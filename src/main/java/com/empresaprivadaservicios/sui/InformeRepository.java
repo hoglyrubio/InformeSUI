@@ -1,8 +1,9 @@
 package com.empresaprivadaservicios.sui;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public class InformeRepository {
+public interface InformeRepository extends CrudRepository<Informe, InformePk>{
 
+  public Long countByInformePk_infoperi(Integer infoperi);
+  
 }

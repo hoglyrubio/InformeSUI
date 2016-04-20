@@ -8,8 +8,11 @@ import java.text.MessageFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class InformeController {
 
   private static final Logger LOG = LoggerFactory.getLogger(InformeController.class);
+  
+  @Autowired
+  private InformeService service;
   
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
   public void runImport(@RequestParam("file") MultipartFile multipartFile) {
@@ -52,6 +58,11 @@ public class InformeController {
   @RequestMapping(path = "/informe/export", method = RequestMethod.GET)
   public String runExport() {
     throw new BusinessException("This is a BusinessException", HttpStatus.BAD_REQUEST);
+  }
+
+  @RequestMapping(path = "/informe/{infoperi}/count", method = RequestMethod.GET)
+  public Long countByInfoperi(@PathVariable Integer infoperi) {
+    return service.countByInfoperi(infoperi);
   }
 
 }

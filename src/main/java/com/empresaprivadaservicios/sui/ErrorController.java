@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class ErrorController {
@@ -21,6 +23,13 @@ public class ErrorController {
   public ResponseEntity<Object> handle(HttpServletRequest request, Throwable throwable) {
     LOG.error("Exception handled", throwable);
     return buildResponseEntity(request, throwable, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  
+  @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class})
+  public ResponseEntity<Object> handle(HttpServletRequest request, Exception ex) {
+    LOG.error("Exception handled", ex);
+    return buildResponseEntity(request, ex, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(TechnicalException.class)
