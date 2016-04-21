@@ -75,6 +75,14 @@ public class Informe {
   
   private Double infovano; // decimal(15,2)
   
+  public Informe() {
+    
+  }
+  
+  public Informe(Integer infoperi, Integer infocodi) {
+    InformePk pk = new InformePk(infoperi, infocodi);
+    setInformePk(pk);
+  }
   
   public InformePk getInformePk() {
     return informePk;
@@ -347,5 +355,18 @@ public class Informe {
   public void setInfovano(Double infovano) {
     this.infovano = infovano;
   }
-  
+
+  @Override
+  public String toString() {
+    return "Informe [informePk=" + informePk + ", infoesta=" + infoesta + ", infonomb=" + infonomb + ", infodire="
+        + infodire + ", infozona=" + infozona + ", infosuca=" + infosuca + ", infolean=" + infolean + ", infoleac="
+        + infoleac + ", infocons=" + infocons + ", infocate=" + infocate + ", infoinan=" + infoinan + ", infoinag="
+        + infoinag + ", infoinal=" + infoinal + ", infoinva=" + infoinva + ", inforeag=" + inforeag + ", inforeal="
+        + inforeal + ", inforeva=" + inforeva + ", infocafi=" + infocafi + ", infocbas=" + infocbas + ", infoccom="
+        + infoccom + ", infocsun=" + infocsun + ", infoalca=" + infoalca + ", infomedi=" + infomedi + ", infosure="
+        + infosure + ", infotanq=" + infotanq + ", infoacom=" + infoacom + ", infootca=" + infootca + ", inforeci="
+        + inforeci + ", infonuat=" + infonuat + ", infovaim=" + infovaim + ", infoserv=" + infoserv + ", infoajus="
+        + infoajus + ", infovapa=" + infovapa + ", infovano=" + infovano + "]";
+  }
+
 }

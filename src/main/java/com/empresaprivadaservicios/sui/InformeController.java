@@ -28,7 +28,7 @@ public class InformeController {
   private InformeService service;
   
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
-  public void runImport(@RequestParam("file") MultipartFile multipartFile) {
+  public void runImport(@RequestParam("peri") Integer infoperi, @RequestParam("file") MultipartFile multipartFile) {
 
     if (multipartFile.isEmpty()) {
       throw new BusinessException("Archivo vacío", HttpStatus.BAD_REQUEST);
@@ -40,6 +40,9 @@ public class InformeController {
       BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
       FileCopyUtils.copy(multipartFile.getInputStream(), stream);
       stream.close();
+      
+      service.loadFile(infoperi, file);
+      
     } catch (IOException ex) {
       throw new TechnicalException("Error cargando archivo", ex);
     }
