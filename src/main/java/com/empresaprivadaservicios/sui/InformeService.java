@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -19,10 +20,13 @@ public class InformeService {
   private static final Logger LOG = LoggerFactory.getLogger(InformeService.class);
 
   @Autowired
-  private InformeRepository repository;
+  private InformeRepository informeRepository;
+
+  @Autowired
+  private PeriodoRepository periodoRepository;
 
   public Long countByInfoperi(Integer infoperi) {
-    return repository.countByInformePk_infoperi(infoperi);
+    return informeRepository.countByInformePk_infoperi(infoperi);
   }
 
   public void loadFile(Integer infoperi, File file) throws IOException {
@@ -74,6 +78,10 @@ public class InformeService {
 
       LOG.info("{}", informe);
     }
+  }
+
+  public List<Periodo> findAllPeriodos() {
+    return periodoRepository.findAllPeriodo();
   }
 
 }

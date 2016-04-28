@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,11 @@ public class InformeController {
   @RequestMapping(path = "/informe/{infoperi}/count", method = RequestMethod.GET)
   public Long countByInfoperi(@PathVariable Integer infoperi) {
     return service.countByInfoperi(infoperi);
+  }
+
+  @RequestMapping(path = "/informe/periodos", method = RequestMethod.GET)
+  public List<Periodo> findAllPeriodos() {
+    return service.findAllPeriodos();
   }
 
 }
