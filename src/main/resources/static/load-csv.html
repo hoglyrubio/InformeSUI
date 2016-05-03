@@ -2,19 +2,14 @@
   <h1>Carga de Informes BH</h1>
 </div>
 
-<form role="form">
+<form role="form" action="informe/upload" method="post" enctype="multipart/form-data">
 	<div class="form-group">
-		<label for="form-periodo">Select list (select one):</label> 
-		<select	class="form-control" id="form-periodo" name="periodo">
-			<option>201501. Enero 2015</option>
-			<option>201502. Febrero 2015</option>
-			<option>201503. Marzo 2015</option>
-			<option>201504. Abril 2015</option>
-		</select>
+		<label>Periodo de facturación</label>
+		<input id="input-1" name="infoperi" class="form-control" type="text"> 
 	</div>
 	<div class="form-group">
-		<label for="form-archivo">Archivo (.CSV):</label> <input
-			type="password" class="form-control" id="form-archivo" name="archivo">
+		<label class="control-label">Seleccione archivo</label>
+		<input id="input-2" type="file" class="file" name="infofile">
 	</div>
 	<button type="submit" class="btn btn-primary">Cargar</button>
 </form>

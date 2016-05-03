@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PeriodoRepository extends CrudRepository<Periodo, Integer>{
 
-  public List<Periodo> findAllPeriodo();
+  public List<Periodo> findAll();
 }

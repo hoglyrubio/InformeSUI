@@ -38,4 +38,9 @@ public class InformePk implements Serializable {
     this.infocodi = infocodi;
   }
 
+  @Override
+  public String toString() {
+    return "InformePk [infoperi=" + infoperi + ", infocodi=" + infocodi + "]";
+  }
+
 }
