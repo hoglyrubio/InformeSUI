@@ -35,10 +35,6 @@ public class InformeController {
   public void runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
     LOG.debug("/informe/upload -> runImport({})", infoperi);
     
-    if (infofile.isEmpty()) {
-      throw new BusinessException("Archivo vacío", HttpStatus.BAD_REQUEST);
-    }
-    
     try {
       informeService.loadFile(infoperi, infofile.getInputStream());
     } catch (IOException ex) {

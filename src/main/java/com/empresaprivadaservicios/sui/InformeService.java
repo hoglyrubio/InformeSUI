@@ -30,8 +30,6 @@ public class InformeService {
     Reader reader = new InputStreamReader(inputStream, "ISO-8859-1");
     CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(reader);
 
-    LOG.info("Headers: {}", parser.getHeaderMap());
-    
     for (CSVRecord record : parser) {
       
       Informe informe = new Informe( infoperi, Integer.valueOf(record.get(InformeFields.INFOCODI)) );
@@ -69,8 +67,6 @@ public class InformeService {
       informe.setInfoajus( Double.valueOf( record.get(InformeFields.INFOAJUS)) );
       informe.setInfovapa( Double.valueOf( record.get(InformeFields.INFOVAPA)) );
       informe.setInfovano( Double.valueOf( record.get(InformeFields.INFOVANO)) );
-
-      LOG.info("{}", informe);
     }
   }
 

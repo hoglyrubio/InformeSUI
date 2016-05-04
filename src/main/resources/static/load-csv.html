@@ -2,14 +2,34 @@
   <h1>Carga de Informes BH</h1>
 </div>
 
-<form role="form" action="informe/upload" method="post" enctype="multipart/form-data">
-	<div class="form-group">
-		<label>Periodo de facturación</label>
-		<input id="input-1" name="infoperi" class="form-control" type="text"> 
-	</div>
-	<div class="form-group">
-		<label class="control-label">Seleccione archivo</label>
-		<input id="input-2" type="file" class="file" name="infofile">
-	</div>
-	<button type="submit" class="btn btn-primary">Cargar</button>
-</form>
+<div id="formulario">
+	<form role="form" action="informe/upload" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<label>Periodo de facturación</label>
+			<select class="form-control" name="infoperi">
+			  <option v-for="periodo in periodos" value="{{ periodo.pericodi }}">
+			    {{ periodo.peridesc }}
+			  </option>
+			</select> 
+		</div>
+		<div class="form-group">
+			<label class="control-label">Seleccione archivo</label>
+			<input type="file" class="file" name="infofile">
+		</div>
+		<button type="submit" class="btn btn-primary">Cargar</button>
+		<button type="reset" class="btn btn-default">Limpiar</button>
+	</form>
+</div>
+
+<script type="text/javascript">
+  new Vue({
+	  el: '#formulario',
+	  data: {
+		  periodos: [
+		   	{ pericodi: 201401, peridesc: "Enero de 2014"},
+		   	{ pericodi: 201402, peridesc: "Febrero de 2014"},
+		   	{ pericodi: 201403, peridesc: "Marzo de 2014"}
+		  ]
+		}
+	});
+</script>
