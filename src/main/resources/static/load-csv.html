@@ -8,7 +8,7 @@
 			<label>Periodo de facturación</label>
 			<select class="form-control" name="infoperi">
 			  <option v-for="periodo in periodos" value="{{ periodo.pericodi }}">
-			    {{ periodo.peridesc }}
+			    Año: {{ periodo.periano }} Mes: {{ periodo.perimes }} {{ periodo.perifein | date }}-{{ periodo.perifefi | datetime}}
 			  </option>
 			</select> 
 		</div>
@@ -18,18 +18,8 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Cargar</button>
 		<button type="reset" class="btn btn-default">Limpiar</button>
+    <a v-on:click="populatePeriodos()" href="#">Load data</a>
 	</form>
 </div>
 
-<script type="text/javascript">
-  new Vue({
-	  el: '#formulario',
-	  data: {
-		  periodos: [
-		   	{ pericodi: 201401, peridesc: "Enero de 2014"},
-		   	{ pericodi: 201402, peridesc: "Febrero de 2014"},
-		   	{ pericodi: 201403, peridesc: "Marzo de 2014"}
-		  ]
-		}
-	});
-</script>
+<script type="text/javascript" src="js/load-csv.js"></script>

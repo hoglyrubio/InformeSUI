@@ -18,13 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class InformeController {
 
   private static final Logger LOG = LoggerFactory.getLogger(InformeController.class);
-  
+
   @Autowired
   private InformeService informeService;
-  
+
   @Autowired
   private PeriodoService periodoService;
-  
+
   @RequestMapping(path = "/informe/periodos", method = RequestMethod.GET)
   public List<Periodo> findAllPeriodos() {
     LOG.debug("/informe/periodos -> findAllPeriodos()");
@@ -34,7 +34,7 @@ public class InformeController {
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
   public void runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
     LOG.debug("/informe/upload -> runImport({})", infoperi);
-    
+
     try {
       informeService.loadFile(infoperi, infofile.getInputStream());
     } catch (IOException ex) {
