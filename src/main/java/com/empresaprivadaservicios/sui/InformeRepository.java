@@ -1,13 +1,17 @@
 package com.empresaprivadaservicios.sui;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 public interface InformeRepository extends CrudRepository<Informe, InformePk>{
 
-  public Long countByInformePk_infoperi(Integer infoperi);
-  
-  public List<Informe> findByInformePk_infoperi(Integer infoperi);
-  
+  Long countByInformePk_infoperi(Integer infoperi);
+
+  List<Informe> findByInformePk_infoperi(Integer infoperi);
+
+  Informe save(Informe informe);
+
+  boolean exists(InformePk informePk);
+
 }
