@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
   <title>Informe SUI</title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/informesui.css">
+  <link rel="stylesheet" type="text/css" href="src/main.css">
 </head> 
 <body>
   <nav class="navbar navbar-inverse">
@@ -17,14 +17,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#" onclick="loadModule('landing')">Informe SUI</a>
+        <a class="navbar-brand" href="#">Informe SUI</a>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Procesos <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="loadModule('load-csv')">Carga de Informes BH (.csv)</a></li>
+              <li><a href="#" onclick="loadModule('loadcsv')">Carga de Informes BH (.csv)</a></li>
               <li><a href="#">Validación de Informe BH</a></li>
               <li><a href="#">Generación de Informe SUI</a></li>
               <li role="separator" class="divider"></li>
@@ -51,6 +51,10 @@
   </nav>
 
   <div id="main-content" class="container">
+    <div class="jumbotron">
+      <h1>Informe SUI</h1>
+      <p>Aplicación destinada a generar los Informes de SUI para la Empresa Privada de Servicios SA ESP</p>
+    </div>    
   </div>
 
   <footer class="footer">
@@ -62,17 +66,6 @@
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.min.js"></script>
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-      loadModule("landing");
-    });
-
-    function loadModule(name) {
-      console.log("loading module: " + name);
-      var _div = $("#main-content");
-      _div.load(name+".html");
-    }
-  </script>
+  <script type="text/javascript" src="src/main.js"></script>
 </body>
 </html>

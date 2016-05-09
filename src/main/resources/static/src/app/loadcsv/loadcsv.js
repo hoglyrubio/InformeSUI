@@ -14,13 +14,5 @@ new Vue({
       console.log(error);
       alert(error.responseText);
     });
-  },
-
-  filters: {
-    localeDateString: function(milliseconds) {
-        var fecha = new Date(milliseconds);
-        return fecha.toLocaleDateString();
-    }
   }
-
 });
