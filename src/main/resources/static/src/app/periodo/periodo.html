@@ -5,9 +5,19 @@
 <div id="tabla-periodos" class="table-responsive">
   <nav>
     <ul class="pagination pagination-sm">
-      <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-      <li v-for="anio in anios"><a href="#">{{ anio.periano }}</a></li>
-      <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+      <li>
+        <a href="#" aria-label="Previous" v-on:click="obtainPreviousGroupOfAnios(anios)">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li v-for="anio in anios">
+        <a href="#" v-on:click="obtainPeriodosByAnio(anio.periano)">{{ anio.periano }}</a>
+      </li>
+      <li>
+        <a href="#" aria-label="Next" v-on:click="obtainNextGroupOfAnios(anios)">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
     </ul>
   </nav>
   <table class="table table-hover">
