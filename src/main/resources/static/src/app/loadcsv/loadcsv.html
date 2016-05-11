@@ -4,11 +4,11 @@
   <h1>Carga de Informes BH</h1>
 </div>
 
-<div id="formulario">
-	<form role="form" action="informe/upload" method="post" enctype="multipart/form-data">
+<div id="formulario" class="container">
+	<form id="formLoadCsv" role="form" v-on:submit="onSubmit4($event)" enctype="multipart/form-data" method="post">
 		<div class="form-group">
 			<label>Periodo de facturación</label>
-			<select class="form-control" name="infoperi">
+			<select id="infoperi" name="infoperi" class="form-control">
 			  <option v-for="periodo in periodos" value="{{ periodo.pericodi }}">
 			    Periodo: {{ periodo.pericodi }} Año: {{ periodo.periano }} Mes: {{ periodo.perimes }} Desde: {{ periodo.perifein | localeDateString }} Hasta: {{ periodo.perifefi | localeDateString}}
 			  </option>
@@ -16,7 +16,7 @@
 		</div>
 		<div class="form-group">
 			<label class="control-label">Seleccione archivo</label>
-			<input type="file" class="file" name="infofile" data-show-preview="false">
+			<input id="infofile" name="infofile" type="file" class="file" data-show-preview="false">
 		</div>
 		<button type="submit" class="btn btn-primary">Cargar</button>
 		<button type="reset" class="btn btn-default">Limpiar</button>

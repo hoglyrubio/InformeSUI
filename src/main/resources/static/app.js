@@ -70,4 +70,14 @@ app.get("/informe/periodos/:periano", function (req, res) {
   res.status(200).send(_response);
 });
 
+app.post("/informe/upload", function (req, res) {
+  console.log("uploaded");
+  console.log(req.params);
+  console.log(req.query);
+  console.log(req.body);
+  console.log(req.files);
+  console.log(req);
+  res.status(200).send("OK");
+});
+
 app.listen(process.env.PORT || 3000);
