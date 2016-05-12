@@ -2,7 +2,8 @@
   <h2>Periodos de facturación</h2>
 </div>
 
-<div id="tabla-periodos" class="table-responsive">
+<div id="tabla-periodos">
+  <small>Seleccione un año para ver los periodos</small>
   <nav>
     <ul class="pagination pagination-sm">
       <li>
@@ -11,7 +12,7 @@
         </a>
       </li>
       <li v-for="anio in anios">
-        <a href="#" v-on:click="obtainPeriodosByAnio(anio.periano)">{{ anio.periano }}</a>
+        <a href="#" v-on:click="obtainPeriodosByAnio(anio)">{{ anio }}</a>
       </li>
       <li>
         <a href="#" aria-label="Next" v-on:click="obtainNextGroupOfAnios(anios)">
@@ -20,22 +21,24 @@
       </li>
     </ul>
   </nav>
-  <table class="table table-hover">
-    <tr>
-      <th>Periodo</th>
-      <th>Año</th>
-      <th>Mes</th>
-      <th>Desde</th>
-      <th>Hasta</th>
-    </tr>
-    <tr v-for="periodo in periodos" onclick="alert('Hi!')">
-      <td>{{ periodo.pericodi }}</td>
-      <td>{{ periodo.periano }}</td>
-      <td>{{ periodo.perimes }}</td>
-      <td>{{ periodo.perifein | localeDateString }}</td>
-      <td>{{ periodo.perifefi | localeDateString }}</td>
-    </tr>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <tr>
+        <th>Periodo</th>
+        <th>Año</th>
+        <th>Mes</th>
+        <th>Desde</th>
+        <th>Hasta</th>
+      </tr>
+      <tr v-for="periodo in periodos" onclick="alert('Hi!')">
+        <td>{{ periodo.pericodi }}</td>
+        <td>{{ periodo.periano }}</td>
+        <td>{{ periodo.perimes }}</td>
+        <td>{{ periodo.perifein | localeDateString }}</td>
+        <td>{{ periodo.perifefi | localeDateString }}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
 <script type="text/javascript" src="src/app/periodo/periodo.js"></script>

@@ -25,7 +25,9 @@ new Vue({
       console.log("anios: " + url);
       var self = this;
       $.get(url, function (data) {
-        self.anios = data;
+        if (data.length > 0) {
+          self.anios = data; 
+        }
       }).fail(function (error) {
         var msg = "Error obteniendo Periodos desde:" + url + ". Message:" + error.responseText;
         console.log(msg);
@@ -38,36 +40,17 @@ new Vue({
     },
 
     obtainPreviousGroupOfAnios: function (anios) {
-      var first = anios[0].periano; 
-      this.requestAnios("informe/anios?gt=" + first);
+      var first = anios[0]; 
+      this.requestAnios("informe/anios?gt=" + first + "&size=5");
     },
 
     obtainNextGroupOfAnios: function (anios) {
-      var last = anios[ anios.length - 1 ].periano;
-      this.requestAnios("informe/anios?lt=" + last);
+      var last = anios[ anios.length - 1 ];
+      this.requestAnios("informe/anios?lt=" + last + "&size=5");
     }
   },
   
   ready: function () {
-    this.requestPeriodos("informe/periodos");
-    this.requestAnios("informe/anios");
-
-/*    
-    var self = this;
-
-    $.get("informe/periodos", function (data) {
-      self.periodos = data;
-    }).fail(function (error) {
-      console.log(error);
-      alert(error.responseText);
-    });
-
-    $.get("informe/anios", function (data) {
-      self.anios = data;
-    }).fail(function (error) {
-      console.log(error);
-      alert(error.responseText);
-    });
-*/
+    this.requestAnios("informe/anios?size=5");
   }
 });

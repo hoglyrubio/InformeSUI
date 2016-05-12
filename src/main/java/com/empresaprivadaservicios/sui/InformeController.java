@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class InformeController {
 
@@ -24,12 +26,6 @@ public class InformeController {
 
   @Autowired
   private PeriodoService periodoService;
-
-  @RequestMapping(path = "/informe/periodos", method = RequestMethod.GET)
-  public List<Periodo> findAllPeriodos() {
-    LOG.debug("/informe/periodos -> findAllPeriodos()");
-    return periodoService.findAll();
-  }
 
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
   public void runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
@@ -42,9 +38,43 @@ public class InformeController {
     }
   }
 
+  @RequestMapping(path = "/informe/periodos", method = RequestMethod.GET)
+  public List<Periodo> findAllPeriodos() {
+    LOG.debug("/informe/periodos -> findAllPeriodos()");
+    return periodoService.findAll();
+  }
+
+  @RequestMapping(path = "/informe/periodos/{periano}", method = RequestMethod.GET)
+  public List<Periodo> findAllPeriodosByAno(@PathVariable Integer periano) {
+    LOG.debug("/informe/periodos -> findAllPeriodos()");
+    return periodoService.findAllPeriodosByAno(periano);
+  }
+
   @RequestMapping(path = "/informe/{infoperi}/count", method = RequestMethod.GET)
   public Long countByInfoperi(@PathVariable Integer infoperi) {
     return informeService.countByInfoperi(infoperi);
+  }
+
+  @RequestMapping(path = "/informe/anios", method = RequestMethod.GET)
+  public List<Integer> obtainAnios(HttpServletRequest request) {
+
+    if (request.getParameter("size") == null) {
+      throw new BusinessException("Falta el parámetro size", HttpStatus.BAD_REQUEST);
+    }
+
+    Integer size = Integer.valueOf(request.getParameter("size"));
+
+    if (request.getParameter("gt") != null) {
+      Integer gt = Integer.valueOf(request.getParameter("gt"));
+      return periodoService.findByPerianoGreaterThan(gt, size);
+    }
+
+    if (request.getParameter("lt") != null) {
+      Integer lt = Integer.valueOf(request.getParameter("lt"));
+      return periodoService.findByPerianoLessThan(lt, size);
+    }
+
+    return periodoService.findLastPeriano(size);
   }
 
 }
