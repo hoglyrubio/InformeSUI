@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ErrorController {
+public class ErrorControllerAdvice {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ErrorController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ErrorControllerAdvice.class);
   
   @ExceptionHandler(Throwable.class)
   public ResponseEntity<Object> handle(HttpServletRequest request, Throwable throwable) {
@@ -24,7 +24,7 @@ public class ErrorController {
     return buildResponseEntity(request, throwable, HttpStatus.INTERNAL_SERVER_ERROR);
   }
   
-  @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class})
+  @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class, NullPointerException.class})
   public ResponseEntity<Object> handle(HttpServletRequest request, Exception ex) {
     LOG.error("Exception handled", ex);
     return buildResponseEntity(request, ex, HttpStatus.BAD_REQUEST);

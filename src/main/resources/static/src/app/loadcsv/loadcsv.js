@@ -8,31 +8,8 @@ new Vue({
 
   methods: {
 
-    onSubmit1: function (event) {
-      var infoperi = $('#infoperi');
-      var infofile = $('#infofile');
-      var formData = new FormData();
-      formData.append('infoperi', infoperi);
-      formData.append('infofile', infofile, infofile.name);
-      console.log(formData);
-      $.post("informe/upload", formData);
-    },
-
-    onSubmit2: function (event) {
-      var form = document.querySelector("form");
-      var formData = new FormData(form);
-      console.log(form);
-      console.log(formData);
-      $.post("informe/upload", formData);
-    },
-
-    onSubmit3: function (event) {
-      var serialized = $("#formLoadCsv").serialize();
-      console.log(serialized);
-      $.post("informe/upload", serialized);
-    },
-
-    onSubmit4: function (event) {
+    onSubmit: function (event) {
+      var self = this;
       event.preventDefault();
       var formData = new FormData(document.getElementById("formLoadCsv"));
       console.log(formData);
@@ -44,19 +21,33 @@ new Vue({
         data: formData,
         cache: false,
         contentType: false,
-        processData: false
+        processData: false,
+        success: function(response) {
+          var responseObject = jQuery.parseJSON(response)
+          $.notify(
+            { message: responseObject.message },
+            { type: "success" }
+          );
+        },
+        error: function(response) {
+          var responseObject = jQuery.parseJSON(response.responseText)
+          $.notify(
+            { title: responseObject.error, message: responseObject.message },
+            { type: "danger", delay: 0 }
+          );
+        }
+      });
+    }
+  },
+  
+    ready: function() {
+      var self = this;
+      $.get("informe/periodos", function(data) {
+        self.periodos = data;
+      }).fail(function(error) {
+        console.log(error);
+        alert(error.responseText);
       });
     }
 
-  },
-  
-  ready: function() {
-    var self = this;
-    $.get("informe/periodos", function(data) {
-      self.periodos = data;
-    }).fail(function(error) {
-      console.log(error);
-      alert(error.responseText);
-    });
-  }
 });

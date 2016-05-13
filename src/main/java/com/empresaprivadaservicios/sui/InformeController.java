@@ -1,66 +1,88 @@
 package com.empresaprivadaservicios.sui;
 
-import java.io.IOException;
-import java.util.List;
-
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class InformeController {
 
   private static final Logger LOG = LoggerFactory.getLogger(InformeController.class);
 
-  @Autowired
   private InformeService informeService;
-
-  @Autowired
   private PeriodoService periodoService;
 
+  @Autowired
+  public InformeController(InformeService informeService, PeriodoService periodoService) {
+    this.informeService = informeService;
+    this.periodoService = periodoService;
+  }
+
+  /*
+   *
+   *  Carga de archivos
+   *
+   */
+
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
-  public void runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
-    LOG.debug("/informe/upload -> runImport({})", infoperi);
+  public Map<String, Object> runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
+    LOG.debug("/informe/upload infoperi: {} file: {}", infoperi, infofile.getOriginalFilename());
 
     try {
-      informeService.loadFile(infoperi, infofile.getInputStream());
+      Integer records = informeService.loadFile(infoperi, infofile.getInputStream());
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", MessageFormat.format("Periodo {0} cargado con {1} registros", infoperi, records));
+      return response;
+
     } catch (IOException ex) {
       throw new TechnicalException("Error cargando archivo", ex);
     }
   }
 
+  /*
+   *  Periodos
+   *
+   */
+
   @RequestMapping(path = "/informe/periodos", method = RequestMethod.GET)
   public List<Periodo> findAllPeriodos() {
-    LOG.debug("/informe/periodos -> findAllPeriodos()");
+    LOG.debug("/informe/periodos");
     return periodoService.findAll();
   }
 
   @RequestMapping(path = "/informe/periodos/{periano}", method = RequestMethod.GET)
   public List<Periodo> findAllPeriodosByAno(@PathVariable Integer periano) {
-    LOG.debug("/informe/periodos -> findAllPeriodos()");
+    LOG.debug("/informe/periodos periano: {}", periano);
     return periodoService.findAllPeriodosByAno(periano);
   }
 
-  @RequestMapping(path = "/informe/{infoperi}/count", method = RequestMethod.GET)
+  @RequestMapping(path = "/informe/periodos/{infoperi}/count", method = RequestMethod.GET)
   public Long countByInfoperi(@PathVariable Integer infoperi) {
+    LOG.debug("/informe/periodos/{}/count", infoperi);
     return informeService.countByInfoperi(infoperi);
   }
 
   @RequestMapping(path = "/informe/anios", method = RequestMethod.GET)
   public List<Integer> obtainAnios(HttpServletRequest request) {
+    LOG.debug("/informe/anios");
 
-    if (request.getParameter("size") == null) {
-      throw new BusinessException("Falta el parámetro size", HttpStatus.BAD_REQUEST);
-    }
+    Validate.notNull(request.getParameter("size"), "Falta el parámetro size");
 
     Integer size = Integer.valueOf(request.getParameter("size"));
 

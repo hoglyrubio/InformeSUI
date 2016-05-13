@@ -3,6 +3,7 @@ package com.empresaprivadaservicios.sui;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,10 @@ public class InformeService {
   }
 
   @Transactional
-  public void loadFile(Integer infoperi, InputStream inputStream) throws IOException {
+  public Integer loadFile(Integer infoperi, InputStream inputStream) throws IOException {
 
-    if (countByInfoperi(infoperi) != 0) {
-      throw new IllegalArgumentException(MessageFormat.format("El periodo {0} ya se encuentra cargado", infoperi.toString()));
-    }
+    Validate.isTrue(countByInfoperi(infoperi) == 0,
+            MessageFormat.format("El periodo {0} ya se encuentra cargado", infoperi.toString()));
 
     Reader reader = new InputStreamReader(inputStream, "ISO-8859-1");
     CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(reader);
@@ -83,7 +83,8 @@ public class InformeService {
 
       informeRepository.save(informe);
     }
-    LOG.info("{} registros cargados", rn);
+    LOG.info("loadFile({}) {} registros cargados", infoperi, rn);
+    return rn;
   }
 
 }

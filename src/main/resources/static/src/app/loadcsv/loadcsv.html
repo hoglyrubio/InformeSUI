@@ -5,7 +5,8 @@
 </div>
 
 <div id="formulario" class="container">
-	<form id="formLoadCsv" role="form" v-on:submit="onSubmit4($event)" enctype="multipart/form-data" method="post">
+
+  <form id="formLoadCsv" role="form" v-on:submit="onSubmit($event)" enctype="multipart/form-data" method="post">
 		<div class="form-group">
 			<label>Periodo de facturación</label>
 			<select id="infoperi" name="infoperi" class="form-control">
