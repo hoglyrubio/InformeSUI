@@ -71,7 +71,8 @@ public class InformeService {
       informe.setInfomedi( Double.valueOf( record.get(InformeFields.INFOMEDI)) );
       informe.setInfosure( Double.valueOf( record.get(InformeFields.INFOSURE)) );
       informe.setInfotanq( Double.valueOf( record.get(InformeFields.INFOTANQ)) );
-      informe.setInfoacom( Double.valueOf( record.get(InformeFields.INFOACOM)) );
+      //informe.setInfoacom( Double.valueOf( record.get(InformeFields.INFOACOM)) );
+      informe.setInfoacom( null );
       informe.setInfootca( Double.valueOf( record.get(InformeFields.INFOOTCA)) );
       informe.setInforeci( Integer.valueOf( record.get(InformeFields.INFORECI)) );
       informe.setInfonuat( Integer.valueOf( record.get(InformeFields.INFONUAT)) );

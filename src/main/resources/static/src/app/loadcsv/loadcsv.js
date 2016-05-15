@@ -24,17 +24,11 @@ new Vue({
         processData: false,
         success: function(response) {
           var responseObject = jQuery.parseJSON(response)
-          $.notify(
-            { message: responseObject.message },
-            { type: "success" }
-          );
+          notifySuccess(responseObject.message);
         },
         error: function(response) {
           var responseObject = jQuery.parseJSON(response.responseText)
-          $.notify(
-            { title: responseObject.error, message: responseObject.message },
-            { type: "danger", delay: 0 }
-          );
+          notifyError(responseObject.error, responseObject.message);
         }
       });
     }

@@ -26,3 +26,21 @@ function loadModule(name) {
   console.log("loading module: " + _src);
   _div.load(_src);
 }
+
+/**
+ *
+ *
+ */
+function notifySuccess(message) {
+  $.notify(
+    { message: message },
+    { type: "success" }
+  );
+}
+
+function notifyError(title, message) {
+  $.notify(
+    { title: title, message: message },
+    { type: "danger", delay: 0 }
+  );
+}
