@@ -15,9 +15,7 @@ new Vue({
       $.get(url, function (data) {
         self.periodos = data;
       }).fail(function (error) {
-        var msg = "Error obteniendo Periodos desde:" + url + ". Message:" + error.responseText;
-        console.log(msg);
-        alert(msg);
+        notifyError(jQuery.parseJSON(response.responseText));
       });            
     },
     
@@ -28,10 +26,8 @@ new Vue({
         if (data.length > 0) {
           self.anios = data; 
         }
-      }).fail(function (error) {
-        var msg = "Error obteniendo Periodos desde:" + url + ". Message:" + error.responseText;
-        console.log(msg);
-        alert(msg);
+      }).fail(function (response) {
+        notifyError(jQuery.parseJSON(response.responseText));
       });            
     },
 

@@ -25,10 +25,9 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Procesos <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#" onclick="loadModule('loadcsv')">Carga de Informes BH (.csv)</a></li>
-              <li><a href="#">Validación de Informe BH</a></li>
-              <li><a href="#">Generación de Informe SUI</a></li>
+              <li><a href="#" onclick="loadModule('validacion')">Validación de Informe BH</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">One more separated link</a></li>
+              <li><a href="#">Generación de Informe SUI</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -57,14 +56,9 @@
     </div>    
   </div>
 
-  <footer class="footer">
-    <div class="container">
-      <p class="">@hoglyrubio Copyright 2016</p>
-    </div>
-  </footer>
-
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.min.js"></script>
   <script type="text/javascript" src="src/main.js"></script>
   <script type="text/javascript" src="src/shared/bootstrap-notify.min.js"></script>

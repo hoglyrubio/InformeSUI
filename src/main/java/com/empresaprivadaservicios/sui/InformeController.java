@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -97,6 +95,16 @@ public class InformeController {
     }
 
     return periodoService.findLastPeriano(size);
+  }
+
+  @RequestMapping(path="/informe/resumen/UsoEstrato/{infoperi}", method = RequestMethod.GET)
+  public List<Object[]> resumenUsoEstrato(@PathVariable Integer infoperi) {
+    return informeService.resumenUsoEstrato(infoperi);
+  }
+
+  @RequestMapping(path="/informe/resumen/Estado/{infoperi}", method = RequestMethod.GET)
+  public List<Object[]> resumenEstado(@PathVariable Integer infoperi) {
+    return informeService.resumenEstado(infoperi);
   }
 
 }

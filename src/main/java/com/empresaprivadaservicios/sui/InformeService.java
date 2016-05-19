@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Service
 public class InformeService {
@@ -86,6 +87,16 @@ public class InformeService {
     }
     LOG.info("loadFile({}) {} registros cargados", infoperi, rn);
     return rn;
+  }
+
+  public List<Object[]> resumenUsoEstrato(Integer infoperi) {
+    List<Object[]> response = informeRepository.resumenUsoEstrato(infoperi);
+    return response;
+  }
+
+  public List<Object[]> resumenEstado(Integer infoperi) {
+    List<Object[]> response = informeRepository.resumenEstado(infoperi);
+    return response;
   }
 
 }

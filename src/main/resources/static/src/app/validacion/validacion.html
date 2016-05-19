@@ -1,0 +1,70 @@
+<div class="page-header">
+  <h1>Validación de Informes BH</h1>
+</div>
+
+<div id="formulario" class="container">
+
+  <form id="formValidacion" role="form" v-on:submit="onSubmit($event)" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+      <label>Periodo de facturación</label>
+      <select id="infoperi" name="infoperi" class="form-control">
+        <option v-for="periodo in periodos" value="{{ periodo.pericodi }}">
+          Periodo: {{ periodo.pericodi }} Año: {{ periodo.periano }} Mes: {{ periodo.perimes }} Desde: {{ periodo.perifein | localeDateString }} Hasta: {{ periodo.perifefi | localeDateString}}
+        </option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Consultar</button>
+  </form>
+  
+  <h3>Resumen por estado</h3>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <tr>
+        <th>Estado</th>
+        <th>Usuarios</th>
+        <th>Consumo (m3)</th>
+      </tr>
+      <tr v-for="reg in resumenEstado">
+        <td class="text-center">{{ reg[0] }}</td>
+        <td class="text-right">{{ reg[1] | numeric }}</td>
+        <td class="text-right">{{ reg[2] | numeric }}</td>
+      </tr>
+      <tr>
+        <td>Totales</td>
+        <td class="text-right">{{ resumenEstadoTotalUsuarios | numeric }}</td>
+        <td class="text-right">{{ resumenEstadoTotalConsumo | numeric }}</td>          
+      </tr>      
+    </table>
+  </div>  
+
+  <h3>Resumen por Uso y Estrato</h3>
+  <div class="container">  
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr>
+          <th>Estado</th>
+          <th>Uso</th>
+          <th>Estrato</th>
+          <th>Usuarios</th>
+          <th>Consumo (m3)</th>
+        </tr>
+        <tr v-for="reg in resumenUsoEstrato">
+          <td class="text-center">{{ reg[0] }}</td>
+          <td class="text-center">{{ reg[1] }}</td>
+          <td class="text-center">{{ reg[2] }}</td>
+          <td class="text-right">{{ reg[3] | numeric }}</td>
+          <td class="text-right">{{ reg[4] | numeric }}</td>
+        </tr>
+        <tr>
+          <td>Totales</td>
+          <td></td>
+          <td></td>
+          <td class="text-right">{{ resumenUsoEstratoTotalUsuarios | numeric }}</td>
+          <td class="text-right">{{ resumenUsoEstratoTotalConsumo | numeric }}</td>          
+        </tr>                
+      </table>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="src/app/validacion/validacion.js"></script>

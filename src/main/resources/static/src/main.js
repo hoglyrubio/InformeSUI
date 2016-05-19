@@ -1,6 +1,5 @@
 /**
  *
- *
  */
 $(document).ready(function () {
   console.log("ready()");
@@ -9,15 +8,17 @@ $(document).ready(function () {
 
 /**
  *
- *
  */
 Vue.filter('localeDateString', function (milliseconds) {
   var fecha = new Date(milliseconds);
   return fecha.toLocaleDateString();
 });
 
+Vue.filter('numeric', function (value) {
+  return numeral(value).format("0,0");
+});
+
 /**
- *
  *
  */
 function loadModule(name) {
@@ -29,7 +30,6 @@ function loadModule(name) {
 
 /**
  *
- *
  */
 function notifySuccess(message) {
   $.notify(
@@ -38,9 +38,23 @@ function notifySuccess(message) {
   );
 }
 
+/**
+ * 
+ */
 function notifyError(title, message) {
   $.notify(
     { title: title, message: message },
+    { type: "danger", delay: 0 }
+  );
+}
+
+/**
+ * Muestra una notificación de error esperando un objeto JSON
+ * del tipo de respuesta establecido en el backend
+ */
+function notifyError(responseObject) {
+  $.notify(
+    { title: responseObject.error, message: responseObject.message },
     { type: "danger", delay: 0 }
   );
 }

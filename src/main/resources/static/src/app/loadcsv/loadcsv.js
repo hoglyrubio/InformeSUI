@@ -13,7 +13,7 @@ new Vue({
       event.preventDefault();
       var formData = new FormData(document.getElementById("formLoadCsv"));
       console.log(formData);
-      
+
       $.ajax({
         url: "informe/upload",
         type: "post",
@@ -22,26 +22,24 @@ new Vue({
         cache: false,
         contentType: false,
         processData: false,
-        success: function(response) {
+        success: function (response) {
           var responseObject = jQuery.parseJSON(response)
           notifySuccess(responseObject.message);
         },
-        error: function(response) {
-          var responseObject = jQuery.parseJSON(response.responseText)
-          notifyError(responseObject.error, responseObject.message);
+        error: function (response) {
+          notifyError(jQuery.parseJSON(response.responseText));
         }
       });
     }
   },
-  
-    ready: function() {
-      var self = this;
-      $.get("informe/periodos", function(data) {
-        self.periodos = data;
-      }).fail(function(error) {
-        console.log(error);
-        alert(error.responseText);
-      });
-    }
+
+  ready: function () {
+    var self = this;
+    $.get("informe/periodos", function (data) {
+      self.periodos = data;
+    }).fail(function (response) {
+      notifyError(jQuery.parseJSON(response.responseText));
+    });
+  }
 
 });
