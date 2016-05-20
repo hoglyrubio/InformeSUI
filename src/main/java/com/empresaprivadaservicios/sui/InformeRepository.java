@@ -21,4 +21,6 @@ public interface InformeRepository extends JpaRepository<Informe, InformePk> {
   @Query(value = "select infoesta, count(*) usuarios, sum(infocons) consumo from informe where infoperi = ?1 group by infoesta", nativeQuery = true)
   List<Object[]> resumenEstado(Integer infoperi);
 
+  List<Informe> findByInformePk_infoperi(Integer infoperi);
+
 }
