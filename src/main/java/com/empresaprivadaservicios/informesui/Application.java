@@ -1,4 +1,4 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class InformeSuiApp {
+public class Application {
 
   public static void main(String[] args) {
-    SpringApplication.run(InformeSuiApp.class, args);
+    SpringApplication.run(Application.class, args);
   }
   
 }

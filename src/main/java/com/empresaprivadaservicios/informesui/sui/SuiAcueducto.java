@@ -1,9 +1,7 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.sui;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(name="suiacu2010")

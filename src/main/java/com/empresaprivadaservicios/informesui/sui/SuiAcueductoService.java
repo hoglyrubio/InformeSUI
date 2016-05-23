@@ -1,5 +1,13 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.sui;
 
+import com.empresaprivadaservicios.informesui.BusinessException;
+import com.empresaprivadaservicios.informesui.tarifa.Tarifa;
+import com.empresaprivadaservicios.informesui.tarifa.TarifaRepository;
+import com.empresaprivadaservicios.informesui.informe.Informe;
+import com.empresaprivadaservicios.informesui.informe.InformeConstantes;
+import com.empresaprivadaservicios.informesui.informe.InformeRepository;
+import com.empresaprivadaservicios.informesui.periodo.Periodo;
+import com.empresaprivadaservicios.informesui.periodo.PeriodoRepository;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static com.empresaprivadaservicios.sui.SuiHelper.ifnull;
+import static com.empresaprivadaservicios.informesui.sui.SuiHelper.ifnull;
 
 @Service
 public class SuiAcueductoService {

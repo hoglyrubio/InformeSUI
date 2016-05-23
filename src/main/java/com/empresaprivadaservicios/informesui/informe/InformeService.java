@@ -1,4 +1,4 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.informe;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

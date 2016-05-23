@@ -1,4 +1,4 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.tarifa;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

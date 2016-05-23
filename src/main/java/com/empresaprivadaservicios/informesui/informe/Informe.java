@@ -1,4 +1,4 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.informe;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.sui;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

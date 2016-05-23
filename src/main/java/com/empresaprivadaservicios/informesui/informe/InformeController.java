@@ -1,5 +1,8 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.informe;
 
+import com.empresaprivadaservicios.informesui.periodo.Periodo;
+import com.empresaprivadaservicios.informesui.periodo.PeriodoService;
+import com.empresaprivadaservicios.informesui.TechnicalException;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.empresaprivadaservicios.sui;
+package com.empresaprivadaservicios.informesui.sui;
 
 public enum SuiEstadoMedidor {
 
