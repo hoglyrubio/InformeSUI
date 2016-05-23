@@ -3,8 +3,11 @@ package com.empresaprivadaservicios.sui;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static com.empresaprivadaservicios.sui.SuiHelper.ifnull;
@@ -15,12 +18,16 @@ public class SuiAcueductoService {
   private final InformeRepository informeRepository;
   private final SuiAcueductoRepository acueductoRepository;
   private final PeriodoRepository periodoRepository;
+  private final TarifaRepository tarifaRepository;
+  private final SuiClaseUsoRepository suiClaseUsoRepository;
 
   @Autowired
-  public SuiAcueductoService(InformeRepository informeRepository, SuiAcueductoRepository acueductoRepository, PeriodoRepository periodoRepository) {
+  public SuiAcueductoService(InformeRepository informeRepository, SuiAcueductoRepository acueductoRepository, PeriodoRepository periodoRepository, TarifaRepository tarifaRepository, SuiClaseUsoRepository suiClaseUsoRepository) {
     this.informeRepository = informeRepository;
     this.acueductoRepository = acueductoRepository;
     this.periodoRepository = periodoRepository;
+    this.tarifaRepository = tarifaRepository;
+    this.suiClaseUsoRepository = suiClaseUsoRepository;
   }
 
   public Integer process(Integer infoperi) {
@@ -37,25 +44,26 @@ public class SuiAcueductoService {
     return informes.size();
   }
 
+  @Transactional
   private SuiAcueducto transform(Informe informe, Periodo periodo) {
     // 1. Nuid
     SuiAcueducto sui = new SuiAcueducto(informe.getInformePk().getInfoperi(), informe.getInformePk().getInfocodi());
     // 2. Numero de cuenta o contrato
     sui.setC02(informe.getInformePk().getInfocodi());
     // 3. Codigo dane depto
-    sui.setC03("54");
+    sui.setC03(SuiConstantes.DANE_DEPARTAMENTO);
     // 4. Codigo dane mpio
-    sui.setC04("405");
+    sui.setC04(SuiConstantes.DANE_MUNICIPIO);
     // 5. Zona IGAC
-    sui.setC05("00");
+    sui.setC05(SuiConstantes.IGAC_ZONA);
     // 6. Sector IGAC
-    sui.setC06("00");
+    sui.setC06(SuiConstantes.IGAC_SECTOR);
     // 7. Manzana o vereda IGAC
-    sui.setC07("0000");
+    sui.setC07(SuiConstantes.IGAC_MANZANA);
     // 8. Numero del predio IGAC
-    sui.setC08("0000");
+    sui.setC08(SuiConstantes.IGAC_NUMERO);
     // 9. Condicion de propiedad del predio IGAC
-    sui.setC09("000");
+    sui.setC09(SuiConstantes.IGAC_CONDICION);
     // 10. Direccion
     sui.setC10( informe.getInfodire() );
     // 11. Numero de factura
@@ -68,7 +76,51 @@ public class SuiAcueductoService {
     Days peridias = Days.daysBetween(new LocalDate(periodo.getPerifefi()), new LocalDate(periodo.getPerifein()));
     sui.setC14(peridias.getDays());
 
+    Tarifa tarifaCF = getUsoEstratoFromTarifaCF(informe, periodo);
+    SuiClaseUso suiClaseUso = codigoClaseUso(tarifaCF);
+
+    // 15. Codigo clase de uso
+    sui.setC15( suiClaseUso.getCluscodi() );
+    // 16. Unidades multiusuario residenciales
+    sui.setC16(null);
+    // 17. Unidades multiusuario no residenciales
+    sui.setC17(null);
+    // 18. Hogar comunitario o sustituto
+    sui.setC18(SuiConstantes.NO_ES_HOGAR_COMUNITARIO_SUSTITUTO);
+    // 19. Estado del medidor
+    sui.setC19( suiClaseUso.getCluscate() == InformeConstantes.USO_RESIDENCIAL ? SuiEstadoMedidor.BUEN_ESTADO.value() : SuiEstadoMedidor.DANADO.value() );
+    // 20. Determinacion del consumo
+    sui.setC20( suiClaseUso.getCluscate() == InformeConstantes.USO_RESIDENCIAL ? SuiDeterminacionConsumo.LEIDO.value() : SuiDeterminacionConsumo.PROMEDIO.value() );
+    // 21. Lectura Anterior
+    sui.setC21(informe.getInfoleac() - informe.getInfocons());
+    // 22. Lectura Actual
+    sui.setC22(informe.getInfoleac());
+    // 23. Consumo del periodo en m3
+    Number cons = ifnull(informe.getInfocons(), Integer.valueOf(0));
+    sui.setC23((Double) cons);
+
     return sui;
+  }
+
+  private Tarifa getUsoEstratoFromTarifaCF(Informe informe, Periodo periodo) {
+    Integer ano = periodo.getPeriano();
+    Integer mes = periodo.getPerimes();
+    Double valorCF = informe.getInfocafi();
+    Tarifa tarifaCF = tarifaRepository.findTarifaCFByValue(ano, mes, valorCF);
+    if (tarifaCF == null) {
+      throw new BusinessException(MessageFormat.format("No se encuentra tarifa de CF. Codigo {0} Valor Cargo fijo {1}", informe.getInformePk().getInfocodi(), informe.getInfocafi()), HttpStatus.BAD_REQUEST);
+    }
+    return tarifaCF;
+  }
+
+  private SuiClaseUso codigoClaseUso(Tarifa tarifaCF) {
+    String uso = tarifaCF.getTarifaPk().getTaricate().toString();
+    Integer suca = tarifaCF.getTarifaPk().getTarisuca();
+    SuiClaseUso suiClaseUso = suiClaseUsoRepository.findByUsoSuca(uso, suca);
+    if (suiClaseUso == null) {
+      throw new BusinessException(MessageFormat.format("No existe Uso: {0} Estrato: {1} en tabla de homologación", uso, suca), HttpStatus.BAD_REQUEST);
+    }
+    return suiClaseUso;
   }
 
 }
