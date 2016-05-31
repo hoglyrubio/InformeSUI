@@ -1,17 +1,14 @@
-package com.empresaprivadaservicios.informesui.informe;
+package com.empresaprivadaservicios.informesui;
 
+import com.empresaprivadaservicios.informesui.informe.InformeService;
 import com.empresaprivadaservicios.informesui.periodo.Periodo;
 import com.empresaprivadaservicios.informesui.periodo.PeriodoService;
-import com.empresaprivadaservicios.informesui.TechnicalException;
+import com.empresaprivadaservicios.informesui.sui.SuiAcueductoService;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,24 +19,20 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class InformeController {
+public class AppController {
 
-  private static final Logger LOG = LoggerFactory.getLogger(InformeController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AppController.class);
 
   private InformeService informeService;
   private PeriodoService periodoService;
+  private SuiAcueductoService acueductoService;
 
   @Autowired
-  public InformeController(InformeService informeService, PeriodoService periodoService) {
+  public AppController(InformeService informeService, PeriodoService periodoService, SuiAcueductoService acueductoService) {
     this.informeService = informeService;
     this.periodoService = periodoService;
+    this.acueductoService = acueductoService;
   }
-
-  /*
-   *
-   *  Carga de archivos
-   *
-   */
 
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
   public Map<String, Object> runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
@@ -48,18 +41,13 @@ public class InformeController {
     try {
       Integer records = informeService.loadFile(infoperi, infofile.getInputStream());
       Map<String, Object> response = new HashMap<>();
-      response.put("message", MessageFormat.format("Periodo {0} cargado con {1} registros", infoperi, records));
+      response.put("message", MessageFormat.format("Periodo {0} cargado con {1} registros", infoperi.toString(), records));
       return response;
 
     } catch (IOException ex) {
       throw new TechnicalException("Error cargando archivo", ex);
     }
   }
-
-  /*
-   *  Periodos
-   *
-   */
 
   @RequestMapping(path = "/informe/periodos", method = RequestMethod.GET)
   public List<Periodo> findAllPeriodos() {
@@ -108,6 +96,14 @@ public class InformeController {
   @RequestMapping(path="/informe/resumen/Estado/{infoperi}", method = RequestMethod.GET)
   public List<Object[]> resumenEstado(@PathVariable Integer infoperi) {
     return informeService.resumenEstado(infoperi);
+  }
+
+  @RequestMapping("/acueducto/procesar/{pericodi}")
+  public Map<String, Object> processAcueducto(@PathVariable Integer pericodi) {
+    Integer records = acueductoService.process(pericodi);
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", MessageFormat.format("Procesado Acueducto periodo: {0} con {1} registros", pericodi.toString(), records));
+    return response;
   }
 
 }

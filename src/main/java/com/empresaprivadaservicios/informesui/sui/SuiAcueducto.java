@@ -10,17 +10,17 @@ public class SuiAcueducto {
   @EmbeddedId
   private SuiAcueductoPk suiAcueductoPk;
   private Integer C02 ; // int(11);
-  private String C03 ; //  varchar(8);
-  private String C04 ; //  varchar(3);
-  private String C05 ; //  varchar(2);
-  private String C06 ; //  varchar(2);
-  private String C07 ; //  varchar(4);
-  private String C08 ; //  varchar(4);
-  private String C09 ; //  varchar(3);
-  private String C10 ; //  varchar(130);
+  private String C03 ; // varchar(8);
+  private String C04 ; // varchar(3);
+  private String C05 ; // varchar(2);
+  private String C06 ; // varchar(2);
+  private String C07 ; // varchar(4);
+  private String C08 ; // varchar(4);
+  private String C09 ; // varchar(3);
+  private String C10 ; // varchar(130);
   private Integer C11 ; // int(11);
-  private Date C12 ; //   date;
-  private Date C13 ; //   date;
+  private Date C12 ; // date;
+  private Date C13 ; // date;
   private Integer C14 ; // int(11);
   private Integer C15 ; // int(11);
   private Integer C16 ; // int(11);
@@ -30,32 +30,35 @@ public class SuiAcueducto {
   private Integer C20 ; // int(11);
   private Integer C21 ; // int(11);
   private Integer C22 ; // int(11);
-  private Double C23 ; //    decimal(15,4);
-  private Double C24 ; //    decimal(15,4);
-  private Double C25 ; //    decimal(15,4);
-  private Double C26 ; //    decimal(15,4);
-  private Double C27 ; //    decimal(15,4);
-  private Double C28 ; //    decimal(15,4);
-  private Double C29 ; //    decimal(15,4);
-  private Double C30 ; //    decimal(15,4);
-  private Double C31 ; //    decimal(15,4);
-  private Double C32 ; //    decimal(15,4);
-  private Double C33 ; //    decimal(15,4);
-  private Double C34 ; //    decimal(15,4);
-  private Double C35 ; //    decimal(15,4);
-  private Double C36 ; //    decimal(15,4);
-  private Double C37 ; //    decimal(15,4);
-  private Double C38 ; //    decimal(15,4);
-  private Double C39 ; //    decimal(15,4);
-  private Double C40 ; //    decimal(15,4);
+  private Double C23 ; // decimal(15,4);
+  private Double C24 ; // decimal(15,4);
+  private Double C25 ; // decimal(15,4);
+  private Double C26 ; // decimal(15,4);
+  private Double C27 ; // decimal(15,4);
+  private Double C28 ; // decimal(15,4);
+  private Double C29 ; // decimal(15,4);
+  private Double C30 ; // decimal(15,4);
+  private Double C31 ; // decimal(15,4);
+  private Double C32 ; // decimal(15,4);
+  private Double C33 ; // decimal(15,4);
+  private Double C34 ; // decimal(15,4);
+  private Double C35 ; // decimal(15,4);
+  private Double C36 ; // decimal(15,4);
+  private Double C37 ; // decimal(15,4);
+  private Double C38 ; // decimal(15,4);
+  private Double C39 ; // decimal(15,4);
+  private Double C40 ; // decimal(15,4);
   private Integer C41 ; // int(11);
-  private Double C42 ; //    decimal(15,4);
-  private Double C43 ; //    decimal(15,4);
-  private Double C44 ; //    decimal(15,4);
+  private Double C42 ; // decimal(15,4);
+  private Double C43 ; // decimal(15,4);
+  private Double C44 ; // decimal(15,4);
   private Integer C45 ; // int(11);
   private Integer C46 ; // int(11);
-  private Double C47 ; //    decimal(15,4);
-  private Double C48 ; //    decimal(15,4);
+  private Double C47 ; // decimal(15,4);
+  private Double C48 ; // decimal(15,4);
+
+  public SuiAcueducto() {
+  }
 
   public SuiAcueducto(Integer periodo, Integer c01) {
     SuiAcueductoPk pk = new SuiAcueductoPk(periodo, c01);

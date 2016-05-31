@@ -3,12 +3,16 @@ package com.empresaprivadaservicios.informesui.informe;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,40 +57,54 @@ public class InformeService {
       informe.setInfodire( record.get(InformeFields.INFODIRE) );
       informe.setInfozona( record.get(InformeFields.INFOZONA) );
       informe.setInfosuca( record.get(InformeFields.INFOSUCA) );
-      informe.setInfolean( Integer.valueOf( record.get(InformeFields.INFOLEAN).replace(".00","")) );
-      informe.setInfoleac( Integer.valueOf( record.get(InformeFields.INFOLEAC).replace(".00","")) );
-      informe.setInfocons( Integer.valueOf( record.get(InformeFields.INFOCONS).replace(".00","")) );
+      informe.setInfolean( integerValue( record.get(InformeFields.INFOLEAN).replace(".00","")) );
+      informe.setInfoleac( integerValue( record.get(InformeFields.INFOLEAC).replace(".00","")) );
+      informe.setInfocons( integerValue( record.get(InformeFields.INFOCONS).replace(".00","")) );
       informe.setInfocate( record.get(InformeFields.INFOCATE) );
-      informe.setInfoinan( Double.valueOf( record.get(InformeFields.INFOINAN)) );
-      informe.setInfoinag( Double.valueOf( record.get(InformeFields.INFOINAG)) );
-      informe.setInfoinal( Double.valueOf( record.get(InformeFields.INFOINAL)) );
-      informe.setInfoinva( Double.valueOf( record.get(InformeFields.INFOINVA)) );
-      informe.setInforeag( Double.valueOf( record.get(InformeFields.INFOREAG)) );
-      informe.setInforeal( Double.valueOf( record.get(InformeFields.INFOREAL)) );
-      informe.setInforeva( Double.valueOf( record.get(InformeFields.INFOREVA)) );
-      informe.setInfocafi( Double.valueOf( record.get(InformeFields.INFOCAFI)) );
-      informe.setInfocbas( Double.valueOf( record.get(InformeFields.INFOCBAS)) );
-      informe.setInfoccom( Double.valueOf( record.get(InformeFields.INFOCCOM)) );
-      informe.setInfocsun( Double.valueOf( record.get(InformeFields.INFOCSUN)) );
-      informe.setInfoalca( Double.valueOf( record.get(InformeFields.INFOALCA)) );
-      informe.setInfomedi( Double.valueOf( record.get(InformeFields.INFOMEDI)) );
-      informe.setInfosure( Double.valueOf( record.get(InformeFields.INFOSURE)) );
-      informe.setInfotanq( Double.valueOf( record.get(InformeFields.INFOTANQ)) );
-      //informe.setInfoacom( Double.valueOf( record.get(InformeFields.INFOACOM)) );
-      informe.setInfoacom( null );
-      informe.setInfootca( Double.valueOf( record.get(InformeFields.INFOOTCA)) );
-      informe.setInforeci( Integer.valueOf( record.get(InformeFields.INFORECI)) );
-      informe.setInfonuat( Integer.valueOf( record.get(InformeFields.INFONUAT)) );
-      informe.setInfovaim( Double.valueOf( record.get(InformeFields.INFOVAIM)) );
-      informe.setInfoserv( Double.valueOf( record.get(InformeFields.INFOSERV)) );
-      informe.setInfoajus( Double.valueOf( record.get(InformeFields.INFOAJUS)) );
-      informe.setInfovapa( Double.valueOf( record.get(InformeFields.INFOVAPA)) );
-      informe.setInfovano( Double.valueOf( record.get(InformeFields.INFOVANO)) );
+      informe.setInfoinan( doubleValue( record.get(InformeFields.INFOINAN)) );
+      informe.setInfoinag( doubleValue( record.get(InformeFields.INFOINAG)) );
+      informe.setInfoinal( doubleValue( record.get(InformeFields.INFOINAL)) );
+      informe.setInfoinva( doubleValue( record.get(InformeFields.INFOINVA)) );
+      informe.setInforeag( doubleValue( record.get(InformeFields.INFOREAG)) );
+      informe.setInforeal( doubleValue( record.get(InformeFields.INFOREAL)) );
+      informe.setInforeva( doubleValue( record.get(InformeFields.INFOREVA)) );
+      informe.setInfocafi( doubleValue( record.get(InformeFields.INFOCAFI)) );
+      informe.setInfocbas( doubleValue( record.get(InformeFields.INFOCBAS)) );
+      informe.setInfoccom( doubleValue( record.get(InformeFields.INFOCCOM)) );
+      informe.setInfocsun( doubleValue( record.get(InformeFields.INFOCSUN)) );
+      informe.setInfoalca( doubleValue( record.get(InformeFields.INFOALCA)) );
+      informe.setInfomedi( doubleValue( record.get(InformeFields.INFOMEDI)) );
+      informe.setInfosure( doubleValue( record.get(InformeFields.INFOSURE)) );
+      informe.setInfotanq( doubleValue( record.get(InformeFields.INFOTANQ)) );
+      //informe.setInfoacom( doubleValue( record.get(InformeFields.INFOACOM)) );
+      informe.setInfoacom( 0D );
+      informe.setInfootca( doubleValue( record.get(InformeFields.INFOOTCA)) );
+      informe.setInforeci( integerValue( record.get(InformeFields.INFORECI)) );
+      informe.setInfonuat( integerValue( record.get(InformeFields.INFONUAT)) );
+      informe.setInfovaim( doubleValue( record.get(InformeFields.INFOVAIM)) );
+      informe.setInfoserv( doubleValue( record.get(InformeFields.INFOSERV)) );
+      informe.setInfoajus( doubleValue( record.get(InformeFields.INFOAJUS)) );
+      informe.setInfovapa( doubleValue( record.get(InformeFields.INFOVAPA)) );
+      informe.setInfovano( doubleValue( record.get(InformeFields.INFOVANO)) );
 
       informeRepository.save(informe);
     }
     LOG.info("loadFile({}) {} registros cargados", infoperi, rn);
     return rn;
+  }
+
+  private Double doubleValue(String value) {
+    if (StringUtils.isEmpty(value)) {
+      return 0D;
+    }
+    return Double.valueOf(value);
+  }
+
+  private Integer integerValue(String value) {
+    if (StringUtils.isEmpty(value)) {
+      return 0;
+    }
+    return Integer.valueOf(value);
   }
 
   public List<Object[]> resumenUsoEstrato(Integer infoperi) {

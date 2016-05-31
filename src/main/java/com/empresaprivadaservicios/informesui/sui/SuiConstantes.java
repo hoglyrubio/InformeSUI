@@ -13,4 +13,10 @@ public class SuiConstantes {
 
   public static final Integer NO_ES_HOGAR_COMUNITARIO_SUSTITUTO = 0;
 
+  public static final String TARICODI_CARGO_FIJO = "CF";
+  public static final String TARICODI_CONSUMO_BASICO = "COB";
+  public static final String TARICODI_CONSUMO_COMPLEMENTARIO = "COC";
+  public static final String TARICODI_CONSUMO_SUNTUARIO = "COS";
+
+  public static final Integer DEFAULT_CASUCODI = -1;
 }

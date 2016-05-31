@@ -8,7 +8,7 @@ public class TarifaPk implements Serializable {
 
   private Integer tariano;
   private Integer tarimes;
-  private Integer taricodi;
+  private String taricodi;
   private Integer taricate;
   private Integer tarisuca;
 
@@ -16,7 +16,7 @@ public class TarifaPk implements Serializable {
 
   }
 
-  public TarifaPk(Integer tariano, Integer tarimes, Integer taricodi, Integer taricate, Integer tarisuca) {
+  public TarifaPk(Integer tariano, Integer tarimes, String taricodi, Integer taricate, Integer tarisuca) {
     this.tariano = tariano;
     this.tarimes = tarimes;
     this.taricodi = taricodi;
@@ -40,11 +40,11 @@ public class TarifaPk implements Serializable {
     this.tarimes = tarimes;
   }
 
-  public Integer getTaricodi() {
+  public String getTaricodi() {
     return taricodi;
   }
 
-  public void setTaricodi(Integer taricodi) {
+  public void setTaricodi(String taricodi) {
     this.taricodi = taricodi;
   }
 

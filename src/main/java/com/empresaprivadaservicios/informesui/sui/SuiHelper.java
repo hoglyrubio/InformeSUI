@@ -9,13 +9,6 @@ public class SuiHelper {
   public static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
   public static final String SEPARATOR = ",";
 
-  public static <T> T ifnull(T value, T result) {
-    if (value == null) {
-      return result;
-    }
-    return value;
-  }
-
   public static String toCsv(SuiAcueducto suiAcueducto) {
 
     StringBuilder csv = new StringBuilder();
@@ -72,6 +65,10 @@ public class SuiHelper {
       .append(suiAcueducto.getC48() == null ? 0 : suiAcueducto.getC48()).append(SEPARATOR);
 
     return csv.toString();
+  }
+
+  public static boolean isResidencial(SuiCateSuca suiCateSuca) {
+    return suiCateSuca.getCasucodi() < 10;
   }
 
 }
