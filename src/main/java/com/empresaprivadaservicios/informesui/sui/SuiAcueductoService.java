@@ -265,12 +265,12 @@ public class SuiAcueductoService {
       suiCateSuca = suiCateSucaRepository.findOne(new SuiCateSucaPk(informe.getInfocate(), informe.getInfosuca()));
     } else {
       throw new BusinessException(MessageFormat.format("El código <{0}> tiene un estado inválido <{0}>.",
-              informe.getInformePk().getInfocodi().toString(), informe.getInfoesta()), HttpStatus.BAD_REQUEST);
+              informe.getInformePk().getInfocodi().toString(), informe.getInfoesta()));
     }
 
     if (suiCateSuca == null) {
       throw new BusinessException(MessageFormat.format("El codigo <{0}> no tiene homologación para Uso <{1}> y Estrato <{2}>",
-              informe.getInformePk().getInfocodi().toString(), informe.getInfoesta()), HttpStatus.BAD_REQUEST);
+              informe.getInformePk().getInfocodi().toString(), informe.getInfoesta()));
     }
 
     return suiCateSuca;
@@ -289,7 +289,7 @@ public class SuiAcueductoService {
     Tarifa tarifaCF = tarifaRepository.findTarifaCFByValue(ano, mes, valorCF);
     if (tarifaCF == null) {
       throw new BusinessException(MessageFormat.format("No se encuentra tarifa de CF. Codigo {0} Valor Cargo fijo {1}",
-              informe.getInformePk().getInfocodi().toString(), informe.getInfocafi()), HttpStatus.BAD_REQUEST);
+              informe.getInformePk().getInfocodi().toString(), informe.getInfocafi()));
     }
     return tarifaCF;
   }

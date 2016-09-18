@@ -10,7 +10,10 @@ public class BusinessException extends RuntimeException {
   
   private HttpStatus status;
   private List<String> messages;
-  
+
+  public BusinessException(String message) {
+    this(message, HttpStatus.BAD_REQUEST);
+  }
   public BusinessException(String message, HttpStatus status) {
     super(message);
     this.status = status;
