@@ -1,5 +1,8 @@
 package com.empresaprivadaservicios.informesui.informe;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
@@ -26,7 +29,7 @@ public class Informe {
   private Integer infocons; // int(11)
   
   private String infocate; // varchar(2)
-  
+
   private Double infoinan; // decimal(15,2)
   
   private Double infoinag; // decimal(15,2)

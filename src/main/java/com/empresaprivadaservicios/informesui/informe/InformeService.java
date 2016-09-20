@@ -40,8 +40,8 @@ public class InformeService {
   @Transactional
   public Integer loadFile(Integer infoperi, InputStream inputStream) throws IOException {
 
-    Validate.isTrue(countByInfoperi(infoperi) == 0,
-            MessageFormat.format("El periodo {0} ya se encuentra cargado", infoperi.toString()));
+    //Validate.isTrue(countByInfoperi(infoperi) == 0,
+    //        MessageFormat.format("El periodo {0} ya se encuentra cargado", infoperi.toString()));
 
     Reader reader = new InputStreamReader(inputStream, "ISO-8859-1");
     CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(reader);
@@ -76,7 +76,7 @@ public class InformeService {
       informe.setInfomedi( doubleValue( record.get(InformeFields.INFOMEDI)) );
       informe.setInfosure( doubleValue( record.get(InformeFields.INFOSURE)) );
       informe.setInfotanq( doubleValue( record.get(InformeFields.INFOTANQ)) );
-      //informe.setInfoacom( doubleValue( record.get(InformeFields.INFOACOM)) );
+      informe.setInfoacom( doubleValue( record.get(InformeFields.INFOACOM)) );
       informe.setInfoacom( 0D );
       informe.setInfootca( doubleValue( record.get(InformeFields.INFOOTCA)) );
       informe.setInforeci( integerValue( record.get(InformeFields.INFORECI)) );

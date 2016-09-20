@@ -53,6 +53,7 @@ public class SuiAcueductoService {
     acueductoRepository.deleteBySuiAcueductoPk_periodo(infoperi);
 
     List<Informe> informes = informeRepository.findByInformePk_infoperi(infoperi);
+
     for (Informe informe : informes) {
       LOG.info("Procesing: {}", informe.getInformePk().getInfocodi() );
       SuiAcueducto sui = transform(informe, periodo);

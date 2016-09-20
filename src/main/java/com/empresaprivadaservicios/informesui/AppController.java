@@ -37,7 +37,6 @@ public class AppController {
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
   public Map<String, Object> runImport(@RequestParam("infoperi") Integer infoperi, @RequestParam("infofile") MultipartFile infofile) {
     LOG.debug("/informe/upload infoperi: {} file: {}", infoperi, infofile.getOriginalFilename());
-
     try {
       Integer records = informeService.loadFile(infoperi, infofile.getInputStream());
       Map<String, Object> response = new HashMap<>();
