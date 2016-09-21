@@ -8,10 +8,14 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -105,4 +109,17 @@ public class AppController {
     return response;
   }
 
+  @RequestMapping("/acueducto/descargar/{pericodi}")
+  public void descargarAcueducto(@PathVariable Integer pericodi, HttpServletResponse response) {
+    try {
+      String lines = acueductoService.obtainCsvLines(pericodi);
+      response.setContentType(MediaType.TEXT_PLAIN.toString());
+      response.setContentLength(lines.length());
+      response.setHeader("Content-Disposition", String.format("inline; filename=\"acu%s.csv\"", pericodi));
+      ServletOutputStream out = response.getOutputStream();
+      out.write(lines.getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

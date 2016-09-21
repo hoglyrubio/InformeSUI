@@ -17,8 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
+import java.io.*;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_NORMAL;
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_SOLO_INTERESES;
@@ -293,6 +298,15 @@ public class SuiAcueductoService {
               informe.getInformePk().getInfocodi().toString(), informe.getInfocafi()));
     }
     return tarifaCF;
+  }
+
+  public String obtainCsvLines(Integer pericodi) {
+    List<SuiAcueducto> suiAcueductos = acueductoRepository.findBySuiAcueductoPk_periodo(pericodi);
+    LOG.info("Acueductos: {}", suiAcueductos.size());
+    return suiAcueductos
+      .parallelStream()
+      .map(suiAcueducto -> SuiHelper.toCsv(suiAcueducto))
+      .collect(Collectors.joining("\n"));
   }
 
 }
