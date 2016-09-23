@@ -1,12 +1,15 @@
 package com.empresaprivadaservicios.informesui.sui;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class SuiHelper {
 
   public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
-  public static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+  public static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = DecimalFormatSymbols.getInstance(Locale.US);
+  public static final DecimalFormat decimalFormat3 = new DecimalFormat("#0.000", DECIMAL_FORMAT_SYMBOLS);
   public static final String SEPARATOR = ",";
 
   public static String toCsv(SuiAcueducto suiAcueducto) {
@@ -22,7 +25,6 @@ public class SuiHelper {
       .append(suiAcueducto.getC06()).append(SEPARATOR)
       .append(suiAcueducto.getC07()).append(SEPARATOR)
       .append(suiAcueducto.getC08()).append(SEPARATOR)
-      .append(suiAcueducto.getC09()).append(SEPARATOR)
       .append(suiAcueducto.getC09()).append(SEPARATOR)
       .append(suiAcueducto.getC10()).append(SEPARATOR)
       .append(suiAcueducto.getC11()).append(SEPARATOR)
@@ -47,8 +49,8 @@ public class SuiHelper {
       .append(suiAcueducto.getC30() == null ? 0 : suiAcueducto.getC30()).append(SEPARATOR)
       .append(suiAcueducto.getC31() == null ? 0 : suiAcueducto.getC21()).append(SEPARATOR)
       .append(suiAcueducto.getC32() == null ? 0 : suiAcueducto.getC32()).append(SEPARATOR)
-      .append(decimalFormat.format(suiAcueducto.getC33() == null ? 0 : suiAcueducto.getC33())).append(SEPARATOR)
-      .append(decimalFormat.format(suiAcueducto.getC34() == null ? 0 : suiAcueducto.getC34())).append(SEPARATOR)
+      .append(decimalFormat3.format(suiAcueducto.getC33() == null ? 0 : suiAcueducto.getC33())).append(SEPARATOR)
+      .append(decimalFormat3.format(suiAcueducto.getC34() == null ? 0 : suiAcueducto.getC34())).append(SEPARATOR)
       .append(suiAcueducto.getC35() == null ? 0 : suiAcueducto.getC35()).append(SEPARATOR)
       .append(suiAcueducto.getC36() == null ? 0 : suiAcueducto.getC36()).append(SEPARATOR)
       .append(suiAcueducto.getC37() == null ? 0 : suiAcueducto.getC37()).append(SEPARATOR)
@@ -62,13 +64,18 @@ public class SuiHelper {
       .append(suiAcueducto.getC45() == null ? 0 : suiAcueducto.getC45()).append(SEPARATOR)
       .append(suiAcueducto.getC46() == null ? "" : suiAcueducto.getC46()).append(SEPARATOR)
       .append(suiAcueducto.getC47() == null ? 0 : suiAcueducto.getC47()).append(SEPARATOR)
-      .append(suiAcueducto.getC48() == null ? 0 : suiAcueducto.getC48()).append(SEPARATOR);
+      .append(suiAcueducto.getC48() == null ? 0 : suiAcueducto.getC48());
 
     return csv.toString();
   }
 
   public static boolean isResidencial(SuiCateSuca suiCateSuca) {
     return suiCateSuca.getCasucodi() < 10;
+  }
+
+  public static double round(double value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    return Math.round(value * factor) / factor;
   }
 
 }

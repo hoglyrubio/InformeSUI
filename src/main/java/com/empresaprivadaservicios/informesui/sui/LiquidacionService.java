@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LiquidacionService {
 
+  private static final int DECIMALS = 4;
   private TarifaRepository tarifaRepository;
 
   @Autowired
@@ -30,6 +31,7 @@ public class LiquidacionService {
     Tarifa tarifaCBas = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), suiCateSuca.getCasucodi(), SuiConstantes.TARICODI_CONSUMO_BASICO);
     Tarifa tarifaCBasPlena = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), SuiConstantes.DEFAULT_CASUCODI, SuiConstantes.TARICODI_CONSUMO_BASICO);
     Double valorConsumoBasico = tarifaCBas.getTarivalo() * consumoBas;
+    valorConsumoBasico = SuiHelper.round(valorConsumoBasico, DECIMALS);
     Double suapConsumoBasico = (valorConsumoBasico - tarifaCBasPlena.getTarivalo()) * consumoBas;
 
     Tarifa tarifaCCom = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), suiCateSuca.getCasucodi(), SuiConstantes.TARICODI_CONSUMO_COMPLEMENTARIO);
@@ -70,4 +72,5 @@ public class LiquidacionService {
 
     return liquidacion;
   }
+
 }

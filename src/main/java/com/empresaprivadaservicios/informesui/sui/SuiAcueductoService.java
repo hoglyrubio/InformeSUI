@@ -62,16 +62,13 @@ public class SuiAcueductoService {
     for (Informe informe : informes) {
       LOG.info("Procesing: {}", informe.getInformePk().getInfocodi() );
       SuiAcueducto sui = transform(informe, periodo);
+      checkTotalFacturado(sui);
       acueductoRepository.save(sui);
     }
     return informes.size();
   }
 
   private SuiAcueducto transform(Informe informe, Periodo periodo) {
-    StopWatch stopWatch = new StopWatch(informe.getInformePk().getInfocodi().toString());
-
-    stopWatch.start("Fase 1");
-
     // 1. Nuid
     SuiAcueducto sui = new SuiAcueducto(informe.getInformePk().getInfoperi(), informe.getInformePk().getInfocodi());
     // 2. Numero de cuenta o contrato
@@ -99,11 +96,8 @@ public class SuiAcueductoService {
     // 13. fecha inicio periodo
     sui.setC13(periodo.getPerifein());
     // 14. Dias facturados
-    Days peridias = Days.daysBetween(new LocalDate(periodo.getPerifefi()), new LocalDate(periodo.getPerifein()));
+    Days peridias = Days.daysBetween(new LocalDate(periodo.getPerifein()), new LocalDate(periodo.getPerifefi()));
     sui.setC14(peridias.getDays());
-
-    stopWatch.stop();
-    stopWatch.start("Fase 2");
 
     SuiCateSuca suiCateSuca = obtainSuiCateSuca(informe, periodo);
 
@@ -126,13 +120,7 @@ public class SuiAcueductoService {
     // 23. Consumo del periodo en m3
     sui.setC23(informe.getInfocons().doubleValue());
 
-    stopWatch.stop();
-    stopWatch.start("Fase 3 Liquidacion");
-
     Liquidacion liquidacion = liquidacionService.process(informe.getInfocons(), suiCateSuca, periodo);
-
-    stopWatch.stop();
-    stopWatch.start("Fase 4");
 
     // 24. Cargo Fijo
     sui.setC24( liquidacion.getTarifaCargoFijoPlena() );
@@ -189,9 +177,6 @@ public class SuiAcueductoService {
             informe.getInfomedi() + informe.getInfotanq() + informe.getInfoacom() +
             informe.getInfootca() - informe.getInfoajus() );
 
-    stopWatch.stop();
-    stopWatch.start("Fase 4");
-
     // MACHETE
     if (informe.getInformePk().getInfocodi() == 20050) {
       sui.setC44( sui.getC31() );
@@ -223,9 +208,6 @@ public class SuiAcueductoService {
       sui.setC43(0D);
     }
 
-    stopWatch.stop();
-    stopWatch.start("Fase 5");
-
     // 45. Causal de Refacturacion
     sui.setC45(0);
     // 46. Numero de factura objeto de refacturacion
@@ -246,8 +228,6 @@ public class SuiAcueductoService {
       sui.setC48(informe.getInfovapa());
     }
 
-    stopWatch.stop();
-    LOG.info(stopWatch.prettyPrint());
     return sui;
   }
 
@@ -304,9 +284,22 @@ public class SuiAcueductoService {
     List<SuiAcueducto> suiAcueductos = acueductoRepository.findBySuiAcueductoPk_periodo(pericodi);
     LOG.info("Acueductos: {}", suiAcueductos.size());
     return suiAcueductos
-      .parallelStream()
+      .stream()
       .map(suiAcueducto -> SuiHelper.toCsv(suiAcueducto))
       .collect(Collectors.joining("\n"));
   }
+
+  private void checkTotalFacturado(SuiAcueducto suiAcueducto) {
+    Double sum = suiAcueducto.getC24() + suiAcueducto.getC30() - suiAcueducto.getC31() +
+      suiAcueducto.getC32() + suiAcueducto.getC35() + suiAcueducto.getC36() + suiAcueducto.getC37() +
+      suiAcueducto.getC38() + suiAcueducto.getC39() + suiAcueducto.getC42() + suiAcueducto.getC43() +
+      suiAcueducto.getC44() - suiAcueducto.getC40();
+
+    if (sum != suiAcueducto.getC47()) {
+      System.err.println("Diferencia de total facturado: " + suiAcueducto.getC47() + " vs. sumatoria: " + sum);
+    }
+
+  }
+
 
 }

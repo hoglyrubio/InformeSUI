@@ -113,9 +113,9 @@ public class AppController {
   public void descargarAcueducto(@PathVariable Integer pericodi, HttpServletResponse response) {
     try {
       String lines = acueductoService.obtainCsvLines(pericodi);
-      response.setContentType(MediaType.TEXT_PLAIN.toString());
-      response.setContentLength(lines.length());
-      response.setHeader("Content-Disposition", String.format("inline; filename=\"acu%s.csv\"", pericodi));
+      LOG.info(lines);
+      response.setContentType("text/csv");
+      response.setHeader("Content-Disposition", String.format("inline; filename=\"%s-acu.csv\"", pericodi));
       ServletOutputStream out = response.getOutputStream();
       out.write(lines.getBytes());
     } catch (IOException e) {
