@@ -39,7 +39,7 @@ public enum InformeFields {
 
   int index;
   
-  private InformeFields(int index) {
+  InformeFields(int index) {
     this.index = index;
   }
 }

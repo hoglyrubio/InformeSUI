@@ -2,6 +2,8 @@ package com.empresaprivadaservicios.informesui.sui;
 
 import com.empresaprivadaservicios.informesui.periodo.Periodo;
 
+import java.math.BigDecimal;
+
 public class Liquidacion {
 
   private SuiCateSuca suiCateSuca;
@@ -12,81 +14,83 @@ public class Liquidacion {
   private Integer consumoCom;
   private Integer consumoSun;
 
-  private Double tarifaCargoFijo;
-  private Double tarifaConsumoBasico;
-  private Double tarifaConsumoComplementario;
-  private Double tarifaConsumoSuntuario;
+  private BigDecimal tarifaCargoFijo;
+  private BigDecimal tarifaConsumoBasico;
+  private BigDecimal tarifaConsumoComplementario;
+  private BigDecimal tarifaConsumoSuntuario;
 
-  private Double tarifaCargoFijoPlena;
-  private Double tarifaConsumoBasicoPlena;
-  private Double tarifaConsumoComplementarioPlena;
-  private Double tarifaConsumoSuntuarioPlena;
+  private BigDecimal tarifaCargoFijoPlena;
+  private BigDecimal tarifaConsumoBasicoPlena;
+  private BigDecimal tarifaConsumoComplementarioPlena;
+  private BigDecimal tarifaConsumoSuntuarioPlena;
 
-  private Double valorCargoFijo;
-  private Double valorConsumoBasico;
-  private Double valorConsumoComplementario;
-  private Double valorConsumoSuntuario;
+  private BigDecimal valorCargoFijo;
+  private BigDecimal valorConsumoBasico;
+  private BigDecimal valorConsumoComplementario;
+  private BigDecimal valorConsumoSuntuario;
 
-  private Double suapCargoFijo;
-  private Double suapConsumoBasico;
-  private Double suapConsumoComplementario;
-  private Double suapConsumoSuntuario;
+  private BigDecimal suapCargoFijo;
+  private BigDecimal suapConsumoBasico;
+  private BigDecimal suapConsumoComplementario;
+  private BigDecimal suapConsumoSuntuario;
 
-  public Double valorConsumo() {
-    return valorConsumoBasico + valorConsumoComplementario + valorConsumoSuntuario;
+  public BigDecimal valorConsumo() {
+    return valorConsumoBasico.add(valorConsumoComplementario).add(valorConsumoSuntuario);
   }
 
-  public Double suapConsumo() {
-    return suapConsumoBasico + suapConsumoComplementario + suapConsumoSuntuario;
+  public BigDecimal suapConsumo() {
+    return suapConsumoBasico.add(suapConsumoComplementario).add(suapConsumoSuntuario);
   }
 
-  public Double totalSubsidio() {
-    return Math.abs((suapCargoFijo < 0 ? suapCargoFijo : 0) +
-           (suapConsumoBasico < 0 ? suapConsumoBasico : 0) +
-           (suapConsumoComplementario < 0 ? suapConsumoComplementario : 0) +
-           (suapConsumoSuntuario < 0 ? suapConsumoSuntuario : 0));
+  public BigDecimal totalSubsidio() {
+    BigDecimal sacf = (suapCargoFijo.compareTo(BigDecimal.ZERO) < 0 ? suapCargoFijo : BigDecimal.ZERO);
+    BigDecimal sacb = (suapConsumoBasico.compareTo(BigDecimal.ZERO) < 0 ? suapConsumoBasico : BigDecimal.ZERO);
+    BigDecimal sacc = (suapConsumoComplementario.compareTo(BigDecimal.ZERO) < 0 ? suapConsumoComplementario : BigDecimal.ZERO);
+    BigDecimal sacs = (suapConsumoSuntuario.compareTo(BigDecimal.ZERO) < 0 ? suapConsumoSuntuario : BigDecimal.ZERO);
+    return sacf.add(sacb).add(sacc).add(sacs).abs();
   }
 
-  public Double totalContribucion() {
-    return Math.abs((suapCargoFijo > 0 ? suapCargoFijo : 0) +
-           (suapConsumoBasico > 0 ? suapConsumoBasico : 0) +
-           (suapConsumoComplementario > 0 ? suapConsumoComplementario : 0) +
-           (suapConsumoSuntuario > 0 ? suapConsumoSuntuario : 0));
+  public BigDecimal totalContribucion() {
+    BigDecimal sacf = (suapCargoFijo.compareTo(BigDecimal.ZERO) > 0 ? suapCargoFijo : BigDecimal.ZERO);
+    BigDecimal sacb = (suapConsumoBasico.compareTo(BigDecimal.ZERO) > 0 ? suapConsumoBasico : BigDecimal.ZERO);
+    BigDecimal sacc = (suapConsumoComplementario.compareTo(BigDecimal.ZERO) > 0 ? suapConsumoComplementario : BigDecimal.ZERO);
+    BigDecimal sacs = (suapConsumoSuntuario.compareTo(BigDecimal.ZERO) > 0 ? suapConsumoSuntuario : BigDecimal.ZERO);
+    return sacf.add(sacb).add(sacc).add(sacs).abs();
   }
 
   public SuiCateSuca getSuiCateSuca() {
     return suiCateSuca;
   }
 
-  public Double getTarifaCargoFijoPlena() {
+  public BigDecimal getTarifaCargoFijoPlena() {
     return tarifaCargoFijoPlena;
   }
 
-  public void setTarifaCargoFijoPlena(Double tarifaCargoFijoPlena) {
+  public void setTarifaCargoFijoPlena(BigDecimal tarifaCargoFijoPlena) {
     this.tarifaCargoFijoPlena = tarifaCargoFijoPlena;
   }
 
-  public Double getTarifaConsumoBasicoPlena() {
+  public BigDecimal getTarifaConsumoBasicoPlena() {
     return tarifaConsumoBasicoPlena;
   }
 
-  public void setTarifaConsumoBasicoPlena(Double tarifaConsumoBasicoPlena) {
+  public void setTarifaConsumoBasicoPlena(BigDecimal tarifaConsumoBasicoPlena) {
     this.tarifaConsumoBasicoPlena = tarifaConsumoBasicoPlena;
   }
 
-  public Double getTarifaConsumoComplementarioPlena() {
+  public BigDecimal getTarifaConsumoComplementarioPlena() {
     return tarifaConsumoComplementarioPlena;
   }
 
-  public void setTarifaConsumoComplementarioPlena(Double tarifaConsumoComplementarioPlena) {
+  public void setTarifaConsumoComplementarioPlena(BigDecimal tarifaConsumoComplementarioPlena) {
     this.tarifaConsumoComplementarioPlena = tarifaConsumoComplementarioPlena;
   }
 
-  public Double getTarifaConsumoSuntuarioPlena() {
+  public BigDecimal getTarifaConsumoSuntuarioPlena() {
     return tarifaConsumoSuntuarioPlena;
   }
 
-  public void setTarifaConsumoSuntuarioPlena(Double tarifaConsumoSuntuarioPlena) {
+  public void setTarifaConsumoSuntuarioPlena(BigDecimal tarifaConsumoSuntuarioPlena) {
     this.tarifaConsumoSuntuarioPlena = tarifaConsumoSuntuarioPlena;
   }
 
@@ -134,99 +138,99 @@ public class Liquidacion {
     this.consumoSun = consumoSun;
   }
 
-  public Double getTarifaCargoFijo() {
+  public BigDecimal getTarifaCargoFijo() {
     return tarifaCargoFijo;
   }
 
-  public void setTarifaCargoFijo(Double tarifaCargoFijo) {
+  public void setTarifaCargoFijo(BigDecimal tarifaCargoFijo) {
     this.tarifaCargoFijo = tarifaCargoFijo;
   }
 
-  public Double getTarifaConsumoBasico() {
+  public BigDecimal getTarifaConsumoBasico() {
     return tarifaConsumoBasico;
   }
 
-  public void setTarifaConsumoBasico(Double tarifaConsumoBasico) {
+  public void setTarifaConsumoBasico(BigDecimal tarifaConsumoBasico) {
     this.tarifaConsumoBasico = tarifaConsumoBasico;
   }
 
-  public Double getTarifaConsumoComplementario() {
+  public BigDecimal getTarifaConsumoComplementario() {
     return tarifaConsumoComplementario;
   }
 
-  public void setTarifaConsumoComplementario(Double tarifaConsumoComplementario) {
+  public void setTarifaConsumoComplementario(BigDecimal tarifaConsumoComplementario) {
     this.tarifaConsumoComplementario = tarifaConsumoComplementario;
   }
 
-  public Double getTarifaConsumoSuntuario() {
+  public BigDecimal getTarifaConsumoSuntuario() {
     return tarifaConsumoSuntuario;
   }
 
-  public void setTarifaConsumoSuntuario(Double tarifaConsumoSuntuario) {
+  public void setTarifaConsumoSuntuario(BigDecimal tarifaConsumoSuntuario) {
     this.tarifaConsumoSuntuario = tarifaConsumoSuntuario;
   }
 
-  public Double getValorCargoFijo() {
+  public BigDecimal getValorCargoFijo() {
     return valorCargoFijo;
   }
 
-  public void setValorCargoFijo(Double valorCargoFijo) {
+  public void setValorCargoFijo(BigDecimal valorCargoFijo) {
     this.valorCargoFijo = valorCargoFijo;
   }
 
-  public Double getValorConsumoBasico() {
+  public BigDecimal getValorConsumoBasico() {
     return valorConsumoBasico;
   }
 
-  public void setValorConsumoBasico(Double valorConsumoBasico) {
+  public void setValorConsumoBasico(BigDecimal valorConsumoBasico) {
     this.valorConsumoBasico = valorConsumoBasico;
   }
 
-  public Double getValorConsumoComplementario() {
+  public BigDecimal getValorConsumoComplementario() {
     return valorConsumoComplementario;
   }
 
-  public void setValorConsumoComplementario(Double valorConsumoComplementario) {
+  public void setValorConsumoComplementario(BigDecimal valorConsumoComplementario) {
     this.valorConsumoComplementario = valorConsumoComplementario;
   }
 
-  public Double getValorConsumoSuntuario() {
+  public BigDecimal getValorConsumoSuntuario() {
     return valorConsumoSuntuario;
   }
 
-  public void setValorConsumoSuntuario(Double valorConsumoSuntuario) {
+  public void setValorConsumoSuntuario(BigDecimal valorConsumoSuntuario) {
     this.valorConsumoSuntuario = valorConsumoSuntuario;
   }
 
-  public Double getSuapCargoFijo() {
+  public BigDecimal getSuapCargoFijo() {
     return suapCargoFijo;
   }
 
-  public void setSuapCargoFijo(Double suapCargoFijo) {
+  public void setSuapCargoFijo(BigDecimal suapCargoFijo) {
     this.suapCargoFijo = suapCargoFijo;
   }
 
-  public Double getSuapConsumoBasico() {
+  public BigDecimal getSuapConsumoBasico() {
     return suapConsumoBasico;
   }
 
-  public void setSuapConsumoBasico(Double suapConsumoBasico) {
+  public void setSuapConsumoBasico(BigDecimal suapConsumoBasico) {
     this.suapConsumoBasico = suapConsumoBasico;
   }
 
-  public Double getSuapConsumoComplementario() {
+  public BigDecimal getSuapConsumoComplementario() {
     return suapConsumoComplementario;
   }
 
-  public void setSuapConsumoComplementario(Double suapConsumoComplementario) {
+  public void setSuapConsumoComplementario(BigDecimal suapConsumoComplementario) {
     this.suapConsumoComplementario = suapConsumoComplementario;
   }
 
-  public Double getSuapConsumoSuntuario() {
+  public BigDecimal getSuapConsumoSuntuario() {
     return suapConsumoSuntuario;
   }
 
-  public void setSuapConsumoSuntuario(Double suapConsumoSuntuario) {
+  public void setSuapConsumoSuntuario(BigDecimal suapConsumoSuntuario) {
     this.suapConsumoSuntuario = suapConsumoSuntuario;
   }
 

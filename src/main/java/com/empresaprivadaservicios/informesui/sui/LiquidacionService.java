@@ -6,10 +6,11 @@ import com.empresaprivadaservicios.informesui.tarifa.TarifaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class LiquidacionService {
 
-  private static final int DECIMALS = 4;
   private TarifaRepository tarifaRepository;
 
   @Autowired
@@ -25,24 +26,23 @@ public class LiquidacionService {
 
     Tarifa tarifaCF = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), suiCateSuca.getCasucodi(), SuiConstantes.TARICODI_CARGO_FIJO);
     Tarifa tarifaCFPlena = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), SuiConstantes.DEFAULT_CASUCODI, SuiConstantes.TARICODI_CARGO_FIJO);
-    Double valorCargoFijo = tarifaCF.getTarivalo();
-    Double suapCargoFijo = valorCargoFijo - tarifaCFPlena.getTarivalo();
+    BigDecimal valorCargoFijo = tarifaCF.getTarivalo();
+    BigDecimal suapCargoFijo = valorCargoFijo.subtract(tarifaCFPlena.getTarivalo());
 
     Tarifa tarifaCBas = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), suiCateSuca.getCasucodi(), SuiConstantes.TARICODI_CONSUMO_BASICO);
     Tarifa tarifaCBasPlena = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), SuiConstantes.DEFAULT_CASUCODI, SuiConstantes.TARICODI_CONSUMO_BASICO);
-    Double valorConsumoBasico = tarifaCBas.getTarivalo() * consumoBas;
-    valorConsumoBasico = SuiHelper.round(valorConsumoBasico, DECIMALS);
-    Double suapConsumoBasico = (valorConsumoBasico - tarifaCBasPlena.getTarivalo()) * consumoBas;
+    BigDecimal valorConsumoBasico = tarifaCBas.getTarivalo().multiply(new BigDecimal(consumoBas));
+    BigDecimal suapConsumoBasico = valorConsumoBasico.subtract(tarifaCBasPlena.getTarivalo().multiply(new BigDecimal(consumoBas)));
 
     Tarifa tarifaCCom = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), suiCateSuca.getCasucodi(), SuiConstantes.TARICODI_CONSUMO_COMPLEMENTARIO);
     Tarifa tarifaCComPlena = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), SuiConstantes.DEFAULT_CASUCODI, SuiConstantes.TARICODI_CONSUMO_COMPLEMENTARIO);
-    Double valorConsumoComplementario = tarifaCCom.getTarivalo() * consumoCom;
-    Double suapConsumoComplementario = (valorConsumoComplementario - tarifaCComPlena.getTarivalo()) * consumoCom;
+    BigDecimal valorConsumoComplementario = tarifaCCom.getTarivalo().multiply(new BigDecimal(consumoCom));
+    BigDecimal suapConsumoComplementario = valorConsumoComplementario.subtract(tarifaCComPlena.getTarivalo().multiply(new BigDecimal(consumoCom)));
 
     Tarifa tarifaCSun = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), suiCateSuca.getCasucodi(), SuiConstantes.TARICODI_CONSUMO_SUNTUARIO);
     Tarifa tarifaCSunPlena = tarifaRepository.findOne(periodo.getPeriano(), periodo.getPerimes(), SuiConstantes.DEFAULT_CASUCODI, SuiConstantes.TARICODI_CONSUMO_SUNTUARIO);
-    Double valorConsumoSuntuario = tarifaCSun.getTarivalo() * consumoSun;
-    Double suapConsumoSuntuario = (valorConsumoSuntuario - tarifaCSunPlena.getTarivalo()) * consumoSun;
+    BigDecimal valorConsumoSuntuario = tarifaCSun.getTarivalo().multiply(new BigDecimal(consumoSun));
+    BigDecimal suapConsumoSuntuario = valorConsumoSuntuario.subtract(tarifaCSunPlena.getTarivalo().multiply(new BigDecimal(consumoSun)));
 
     Liquidacion liquidacion = new Liquidacion();
 

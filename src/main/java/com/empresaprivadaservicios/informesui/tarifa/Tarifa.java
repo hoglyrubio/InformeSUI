@@ -2,6 +2,7 @@ package com.empresaprivadaservicios.informesui.tarifa;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 @Entity(name = "sui_tarifa")
 public class Tarifa {
@@ -9,8 +10,8 @@ public class Tarifa {
   @EmbeddedId
   private TarifaPk tarifaPk;
 
-  private Double tarivalo;
-  private Double tariporc;
+  private BigDecimal tarivalo;
+  private BigDecimal tariporc;
   private String taridesc;
   private Integer tariclus;
 
@@ -22,7 +23,7 @@ public class Tarifa {
     this.tarifaPk = tarifaPk;
   }
 
-  public Tarifa(TarifaPk tarifaPk, Double tarivalo, Double tariporc, String taridesc, Integer tariclus) {
+  public Tarifa(TarifaPk tarifaPk, BigDecimal tarivalo, BigDecimal tariporc, String taridesc, Integer tariclus) {
     this.tarifaPk = tarifaPk;
     this.tarivalo = tarivalo;
     this.tariporc = tariporc;
@@ -38,19 +39,19 @@ public class Tarifa {
     this.tarifaPk = tarifaPk;
   }
 
-  public Double getTarivalo() {
+  public BigDecimal getTarivalo() {
     return tarivalo;
   }
 
-  public void setTarivalo(Double tarivalo) {
+  public void setTarivalo(BigDecimal tarivalo) {
     this.tarivalo = tarivalo;
   }
 
-  public Double getTariporc() {
+  public BigDecimal getTariporc() {
     return tariporc;
   }
 
-  public void setTariporc(Double tariporc) {
+  public void setTariporc(BigDecimal tariporc) {
     this.tariporc = tariporc;
   }
 

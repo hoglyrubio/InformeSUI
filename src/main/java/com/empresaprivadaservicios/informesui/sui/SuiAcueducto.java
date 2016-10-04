@@ -2,6 +2,7 @@ package com.empresaprivadaservicios.informesui.sui;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity(name="suiacu2010")
@@ -30,32 +31,32 @@ public class SuiAcueducto {
   private Integer C20 ; // int(11);
   private Integer C21 ; // int(11);
   private Integer C22 ; // int(11);
-  private Double C23 ; // decimal(15,4);
-  private Double C24 ; // decimal(15,4);
-  private Double C25 ; // decimal(15,4);
-  private Double C26 ; // decimal(15,4);
-  private Double C27 ; // decimal(15,4);
-  private Double C28 ; // decimal(15,4);
-  private Double C29 ; // decimal(15,4);
-  private Double C30 ; // decimal(15,4);
-  private Double C31 ; // decimal(15,4);
-  private Double C32 ; // decimal(15,4);
-  private Double C33 ; // decimal(15,4);
-  private Double C34 ; // decimal(15,4);
-  private Double C35 ; // decimal(15,4);
-  private Double C36 ; // decimal(15,4);
-  private Double C37 ; // decimal(15,4);
-  private Double C38 ; // decimal(15,4);
-  private Double C39 ; // decimal(15,4);
-  private Double C40 ; // decimal(15,4);
+  private BigDecimal C23 ; // decimal(15,4);
+  private BigDecimal C24 ; // decimal(15,4);
+  private BigDecimal C25 ; // decimal(15,4);
+  private BigDecimal C26 ; // decimal(15,4);
+  private BigDecimal C27 ; // decimal(15,4);
+  private BigDecimal C28 ; // decimal(15,4);
+  private BigDecimal C29 ; // decimal(15,4);
+  private BigDecimal C30 ; // decimal(15,4);
+  private BigDecimal C31 ; // decimal(15,4);
+  private BigDecimal C32 ; // decimal(15,4);
+  private BigDecimal C33 ; // decimal(15,4);
+  private BigDecimal C34 ; // decimal(15,4);
+  private BigDecimal C35 ; // decimal(15,4);
+  private BigDecimal C36 ; // decimal(15,4);
+  private BigDecimal C37 ; // decimal(15,4);
+  private BigDecimal C38 ; // decimal(15,4);
+  private BigDecimal C39 ; // decimal(15,4);
+  private BigDecimal C40 ; // decimal(15,4);
   private Integer C41 ; // int(11);
-  private Double C42 ; // decimal(15,4);
-  private Double C43 ; // decimal(15,4);
-  private Double C44 ; // decimal(15,4);
+  private BigDecimal C42 ; // decimal(15,4);
+  private BigDecimal C43 ; // decimal(15,4);
+  private BigDecimal C44 ; // decimal(15,4);
   private Integer C45 ; // int(11);
   private Integer C46 ; // int(11);
-  private Double C47 ; // decimal(15,4);
-  private Double C48 ; // decimal(15,4);
+  private BigDecimal C47 ; // decimal(15,4);
+  private BigDecimal C48 ; // decimal(15,4);
 
   public SuiAcueducto() {
   }
@@ -241,147 +242,147 @@ public class SuiAcueducto {
     C22 = c22;
   }
 
-  public Double getC23() {
+  public BigDecimal getC23() {
     return C23;
   }
 
-  public void setC23(Double c23) {
+  public void setC23(BigDecimal c23) {
     C23 = c23;
   }
 
-  public Double getC24() {
+  public BigDecimal getC24() {
     return C24;
   }
 
-  public void setC24(Double c24) {
+  public void setC24(BigDecimal c24) {
     C24 = c24;
   }
 
-  public Double getC25() {
+  public BigDecimal getC25() {
     return C25;
   }
 
-  public void setC25(Double c25) {
+  public void setC25(BigDecimal c25) {
     C25 = c25;
   }
 
-  public Double getC26() {
+  public BigDecimal getC26() {
     return C26;
   }
 
-  public void setC26(Double c26) {
+  public void setC26(BigDecimal c26) {
     C26 = c26;
   }
 
-  public Double getC27() {
+  public BigDecimal getC27() {
     return C27;
   }
 
-  public void setC27(Double c27) {
+  public void setC27(BigDecimal c27) {
     C27 = c27;
   }
 
-  public Double getC28() {
+  public BigDecimal getC28() {
     return C28;
   }
 
-  public void setC28(Double c28) {
+  public void setC28(BigDecimal c28) {
     C28 = c28;
   }
 
-  public Double getC29() {
+  public BigDecimal getC29() {
     return C29;
   }
 
-  public void setC29(Double c29) {
+  public void setC29(BigDecimal c29) {
     C29 = c29;
   }
 
-  public Double getC30() {
+  public BigDecimal getC30() {
     return C30;
   }
 
-  public void setC30(Double c30) {
+  public void setC30(BigDecimal c30) {
     C30 = c30;
   }
 
-  public Double getC31() {
+  public BigDecimal getC31() {
     return C31;
   }
 
-  public void setC31(Double c31) {
+  public void setC31(BigDecimal c31) {
     C31 = c31;
   }
 
-  public Double getC32() {
+  public BigDecimal getC32() {
     return C32;
   }
 
-  public void setC32(Double c32) {
+  public void setC32(BigDecimal c32) {
     C32 = c32;
   }
 
-  public Double getC33() {
+  public BigDecimal getC33() {
     return C33;
   }
 
-  public void setC33(Double c33) {
+  public void setC33(BigDecimal c33) {
     C33 = c33;
   }
 
-  public Double getC34() {
+  public BigDecimal getC34() {
     return C34;
   }
 
-  public void setC34(Double c34) {
+  public void setC34(BigDecimal c34) {
     C34 = c34;
   }
 
-  public Double getC35() {
+  public BigDecimal getC35() {
     return C35;
   }
 
-  public void setC35(Double c35) {
+  public void setC35(BigDecimal c35) {
     C35 = c35;
   }
 
-  public Double getC36() {
+  public BigDecimal getC36() {
     return C36;
   }
 
-  public void setC36(Double c36) {
+  public void setC36(BigDecimal c36) {
     C36 = c36;
   }
 
-  public Double getC37() {
+  public BigDecimal getC37() {
     return C37;
   }
 
-  public void setC37(Double c37) {
+  public void setC37(BigDecimal c37) {
     C37 = c37;
   }
 
-  public Double getC38() {
+  public BigDecimal getC38() {
     return C38;
   }
 
-  public void setC38(Double c38) {
+  public void setC38(BigDecimal c38) {
     C38 = c38;
   }
 
-  public Double getC39() {
+  public BigDecimal getC39() {
     return C39;
   }
 
-  public void setC39(Double c39) {
+  public void setC39(BigDecimal c39) {
     C39 = c39;
   }
 
-  public Double getC40() {
+  public BigDecimal getC40() {
     return C40;
   }
 
-  public void setC40(Double c40) {
+  public void setC40(BigDecimal c40) {
     C40 = c40;
   }
 
@@ -393,27 +394,27 @@ public class SuiAcueducto {
     C41 = c41;
   }
 
-  public Double getC42() {
+  public BigDecimal getC42() {
     return C42;
   }
 
-  public void setC42(Double c42) {
+  public void setC42(BigDecimal c42) {
     C42 = c42;
   }
 
-  public Double getC43() {
+  public BigDecimal getC43() {
     return C43;
   }
 
-  public void setC43(Double c43) {
+  public void setC43(BigDecimal c43) {
     C43 = c43;
   }
 
-  public Double getC44() {
+  public BigDecimal getC44() {
     return C44;
   }
 
-  public void setC44(Double c44) {
+  public void setC44(BigDecimal c44) {
     C44 = c44;
   }
 
@@ -433,19 +434,19 @@ public class SuiAcueducto {
     C46 = c46;
   }
 
-  public Double getC47() {
+  public BigDecimal getC47() {
     return C47;
   }
 
-  public void setC47(Double c47) {
+  public void setC47(BigDecimal c47) {
     C47 = c47;
   }
 
-  public Double getC48() {
+  public BigDecimal getC48() {
     return C48;
   }
 
-  public void setC48(Double c48) {
+  public void setC48(BigDecimal c48) {
     C48 = c48;
   }
 

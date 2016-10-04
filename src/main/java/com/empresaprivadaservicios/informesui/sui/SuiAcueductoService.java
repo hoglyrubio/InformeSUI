@@ -12,17 +12,12 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StopWatch;
 
-import java.io.*;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.BinaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_NORMAL;
@@ -32,6 +27,8 @@ import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.E
 public class SuiAcueductoService {
 
   private static final Logger LOG = LoggerFactory.getLogger(SuiAcueductoService.class);
+
+  private static final int SCALE = 4;
 
   private final InformeRepository informeRepository;
   private final SuiAcueductoRepository acueductoRepository;
@@ -118,25 +115,28 @@ public class SuiAcueductoService {
     // 22. Lectura Actual
     sui.setC22(informe.getInfoleac());
     // 23. Consumo del periodo en m3
-    sui.setC23(informe.getInfocons().doubleValue());
+    sui.setC23(new BigDecimal(informe.getInfocons()));
 
     Liquidacion liquidacion = liquidacionService.process(informe.getInfocons(), suiCateSuca, periodo);
 
     // 24. Cargo Fijo
     sui.setC24( liquidacion.getTarifaCargoFijoPlena() );
     // 25. Consumo basico
-    sui.setC25( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoBasicoPlena() : 0 );
+    sui.setC25( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoBasicoPlena() : BigDecimal.ZERO );
     // 26. Consumo complementario
-    sui.setC26( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoComplementarioPlena() : 0 );
+    sui.setC26( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoComplementarioPlena() : BigDecimal.ZERO );
     // 27. Consumo suntuario
-    sui.setC27( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoSuntuarioPlena() : 0 );
+    sui.setC27( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoSuntuarioPlena() : BigDecimal.ZERO );
     // 28. CMT
-    sui.setC28(0D);
+    sui.setC28(BigDecimal.ZERO);
     // 29. Valor por metro cubico
     if (informe.getInfocons() > 0) {
-      sui.setC29((informe.getInfocbas() + informe.getInfoccom() + informe.getInfocsun()) / informe.getInfocons());
+      sui.setC29( informe.getInfocbas()
+        .add(informe.getInfoccom())
+        .add(informe.getInfocsun())
+        .divide(new BigDecimal(informe.getInfocons()), SCALE, BigDecimal.ROUND_HALF_UP) );
     } else {
-      sui.setC29(0D);
+      sui.setC29(BigDecimal.ZERO);
     }
     // 30. Valor facturado por consumo
     sui.setC30(liquidacion.valorConsumo());
@@ -145,26 +145,26 @@ public class SuiAcueductoService {
     // 32. Valor contribucion
     sui.setC32( liquidacion.totalContribucion() );
     // 33. Factor subsidio o contribucion
-    sui.setC33( liquidacion.getSuapCargoFijo() / liquidacion.getValorCargoFijo() );
+    sui.setC33( liquidacion.getSuapCargoFijo().divide(liquidacion.getValorCargoFijo(), 3, BigDecimal.ROUND_HALF_UP) );
     // 34. Factor subsidio o contribucion consumo
-    if (liquidacion.valorConsumo() != 0) {
-      sui.setC34( liquidacion.suapConsumo() / liquidacion.valorConsumo() );
+    if (liquidacion.valorConsumo().compareTo(BigDecimal.ZERO) != 0) {
+      sui.setC34( liquidacion.suapConsumo().divide(liquidacion.valorConsumo(), 3, BigDecimal.ROUND_HALF_UP) );
     } else {
-      sui.setC34(0D);
+      sui.setC34(BigDecimal.ZERO);
     }
 
     // 35. Cargo por conexion // NO EXISTE
-    sui.setC35(0D);
+    sui.setC35(BigDecimal.ZERO);
     // 36. Cargo por Reconexion // 50% de INFODURE
-    sui.setC36( informe.getInfosure() / 2 );
+    sui.setC36( informe.getInfosure().divide(new BigDecimal(2), SCALE, BigDecimal.ROUND_HALF_UP));
     // 37. Cargo por Reinstalacion // NO EXISTE
-    sui.setC37(0D);
+    sui.setC37(BigDecimal.ZERO);
     // 38. Cargo por suspension // 50% de INFODURE
-    sui.setC38( informe.getInfosure() / 2 );
+    sui.setC38( informe.getInfosure().divide(new BigDecimal(2), SCALE, BigDecimal.ROUND_HALF_UP));
     // 39. Cargo por corte
-    sui.setC39(0D);
+    sui.setC39(BigDecimal.ZERO);
     // 40. Pago anticipado del servicio
-    sui.setC40(0D);
+    sui.setC40(BigDecimal.ZERO);
     // 41. Dias de mora.
     sui.setC41( informe.getInfonuat() * 30 );
     // 42. Valor de mora
@@ -172,40 +172,45 @@ public class SuiAcueductoService {
     // 43. Intereses por mora
     sui.setC43( informe.getInfoinag() );
     // 44. Otros Cobros
-    sui.setC44( informe.getInfoinan() + // Intereses anteriores
-            informe.getInforeva() + informe.getInfoinva() + // Refacturado e intereses Varios
-            informe.getInfomedi() + informe.getInfotanq() + informe.getInfoacom() +
-            informe.getInfootca() - informe.getInfoajus() );
+
+    sui.setC44( informe.getInfoinan() // Intereses anteriores
+      .add(informe.getInforeva()) // Refacturado
+      .add(informe.getInfoinva()) // Intereses varios
+      .add(informe.getInfomedi())
+      .add(informe.getInfotanq())
+      .add(informe.getInfoacom())
+      .add(informe.getInfootca())
+      .subtract(informe.getInfoajus()) );
 
     // MACHETE
     if (informe.getInformePk().getInfocodi() == 20050) {
       sui.setC44( sui.getC31() );
-      sui.setC31(0D);
-      sui.setC24(0D);
+      sui.setC31(BigDecimal.ZERO);
+      sui.setC24(BigDecimal.ZERO);
     }
 
     // En el 201105 se present Refacturado negativo, lo sumamos a otros cobros.
-    if (sui.getC42() < 0) {
-      sui.setC44(sui.getC44() + sui.getC42());
-      sui.setC42(0D);
+    if (sui.getC42().compareTo(BigDecimal.ZERO) < 0) {
+      sui.setC44(sui.getC44().add(sui.getC42()));
+      sui.setC42(BigDecimal.ZERO);
     }
 
     // Por si los intereses son negativos
-    if (sui.getC43() < 0) {
-      sui.setC44(sui.getC44() + sui.getC43());
-      sui.setC43(0D);
+    if (sui.getC43().compareTo(BigDecimal.ZERO) < 0) {
+      sui.setC44(sui.getC44().add(sui.getC43()));
+      sui.setC43(BigDecimal.ZERO);
     }
 
     //  Dias de mora por si no tiene y hay mora
-    if (sui.getC42() > 0 && sui.getC41() == 0) {
+    if (sui.getC42().compareTo(BigDecimal.ZERO) > 0 && sui.getC41() == 0) {
       sui.setC41(30);
     }
 
     // En algunos meses del 2011 se presenta que hay intereses pero no refacturado,
     // por lo tanto se suma este Interes por mora a Otros cobros.
-    if (sui.getC42() == 0 && sui.getC43() != 0) {
-      sui.setC44(sui.getC44() + sui.getC43());
-      sui.setC43(0D);
+    if (sui.getC42().compareTo(BigDecimal.ZERO) == 0 && sui.getC43().compareTo(BigDecimal.ZERO) != 0) {
+      sui.setC44(sui.getC44().add(sui.getC43()));
+      sui.setC43(BigDecimal.ZERO);
     }
 
     // 45. Causal de Refacturacion
@@ -213,16 +218,27 @@ public class SuiAcueductoService {
     // 46. Numero de factura objeto de refacturacion
     sui.setC46(null);
     // 47.Valor total facturado ACUEDUCTO
-    sui.setC47(informe.getInfovaim() - (informe.getInfoalca() + informe.getInfoinal() + informe.getInforeal()));
+    sui.setC47(informe.getInfovaim().subtract(informe.getInfoalca().add(informe.getInfoinal()).add(informe.getInforeal())));
 
     // Ajuste de los totales
-    Double total = sui.getC24() + sui.getC30() - sui.getC31() + sui.getC32() + sui.getC35() + sui.getC36() +
-            sui.getC37() + sui.getC38() + sui.getC39() + sui.getC42() + sui.getC43() + sui.getC44() - sui.getC40();
+    BigDecimal total = sui.getC24()
+      .add(sui.getC30())
+      .subtract(sui.getC31())
+      .add(sui.getC32())
+      .add(sui.getC35())
+      .add(sui.getC36())
+      .add(sui.getC37())
+      .add(sui.getC38())
+      .add(sui.getC39())
+      .add(sui.getC42())
+      .add(sui.getC43())
+      .add(sui.getC44())
+      .subtract(sui.getC40());
 
-    sui.setC44(sui.getC44() + sui.getC47() - total);
+    sui.setC44(sui.getC44().add(sui.getC47()).subtract(total));
 
     // 48. Pagos del usuario durante el mes de reporte, se calcula para Acuedcucto
-    if (informe.getInfovapa() > sui.getC47()) {
+    if (informe.getInfovapa().compareTo(sui.getC47()) > 0) {
       sui.setC48(sui.getC47());
     } else {
       sui.setC48(informe.getInfovapa());
@@ -271,8 +287,8 @@ public class SuiAcueductoService {
   private Tarifa obtainTarifaCargoFijoCobrada(Informe informe, Periodo periodo) {
     Integer ano = periodo.getPeriano();
     Integer mes = periodo.getPerimes();
-    Double valorCF = informe.getInfocafi();
-    Tarifa tarifaCF = tarifaRepository.findTarifaCFByValue(ano, mes, valorCF);
+    BigDecimal valorCF = informe.getInfocafi();
+    Tarifa tarifaCF = tarifaRepository.findTarifaCFByValue(ano, mes, valorCF.doubleValue());
     if (tarifaCF == null) {
       throw new BusinessException(MessageFormat.format("No se encuentra tarifa de CF. Codigo {0} Valor Cargo fijo {1}",
               informe.getInformePk().getInfocodi().toString(), informe.getInfocafi()));
@@ -290,15 +306,23 @@ public class SuiAcueductoService {
   }
 
   private void checkTotalFacturado(SuiAcueducto suiAcueducto) {
-    Double sum = suiAcueducto.getC24() + suiAcueducto.getC30() - suiAcueducto.getC31() +
-      suiAcueducto.getC32() + suiAcueducto.getC35() + suiAcueducto.getC36() + suiAcueducto.getC37() +
-      suiAcueducto.getC38() + suiAcueducto.getC39() + suiAcueducto.getC42() + suiAcueducto.getC43() +
-      suiAcueducto.getC44() - suiAcueducto.getC40();
+    BigDecimal sum = suiAcueducto.getC24()
+      .add(suiAcueducto.getC30())
+      .subtract(suiAcueducto.getC31())
+      .add(suiAcueducto.getC32())
+      .add(suiAcueducto.getC35())
+      .add(suiAcueducto.getC36())
+      .add(suiAcueducto.getC37())
+      .add(suiAcueducto.getC38())
+      .add(suiAcueducto.getC39())
+      .add(suiAcueducto.getC42())
+      .add(suiAcueducto.getC43())
+      .add(suiAcueducto.getC44())
+      .subtract(suiAcueducto.getC40());
 
-    if (sum != suiAcueducto.getC47()) {
+    if (sum.compareTo(suiAcueducto.getC47()) != 0) {
       System.err.println("Diferencia de total facturado: " + suiAcueducto.getC47() + " vs. sumatoria: " + sum);
     }
-
   }
 
 

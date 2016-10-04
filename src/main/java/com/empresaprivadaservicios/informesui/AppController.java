@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,17 @@ import java.util.Map;
 
 @RestController
 public class AppController {
+
+  public static void main(String[] args) {
+    BigDecimal a = new BigDecimal(11);
+    BigDecimal b = new BigDecimal(22);
+    BigDecimal c = new BigDecimal(33);
+
+    System.out.println("ROUND_HALF_UP: " + a.divide(c, 4, BigDecimal.ROUND_HALF_UP));
+    System.out.println("ROUND_HALF_DOWN: " + a.divide(c, 4, BigDecimal.ROUND_HALF_DOWN));
+    System.out.println("ROUND_HALF_EVEN: " + a.divide(c, 4, BigDecimal.ROUND_HALF_EVEN));
+
+  }
 
   private static final Logger LOG = LoggerFactory.getLogger(AppController.class);
 
