@@ -47,7 +47,7 @@ public class SuiHelper {
       .append(suiAcueducto.getC28() == null ? 0 : suiAcueducto.getC28()).append(SEPARATOR)
       .append(suiAcueducto.getC29() == null ? 0 : suiAcueducto.getC29()).append(SEPARATOR)
       .append(suiAcueducto.getC30() == null ? 0 : suiAcueducto.getC30()).append(SEPARATOR)
-      .append(suiAcueducto.getC31() == null ? 0 : suiAcueducto.getC21()).append(SEPARATOR)
+      .append(suiAcueducto.getC31() == null ? 0 : suiAcueducto.getC31()).append(SEPARATOR)
       .append(suiAcueducto.getC32() == null ? 0 : suiAcueducto.getC32()).append(SEPARATOR)
       .append(decimalFormat3.format(suiAcueducto.getC33() == null ? 0 : suiAcueducto.getC33())).append(SEPARATOR)
       .append(decimalFormat3.format(suiAcueducto.getC34() == null ? 0 : suiAcueducto.getC34())).append(SEPARATOR)

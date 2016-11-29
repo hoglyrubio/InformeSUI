@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_NORMAL;
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_SOLO_INTERESES;
+import static java.math.BigDecimal.ROUND_HALF_UP;
+import static java.math.BigDecimal.ZERO;
 
 @Service
 public class SuiAcueductoService {
@@ -122,21 +124,21 @@ public class SuiAcueductoService {
     // 24. Cargo Fijo
     sui.setC24( liquidacion.getTarifaCargoFijoPlena() );
     // 25. Consumo basico
-    sui.setC25( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoBasicoPlena() : BigDecimal.ZERO );
+    sui.setC25( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoBasicoPlena() : ZERO );
     // 26. Consumo complementario
-    sui.setC26( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoComplementarioPlena() : BigDecimal.ZERO );
+    sui.setC26( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoComplementarioPlena() : ZERO );
     // 27. Consumo suntuario
-    sui.setC27( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoSuntuarioPlena() : BigDecimal.ZERO );
+    sui.setC27( informe.getInfocons() > 0 ? liquidacion.getTarifaConsumoSuntuarioPlena() : ZERO );
     // 28. CMT
-    sui.setC28(BigDecimal.ZERO);
+    sui.setC28(ZERO);
     // 29. Valor por metro cubico
     if (informe.getInfocons() > 0) {
       sui.setC29( informe.getInfocbas()
         .add(informe.getInfoccom())
         .add(informe.getInfocsun())
-        .divide(new BigDecimal(informe.getInfocons()), SCALE, BigDecimal.ROUND_HALF_UP) );
+        .divide(new BigDecimal(informe.getInfocons()), SCALE, ROUND_HALF_UP) );
     } else {
-      sui.setC29(BigDecimal.ZERO);
+      sui.setC29(ZERO);
     }
     // 30. Valor facturado por consumo
     sui.setC30(liquidacion.valorConsumo());
@@ -145,26 +147,26 @@ public class SuiAcueductoService {
     // 32. Valor contribucion
     sui.setC32( liquidacion.totalContribucion() );
     // 33. Factor subsidio o contribucion
-    sui.setC33( liquidacion.getSuapCargoFijo().divide(liquidacion.getValorCargoFijo(), 3, BigDecimal.ROUND_HALF_UP) );
+    sui.setC33( liquidacion.getSuapCargoFijo().divide(liquidacion.getValorCargoFijo(), 3, ROUND_HALF_UP) );
     // 34. Factor subsidio o contribucion consumo
-    if (liquidacion.valorConsumo().compareTo(BigDecimal.ZERO) != 0) {
-      sui.setC34( liquidacion.suapConsumo().divide(liquidacion.valorConsumo(), 3, BigDecimal.ROUND_HALF_UP) );
+    if (liquidacion.valorConsumo().compareTo(ZERO) != 0) {
+      sui.setC34( liquidacion.suapConsumo().divide(liquidacion.valorConsumo(), 3, ROUND_HALF_UP) );
     } else {
-      sui.setC34(BigDecimal.ZERO);
+      sui.setC34(ZERO);
     }
 
     // 35. Cargo por conexion // NO EXISTE
-    sui.setC35(BigDecimal.ZERO);
+    sui.setC35(ZERO);
     // 36. Cargo por Reconexion // 50% de INFODURE
-    sui.setC36( informe.getInfosure().divide(new BigDecimal(2), SCALE, BigDecimal.ROUND_HALF_UP));
+    sui.setC36( informe.getInfosure().divide(new BigDecimal(2), SCALE, ROUND_HALF_UP));
     // 37. Cargo por Reinstalacion // NO EXISTE
-    sui.setC37(BigDecimal.ZERO);
+    sui.setC37(ZERO);
     // 38. Cargo por suspension // 50% de INFODURE
-    sui.setC38( informe.getInfosure().divide(new BigDecimal(2), SCALE, BigDecimal.ROUND_HALF_UP));
+    sui.setC38( informe.getInfosure().divide(new BigDecimal(2), SCALE, ROUND_HALF_UP));
     // 39. Cargo por corte
-    sui.setC39(BigDecimal.ZERO);
+    sui.setC39(ZERO);
     // 40. Pago anticipado del servicio
-    sui.setC40(BigDecimal.ZERO);
+    sui.setC40(ZERO);
     // 41. Dias de mora.
     sui.setC41( informe.getInfonuat() * 30 );
     // 42. Valor de mora
@@ -185,32 +187,32 @@ public class SuiAcueductoService {
     // MACHETE
     if (informe.getInformePk().getInfocodi() == 20050) {
       sui.setC44( sui.getC31() );
-      sui.setC31(BigDecimal.ZERO);
-      sui.setC24(BigDecimal.ZERO);
+      sui.setC31(ZERO);
+      sui.setC24(ZERO);
     }
 
     // En el 201105 se present Refacturado negativo, lo sumamos a otros cobros.
-    if (sui.getC42().compareTo(BigDecimal.ZERO) < 0) {
+    if (sui.getC42().compareTo(ZERO) < 0) {
       sui.setC44(sui.getC44().add(sui.getC42()));
-      sui.setC42(BigDecimal.ZERO);
+      sui.setC42(ZERO);
     }
 
     // Por si los intereses son negativos
-    if (sui.getC43().compareTo(BigDecimal.ZERO) < 0) {
+    if (sui.getC43().compareTo(ZERO) < 0) {
       sui.setC44(sui.getC44().add(sui.getC43()));
-      sui.setC43(BigDecimal.ZERO);
+      sui.setC43(ZERO);
     }
 
     //  Dias de mora por si no tiene y hay mora
-    if (sui.getC42().compareTo(BigDecimal.ZERO) > 0 && sui.getC41() == 0) {
+    if (sui.getC42().compareTo(ZERO) > 0 && sui.getC41() == 0) {
       sui.setC41(30);
     }
 
     // En algunos meses del 2011 se presenta que hay intereses pero no refacturado,
     // por lo tanto se suma este Interes por mora a Otros cobros.
-    if (sui.getC42().compareTo(BigDecimal.ZERO) == 0 && sui.getC43().compareTo(BigDecimal.ZERO) != 0) {
+    if (sui.getC42().compareTo(ZERO) == 0 && sui.getC43().compareTo(ZERO) != 0) {
       sui.setC44(sui.getC44().add(sui.getC43()));
-      sui.setC43(BigDecimal.ZERO);
+      sui.setC43(ZERO);
     }
 
     // 45. Causal de Refacturacion

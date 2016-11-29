@@ -4,6 +4,8 @@ import com.empresaprivadaservicios.informesui.periodo.Periodo;
 
 import java.math.BigDecimal;
 
+import static java.math.BigDecimal.ZERO;
+
 public class Liquidacion {
 
   private SuiCateSuca suiCateSuca;
@@ -35,27 +37,45 @@ public class Liquidacion {
   private BigDecimal suapConsumoSuntuario;
 
   public BigDecimal valorConsumo() {
-    return valorConsumoBasico.add(valorConsumoComplementario).add(valorConsumoSuntuario);
+    return valorConsumoBasico
+      .add(valorConsumoComplementario)
+      .add(valorConsumoSuntuario);
   }
 
   public BigDecimal suapConsumo() {
-    return suapConsumoBasico.add(suapConsumoComplementario).add(suapConsumoSuntuario);
+    return suapConsumoBasico
+      .add(suapConsumoComplementario)
+      .add(suapConsumoSuntuario);
   }
 
   public BigDecimal totalSubsidio() {
-    BigDecimal sacf = (suapCargoFijo.compareTo(BigDecimal.ZERO) < 0 ? suapCargoFijo : BigDecimal.ZERO);
-    BigDecimal sacb = (suapConsumoBasico.compareTo(BigDecimal.ZERO) < 0 ? suapConsumoBasico : BigDecimal.ZERO);
-    BigDecimal sacc = (suapConsumoComplementario.compareTo(BigDecimal.ZERO) < 0 ? suapConsumoComplementario : BigDecimal.ZERO);
-    BigDecimal sacs = (suapConsumoSuntuario.compareTo(BigDecimal.ZERO) < 0 ? suapConsumoSuntuario : BigDecimal.ZERO);
-    return sacf.add(sacb).add(sacc).add(sacs).abs();
+    return sanitizeNegative(suapCargoFijo)
+      .add(sanitizeNegative(suapConsumoBasico))
+      .add(sanitizeNegative(suapConsumoComplementario))
+      .add(sanitizeNegative(suapConsumoSuntuario))
+      .abs();
+  }
+
+  private BigDecimal sanitizeNegative(BigDecimal value) {
+    if (value.compareTo(ZERO) < 0) {
+      return value;
+    }
+    return ZERO;
   }
 
   public BigDecimal totalContribucion() {
-    BigDecimal sacf = (suapCargoFijo.compareTo(BigDecimal.ZERO) > 0 ? suapCargoFijo : BigDecimal.ZERO);
-    BigDecimal sacb = (suapConsumoBasico.compareTo(BigDecimal.ZERO) > 0 ? suapConsumoBasico : BigDecimal.ZERO);
-    BigDecimal sacc = (suapConsumoComplementario.compareTo(BigDecimal.ZERO) > 0 ? suapConsumoComplementario : BigDecimal.ZERO);
-    BigDecimal sacs = (suapConsumoSuntuario.compareTo(BigDecimal.ZERO) > 0 ? suapConsumoSuntuario : BigDecimal.ZERO);
-    return sacf.add(sacb).add(sacc).add(sacs).abs();
+    return sanitizePositive(suapCargoFijo)
+      .add(sanitizePositive(suapConsumoBasico))
+      .add(sanitizePositive(suapConsumoComplementario))
+      .add(sanitizePositive(suapConsumoSuntuario))
+      .abs();
+  }
+
+  private BigDecimal sanitizePositive(BigDecimal value) {
+    if (value.compareTo(ZERO) > 0) {
+      return value;
+    }
+    return ZERO;
   }
 
   public SuiCateSuca getSuiCateSuca() {
