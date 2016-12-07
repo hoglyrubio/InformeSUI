@@ -185,11 +185,11 @@ public class SuiAcueductoService {
       .subtract(informe.getInfoajus()) );
 
     // MACHETE
-    if (informe.getInformePk().getInfocodi() == 20050) {
+    /*if (informe.getInformePk().getInfocodi() == 20050) {
       sui.setC44( sui.getC31() );
       sui.setC31(ZERO);
       sui.setC24(ZERO);
-    }
+    }*/
 
     // En el 201105 se present Refacturado negativo, lo sumamos a otros cobros.
     if (sui.getC42().compareTo(ZERO) < 0) {
@@ -268,13 +268,13 @@ public class SuiAcueductoService {
     } else if (ESTADO_SOLO_INTERESES.equals(informe.getInfoesta())) {
       suiCateSuca = suiCateSucaRepository.findOne(new SuiCateSucaPk(informe.getInfocate(), informe.getInfosuca()));
     } else {
-      throw new BusinessException(MessageFormat.format("El código <{0}> tiene un estado inválido <{0}>.",
-              informe.getInformePk().getInfocodi().toString(), informe.getInfoesta()));
+      throw new BusinessException(MessageFormat.format("El código <{0}> tiene un estado inválido <{1}>.",
+              informe.getInformePk().getInfocodi(), informe.getInfoesta()));
     }
 
     if (suiCateSuca == null) {
       throw new BusinessException(MessageFormat.format("El codigo <{0}> no tiene homologación para Uso <{1}> y Estrato <{2}>",
-              informe.getInformePk().getInfocodi().toString(), informe.getInfoesta()));
+              informe.getInformePk().getInfocodi(), informe.getInfocate(), informe.getInfosuca()));
     }
 
     return suiCateSuca;
@@ -292,8 +292,9 @@ public class SuiAcueductoService {
     BigDecimal valorCF = informe.getInfocafi();
     Tarifa tarifaCF = tarifaRepository.findTarifaCFByValue(ano, mes, valorCF.doubleValue());
     if (tarifaCF == null) {
-      throw new BusinessException(MessageFormat.format("No se encuentra tarifa de CF. Codigo {0} Valor Cargo fijo {1}",
-              informe.getInformePk().getInfocodi().toString(), informe.getInfocafi()));
+      LOG.warn("No se encuentra tarifa de CF. Codigo {} Valor Cargo fijo {} (Uso {} Est {}). Se usará tarifa media",
+        informe.getInformePk().getInfocodi(), informe.getInfocafi(), informe.getInfocate(), informe.getInfosuca());
+      tarifaCF = tarifaRepository.findOne(ano, mes, SuiConstantes.TARICLUS_PLENA, SuiConstantes.TARICODI_CARGO_FIJO);
     }
     return tarifaCF;
   }

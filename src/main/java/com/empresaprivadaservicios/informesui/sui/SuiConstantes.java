@@ -19,4 +19,6 @@ public class SuiConstantes {
   public static final String TARICODI_CONSUMO_SUNTUARIO = "COS";
 
   public static final Integer DEFAULT_CASUCODI = -1;
+
+  public static final Integer TARICLUS_PLENA = 3;
 }
