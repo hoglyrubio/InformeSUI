@@ -21,4 +21,7 @@ public class SuiConstantes {
   public static final Integer DEFAULT_CASUCODI = -1;
 
   public static final Integer TARICLUS_PLENA = 3;
+
+  public static final Integer SIN_AFORO_ALCANTARILLADO = 0;
+  public static final Integer CON_CARACTERIZACION_ALCANTARILLADO = 1;
 }

@@ -4,6 +4,7 @@ import com.empresaprivadaservicios.informesui.informe.InformeService;
 import com.empresaprivadaservicios.informesui.periodo.Periodo;
 import com.empresaprivadaservicios.informesui.periodo.PeriodoService;
 import com.empresaprivadaservicios.informesui.sui.SuiAcueductoService;
+import com.empresaprivadaservicios.informesui.sui.SuiAlcantarilladoService;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public class AppController {
   private InformeService informeService;
   private PeriodoService periodoService;
   private SuiAcueductoService acueductoService;
+  private SuiAlcantarilladoService alcantarilladoService;
 
   @Autowired
   public AppController(InformeService informeService, PeriodoService periodoService, SuiAcueductoService acueductoService) {
@@ -123,4 +125,27 @@ public class AppController {
       e.printStackTrace();
     }
   }
+
+  @RequestMapping("/alcantarillado/procesar/{pericodi}")
+  public Map<String, Object> processAlcantarillado(@PathVariable Integer pericodi) {
+    Integer records = alcantarilladoService.process(pericodi);
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", MessageFormat.format("Procesado Alcantarillado periodo: {0} con {1} registros", pericodi.toString(), records));
+    return response;
+  }
+
+  @RequestMapping("/alcantarillado/descargar/{pericodi}")
+  public void descargarAlcantarillado(@PathVariable Integer pericodi, HttpServletResponse response) {
+    try {
+      String lines = alcantarilladoService.obtainCsvLines(pericodi);
+      LOG.info(lines);
+      response.setContentType("text/csv");
+      response.setHeader("Content-Disposition", String.format("inline; filename=\"%s-alc.csv\"", pericodi));
+      ServletOutputStream out = response.getOutputStream();
+      out.write(lines.getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 }

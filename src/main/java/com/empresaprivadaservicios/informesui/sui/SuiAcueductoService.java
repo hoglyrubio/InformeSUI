@@ -1,11 +1,9 @@
 package com.empresaprivadaservicios.informesui.sui;
 
-import com.empresaprivadaservicios.informesui.BusinessException;
 import com.empresaprivadaservicios.informesui.informe.Informe;
 import com.empresaprivadaservicios.informesui.informe.InformeRepository;
 import com.empresaprivadaservicios.informesui.periodo.Periodo;
 import com.empresaprivadaservicios.informesui.periodo.PeriodoRepository;
-import com.empresaprivadaservicios.informesui.tarifa.Tarifa;
 import com.empresaprivadaservicios.informesui.tarifa.TarifaRepository;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -16,12 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_NORMAL;
-import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_SOLO_INTERESES;
 import static java.math.BigDecimal.ROUND_HALF_UP;
 import static java.math.BigDecimal.ZERO;
 
@@ -38,17 +33,19 @@ public class SuiAcueductoService {
   private final TarifaRepository tarifaRepository;
   private final SuiCateSucaRepository suiCateSucaRepository;
   private final LiquidacionService liquidacionService;
+  private final SuiCommon suiCommon;
 
   @Autowired
   public SuiAcueductoService(InformeRepository informeRepository, SuiAcueductoRepository acueductoRepository,
                              PeriodoRepository periodoRepository, TarifaRepository tarifaRepository,
-                             SuiCateSucaRepository suiCateSucaRepository, LiquidacionService liquidacionService) {
+                             SuiCateSucaRepository suiCateSucaRepository, LiquidacionService liquidacionService, SuiCommon suiCommon) {
     this.informeRepository = informeRepository;
     this.acueductoRepository = acueductoRepository;
     this.periodoRepository = periodoRepository;
     this.tarifaRepository = tarifaRepository;
     this.suiCateSucaRepository = suiCateSucaRepository;
     this.liquidacionService = liquidacionService;
+    this.suiCommon = suiCommon;
   }
 
   @Transactional
@@ -98,7 +95,7 @@ public class SuiAcueductoService {
     Days peridias = Days.daysBetween(new LocalDate(periodo.getPerifein()), new LocalDate(periodo.getPerifefi()));
     sui.setC14(peridias.getDays());
 
-    SuiCateSuca suiCateSuca = obtainSuiCateSuca(informe, periodo);
+    SuiCateSuca suiCateSuca = suiCommon.obtainSuiCateSuca(informe, periodo);
 
     // 15. Codigo clase de uso
     sui.setC15(suiCateSuca.getCasucodi());
@@ -184,13 +181,6 @@ public class SuiAcueductoService {
       .add(informe.getInfootca())
       .subtract(informe.getInfoajus()) );
 
-    // MACHETE
-    /*if (informe.getInformePk().getInfocodi() == 20050) {
-      sui.setC44( sui.getC31() );
-      sui.setC31(ZERO);
-      sui.setC24(ZERO);
-    }*/
-
     // En el 201105 se present Refacturado negativo, lo sumamos a otros cobros.
     if (sui.getC42().compareTo(ZERO) < 0) {
       sui.setC44(sui.getC44().add(sui.getC42()));
@@ -247,56 +237,6 @@ public class SuiAcueductoService {
     }
 
     return sui;
-  }
-
-  /**
-   * Obtiene el Uso y Estrato de acuerdo con la homologación en la tabla SUI_CATESUCA, tiene soporte para las dos
-   * versiones de datos que usan R o 1 para el Uso desde el año 2014
-   * @param informe
-   * @param periodo
-   * @return
-   */
-  private SuiCateSuca obtainSuiCateSuca(Informe informe, Periodo periodo) {
-
-    SuiCateSuca suiCateSuca = null;
-
-    if (ESTADO_NORMAL.equals(informe.getInfoesta())) {
-      Tarifa tarifaCF = obtainTarifaCargoFijoCobrada(informe, periodo);
-      Integer uso = tarifaCF.getTarifaPk().getTaricate();
-      Integer est = tarifaCF.getTarifaPk().getTarisuca();
-      suiCateSuca = suiCateSucaRepository.findOne(new SuiCateSucaPk(uso.toString(), est.toString()));
-    } else if (ESTADO_SOLO_INTERESES.equals(informe.getInfoesta())) {
-      suiCateSuca = suiCateSucaRepository.findOne(new SuiCateSucaPk(informe.getInfocate(), informe.getInfosuca()));
-    } else {
-      throw new BusinessException(MessageFormat.format("El código <{0}> tiene un estado inválido <{1}>.",
-              informe.getInformePk().getInfocodi(), informe.getInfoesta()));
-    }
-
-    if (suiCateSuca == null) {
-      throw new BusinessException(MessageFormat.format("El codigo <{0}> no tiene homologación para Uso <{1}> y Estrato <{2}>",
-              informe.getInformePk().getInfocodi(), informe.getInfocate(), informe.getInfosuca()));
-    }
-
-    return suiCateSuca;
-  }
-
-  /**
-   *
-   * @param informe
-   * @param periodo
-   * @return
-   */
-  private Tarifa obtainTarifaCargoFijoCobrada(Informe informe, Periodo periodo) {
-    Integer ano = periodo.getPeriano();
-    Integer mes = periodo.getPerimes();
-    BigDecimal valorCF = informe.getInfocafi();
-    Tarifa tarifaCF = tarifaRepository.findTarifaCFByValue(ano, mes, valorCF.doubleValue());
-    if (tarifaCF == null) {
-      LOG.warn("No se encuentra tarifa de CF. Codigo {} Valor Cargo fijo {} (Uso {} Est {}). Se usará tarifa media",
-        informe.getInformePk().getInfocodi(), informe.getInfocafi(), informe.getInfocate(), informe.getInfosuca());
-      tarifaCF = tarifaRepository.findOne(ano, mes, SuiConstantes.TARICLUS_PLENA, SuiConstantes.TARICODI_CARGO_FIJO);
-    }
-    return tarifaCF;
   }
 
   public String obtainCsvLines(Integer pericodi) {

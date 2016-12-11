@@ -1,5 +1,6 @@
 package com.empresaprivadaservicios.informesui.sui;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -73,9 +74,46 @@ public class SuiHelper {
     return suiCateSuca.getCasucodi() < 10;
   }
 
-  public static double round(double value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    return Math.round(value * factor) / factor;
+  public static boolean isPositive(BigDecimal value) {
+    return value.compareTo(BigDecimal.ZERO) > 0;
   }
 
+  public static boolean isNegative(BigDecimal value) {
+    return value.compareTo(BigDecimal.ZERO) < 0;
+  }
+
+  public static boolean isZero(BigDecimal value) {
+    return value.compareTo(BigDecimal.ZERO) == 0;
+  }
+
+  public static boolean isNonZero(BigDecimal value) {
+    return value.compareTo(BigDecimal.ZERO) != 0;
+  }
+
+  public static String toCsv(SuiAlcantarillado suiAlcantarillado) {
+
+    StringBuilder csv = new StringBuilder();
+
+    csv
+      .append(suiAlcantarillado.getSuiAlcantarilladoPk().getC01()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC02()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC03()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC04()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC05()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC06()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC07()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC08()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC09()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC10()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC11()).append(SEPARATOR)
+      .append(dateFormat.format(suiAlcantarillado.getC12())).append(SEPARATOR)
+      .append(dateFormat.format(suiAlcantarillado.getC13())).append(SEPARATOR)
+      .append(suiAlcantarillado.getC14()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC15()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC16() == null ? "" : suiAlcantarillado.getC16()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC17() == null ? "" : suiAlcantarillado.getC17()).append(SEPARATOR)
+      .append(suiAlcantarillado.getC18() == null ? 0 : suiAlcantarillado.getC18()).append(SEPARATOR);
+      // TODO: Completar el resto de los campos
+    return csv.toString();
+  }
 }
