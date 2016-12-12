@@ -1,0 +1,22 @@
+<div class="page-header">
+  <h1>Informe SUI - Alcantarillado</h1>
+</div>
+
+<div id="formulario" class="container">
+
+  <form id="formAlcantarillado" role="form" v-on:submit="onSubmit($event)" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+      <label>Periodo de facturación</label>
+      <select id="infoperi" name="infoperi" class="form-control">
+        <option v-for="periodo in periodos" value="{{ periodo.pericodi }}">
+          Periodo: {{ periodo.pericodi }} Año: {{ periodo.periano }} Mes: {{ periodo.perimes }} Desde: {{ periodo.perifein | localeDateString }} Hasta: {{ periodo.perifefi | localeDateString}}
+        </option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Generar</button>
+    <button type="button" class="btn btn-default">Descargar</button>
+  </form>
+  
+</div>
+
+<script type="text/javascript" src="src/app/alcantarillado/alcantarillado.js"></script>

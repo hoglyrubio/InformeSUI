@@ -9,16 +9,13 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +32,11 @@ public class AppController {
   private SuiAlcantarilladoService alcantarilladoService;
 
   @Autowired
-  public AppController(InformeService informeService, PeriodoService periodoService, SuiAcueductoService acueductoService) {
+  public AppController(InformeService informeService, PeriodoService periodoService, SuiAcueductoService acueductoService, SuiAlcantarilladoService alcantarilladoService) {
     this.informeService = informeService;
     this.periodoService = periodoService;
     this.acueductoService = acueductoService;
+    this.alcantarilladoService = alcantarilladoService;
   }
 
   @RequestMapping(path = "/informe/upload", method = RequestMethod.POST)
