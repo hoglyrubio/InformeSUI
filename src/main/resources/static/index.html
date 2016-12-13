@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
   <title>Informe SUI</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/informesui.css">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.min.css">
-</head> 
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="src/main.css">
+</head>
 <body>
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -18,25 +17,26 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#" onclick="loadModule('landing')">Informe SUI</a>
+        <a class="navbar-brand" href="index.html">Informe SUI</a>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Procesos <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="loadModule('load-csv')">Carga de Informes BH (.csv)</a></li>
-              <li><a href="#">Validación de Informe BH</a></li>
-              <li><a href="#">Generación de Informe SUI</a></li>
+              <li><a href="#" onclick="loadModule('loadcsv')">Carga de Informes BH (.csv)</a></li>
+              <li><a href="#" onclick="loadModule('validacion')">Validación de Informe BH</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">One more separated link</a></li>
+              <li><a href="#" onclick="loadModule('acueducto')">Informe SUI - Acueducto</a></li>
+              <li><a href="#" onclick="loadModule('alcantarillado')">Informe SUI - Alcantarillado</a></li>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mantenimiento <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Periodos de facturación</a></li>
-              <li><a href="#">Tarifas</a></li>
+              <li><a href="#" onclick="loadModule('periodo')">Periodos de facturación</a></li>
+              <li><a href="#" onclick="loadModule('tarifas')">Tarifas</a></li>
+              <li><a href="#" onclick="loadModule('catesuca')">Homologación de Uso/Estrato</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -52,28 +52,17 @@
   </nav>
 
   <div id="main-content" class="container">
+    <div class="jumbotron">
+      <h1>Informe SUI</h1>
+      <p>Aplicación destinada a generar los Informes de SUI para la Empresa Privada de Servicios SA ESP</p>
+    </div>    
   </div>
 
-  <footer class="footer">
-    <div class="container">
-      <p class="">@hoglyrubio Copyright 2016</p>
-    </div>
-  </footer>
-
-  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput.min.js"></script>
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-      loadModule("landing");
-    });
-
-    function loadModule(name) {
-      console.log("loading module: " + name);
-      var _div = $("#main-content");
-      _div.load(name+".html");
-    }
-  </script>
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.min.js"></script>
+  <script type="text/javascript" src="src/main.js"></script>
+  <script type="text/javascript" src="src/shared/bootstrap-notify.min.js"></script>
 </body>
 </html>

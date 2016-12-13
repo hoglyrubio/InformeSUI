@@ -1,0 +1,2919 @@
+-- MySQL dump 10.13  Distrib 5.5.25a, for osx10.6 (i386)
+--
+-- Host: localhost    Database: empprivserv
+-- ------------------------------------------------------
+-- Server version	5.5.25a
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `contproc`
+--
+
+DROP TABLE IF EXISTS `contproc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contproc` (
+  `COPRCONS` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Consecutivo de tabla',
+  `COPRPROG` varchar(10) DEFAULT NULL COMMENT 'Programa',
+  `COPRPARA` varchar(50) DEFAULT NULL COMMENT 'Parametros',
+  `COPRFEIE` datetime DEFAULT NULL COMMENT 'Inicio de ejecución',
+  `COPRFEFE` datetime DEFAULT NULL COMMENT 'Fin de ejecución',
+  `COPRESTA` varchar(1) DEFAULT NULL COMMENT 'Estado',
+  `COPRDATA` varchar(500) DEFAULT NULL COMMENT 'Datos adicionales',
+  `COPRUSER` varchar(50) DEFAULT NULL COMMENT 'Usuario',
+  PRIMARY KEY (`COPRCONS`),
+  KEY `ix_contprog_prog_para` (`COPRPROG`,`COPRPARA`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Control de procesos';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `histconc`
+--
+
+DROP TABLE IF EXISTS `histconc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `histconc` (
+  `hicoconc` varchar(20) NOT NULL DEFAULT '',
+  `hicoorde` int(11) DEFAULT NULL,
+  PRIMARY KEY (`hicoconc`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `histdeta`
+--
+
+DROP TABLE IF EXISTS `histdeta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `histdeta` (
+  `hideperi` int(11) NOT NULL DEFAULT '0',
+  `hidecodi` int(11) NOT NULL DEFAULT '0',
+  `hideconc` varchar(20) NOT NULL DEFAULT '',
+  `hidevalo` decimal(15,2) DEFAULT NULL,
+  `hidedoso` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`hideperi`,`hidecodi`,`hideconc`),
+  CONSTRAINT `fk_histdeta_histmaes` FOREIGN KEY (`hideperi`, `hidecodi`) REFERENCES `histmaes` (`himaperi`, `himacodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `histmaes`
+--
+
+DROP TABLE IF EXISTS `histmaes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `histmaes` (
+  `himaperi` int(11) NOT NULL DEFAULT '0',
+  `himacodi` int(11) NOT NULL DEFAULT '0',
+  `himavame` decimal(15,2) DEFAULT NULL,
+  `himavamo` decimal(15,2) DEFAULT NULL,
+  `himamemo` int(11) DEFAULT NULL,
+  `himavapa` decimal(15,2) DEFAULT NULL,
+  PRIMARY KEY (`himaperi`,`himacodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `historia`
+--
+
+DROP TABLE IF EXISTS `historia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `historia` (
+  `PERIODO` varchar(6) NOT NULL DEFAULT '',
+  `CODIGOC` varchar(8) NOT NULL DEFAULT '',
+  `NOMBREC` varchar(50) DEFAULT NULL,
+  `DIRECCC` varchar(50) DEFAULT NULL,
+  `ZONAC` varchar(3) DEFAULT NULL,
+  `ANTERIOR` decimal(12,2) DEFAULT NULL,
+  `ACTUAL` decimal(12,2) DEFAULT NULL,
+  `USO` int(11) DEFAULT NULL,
+  `OCUPADA` int(11) DEFAULT NULL,
+  `ESTRATO` int(11) DEFAULT NULL,
+  `P00` int(11) DEFAULT NULL,
+  `P10` int(11) DEFAULT NULL,
+  `P11` int(11) DEFAULT NULL,
+  `P12` int(11) DEFAULT NULL,
+  `ACUERDO` decimal(14,2) DEFAULT NULL,
+  `VRPAG` decimal(14,2) DEFAULT NULL,
+  `VRPAS` decimal(14,2) DEFAULT NULL,
+  `VRPAL` decimal(14,2) DEFAULT NULL,
+  `VRPVA` decimal(14,2) DEFAULT NULL,
+  `INTAG` decimal(10,2) DEFAULT NULL,
+  `INTAL` decimal(10,2) DEFAULT NULL,
+  `INTAS` decimal(10,2) DEFAULT NULL,
+  `INTVA` decimal(10,2) DEFAULT NULL,
+  `INTAGM` decimal(10,2) DEFAULT NULL,
+  `INTALM` decimal(10,2) DEFAULT NULL,
+  `INTASM` decimal(10,2) DEFAULT NULL,
+  `INTVAM` decimal(10,2) DEFAULT NULL,
+  `RECARGO` decimal(14,2) DEFAULT NULL,
+  `VALORABON` decimal(14,2) DEFAULT NULL,
+  `FECHAMOV` date DEFAULT NULL,
+  `CARGOFIJO` decimal(14,2) DEFAULT NULL,
+  `CONSBASICO` decimal(14,2) DEFAULT NULL,
+  `CONSUPLEM` decimal(14,2) DEFAULT NULL,
+  `CONSUNTUA` decimal(14,2) DEFAULT NULL,
+  `ASEO` decimal(14,2) DEFAULT NULL,
+  `ALCANTA` decimal(14,2) DEFAULT NULL,
+  `INST_ACUED` decimal(14,2) DEFAULT NULL,
+  `INST_ALCAN` decimal(14,2) DEFAULT NULL,
+  `MANTO_MEDI` decimal(14,2) DEFAULT NULL,
+  `ABONO_CRED` decimal(14,2) DEFAULT NULL,
+  `VARIOS` decimal(14,2) DEFAULT NULL,
+  `ULTIMOREC` decimal(10,0) DEFAULT NULL,
+  `RECIBOSP` decimal(3,0) DEFAULT NULL,
+  `VALOREC` decimal(14,2) DEFAULT NULL,
+  `VALORPAG` decimal(14,2) DEFAULT NULL,
+  `FECHAPAG` date DEFAULT NULL,
+  `TIPONOTA` varchar(2) DEFAULT NULL,
+  `DIFEREN` decimal(14,2) DEFAULT NULL,
+  `VALOR_NOTA` decimal(14,2) DEFAULT NULL,
+  `OTROS_CAR` decimal(14,2) DEFAULT NULL,
+  `CONS_ANTER` decimal(14,2) DEFAULT NULL,
+  `PROMEDIO` decimal(14,2) DEFAULT NULL,
+  `CARGO_FIJO` decimal(14,2) DEFAULT NULL,
+  `SUBAGUA` decimal(10,2) DEFAULT NULL,
+  `SUBASEO` decimal(10,2) DEFAULT NULL,
+  `SUBALCA` decimal(10,2) DEFAULT NULL,
+  `TIPOCLI` varchar(1) DEFAULT NULL,
+  `ESTADO` int(11) DEFAULT NULL,
+  `DEUDA` decimal(15,2) DEFAULT NULL,
+  `INTERESA` decimal(15,2) DEFAULT NULL,
+  `INTERESM` decimal(15,2) DEFAULT NULL,
+  `VCUOTAM` decimal(14,2) DEFAULT NULL,
+  `VALORPEN` decimal(14,2) DEFAULT NULL,
+  `CODTERCE` varchar(15) DEFAULT NULL,
+  `PAGOACU` decimal(15,2) DEFAULT NULL,
+  `PAGOALC` decimal(15,2) DEFAULT NULL,
+  PRIMARY KEY (`PERIODO`,`CODIGOC`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `informe`
+--
+
+DROP TABLE IF EXISTS `informe`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `informe` (
+  `infoperi` int(11) NOT NULL DEFAULT '0' COMMENT 'PERIODO',
+  `infocodi` int(11) NOT NULL DEFAULT '0' COMMENT 'CODIGO',
+  `infoesta` int(11) DEFAULT NULL COMMENT 'ESTADO',
+  `infonomb` varchar(50) DEFAULT NULL COMMENT 'NOMRE DEL ABONADO',
+  `infodire` varchar(50) DEFAULT NULL COMMENT 'DIRECCION DEL ABONADO',
+  `infozona` varchar(10) DEFAULT NULL COMMENT 'ZONA',
+  `infosuca` varchar(1) DEFAULT NULL COMMENT 'ESTRATO',
+  `infolean` int(11) DEFAULT NULL COMMENT 'ANTERIOR',
+  `infoleac` int(11) DEFAULT NULL COMMENT 'ACTUAL',
+  `infocons` int(11) DEFAULT NULL COMMENT 'COMSUMO',
+  `infocate` varchar(2) DEFAULT NULL COMMENT 'USO',
+  `infoinan` decimal(15,2) DEFAULT NULL COMMENT 'INTE/ANTER',
+  `infoinag` decimal(15,2) DEFAULT NULL COMMENT 'INTE/AGUA',
+  `infoinal` decimal(15,2) DEFAULT NULL COMMENT 'INTE/ALCANT',
+  `infoinva` decimal(15,2) DEFAULT NULL COMMENT 'INTE/VARIOS',
+  `inforeag` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/AGU.',
+  `inforeal` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/ALCA.',
+  `inforeva` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/VARIO.',
+  `infocafi` decimal(15,2) DEFAULT NULL COMMENT 'CARGOFIJO',
+  `infocbas` decimal(15,2) DEFAULT NULL COMMENT 'COMS.BASICO.',
+  `infoccom` decimal(15,2) DEFAULT NULL COMMENT 'COMPLENTARIOS',
+  `infocsun` decimal(15,2) DEFAULT NULL COMMENT 'COMSUELTAL',
+  `infoalca` decimal(15,2) DEFAULT NULL COMMENT 'ALCANTARILLADO',
+  `infomedi` decimal(15,2) DEFAULT NULL COMMENT 'MEDIDORES',
+  `infosure` decimal(15,2) DEFAULT NULL COMMENT 'SUSP+RECON',
+  `infotanq` decimal(15,2) DEFAULT NULL COMMENT 'TANQUES',
+  `infoacom` decimal(15,2) DEFAULT NULL COMMENT 'ACOMETIDAS',
+  `infootca` decimal(15,2) DEFAULT NULL COMMENT 'OTR/CARGOS',
+  `inforeci` int(11) DEFAULT NULL COMMENT 'RECIBO #',
+  `infonuat` int(15) DEFAULT NULL COMMENT 'ATRASOS',
+  `infovaim` decimal(15,2) DEFAULT NULL COMMENT 'VALOR IMPRESO',
+  `infoserv` decimal(15,2) DEFAULT NULL COMMENT 'VALOR SERVICOS',
+  `infoajus` decimal(15,2) DEFAULT NULL COMMENT 'AJUSTES',
+  `infovapa` decimal(15,2) DEFAULT NULL COMMENT 'VALOR PAGADO',
+  `infovano` decimal(15,2) DEFAULT NULL COMMENT 'VALOR NOTA',
+  PRIMARY KEY (`infoperi`,`infocodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `informe_tmp_v1`
+--
+
+DROP TABLE IF EXISTS `informe_tmp_v1`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `informe_tmp_v1` (
+  `infocodi` int(11) NOT NULL DEFAULT '0' COMMENT 'CODIGO',
+  `infoesta` int(11) DEFAULT NULL COMMENT 'ESTADO',
+  `infonomb` varchar(50) DEFAULT NULL COMMENT 'NOMRE DEL ABONADO',
+  `infodire` varchar(50) DEFAULT NULL COMMENT 'DIRECCION DEL ABONADO',
+  `infozona` varchar(10) DEFAULT NULL COMMENT 'ZONA',
+  `infosuca` varchar(1) DEFAULT NULL COMMENT 'ESTRATO',
+  `infolean` int(11) DEFAULT NULL COMMENT 'ANTERIOR',
+  `infoleac` int(11) DEFAULT NULL COMMENT 'ACTUAL',
+  `infocons` int(11) DEFAULT NULL COMMENT 'COMSUMO',
+  `infocate` varchar(2) DEFAULT NULL COMMENT 'USO',
+  `infoinan` decimal(15,2) DEFAULT NULL COMMENT 'INTE/ANTER',
+  `infoinag` decimal(15,2) DEFAULT NULL COMMENT 'INTE/AGUA',
+  `infoinal` decimal(15,2) DEFAULT NULL COMMENT 'INTE/ALCANT',
+  `infoinva` decimal(15,2) DEFAULT NULL COMMENT 'INTE/VARIOS',
+  `inforeag` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/AGU.',
+  `inforeal` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/ALCA.',
+  `inforeva` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/VARIO.',
+  `infocafi` decimal(15,2) DEFAULT NULL COMMENT 'CARGOFIJO',
+  `infocbas` decimal(15,2) DEFAULT NULL COMMENT 'COMS.BASICO.',
+  `infoccom` decimal(15,2) DEFAULT NULL COMMENT 'COMPLENTARIOS',
+  `infocsun` decimal(15,2) DEFAULT NULL COMMENT 'COMSUELTAL',
+  `infoalca` decimal(15,2) DEFAULT NULL COMMENT 'ALCANTARILLADO',
+  `infomedi` decimal(15,2) DEFAULT NULL COMMENT 'MEDIDORES',
+  `infosure` decimal(15,2) DEFAULT NULL COMMENT 'SUSP+RECON',
+  `infotanq` decimal(15,2) DEFAULT NULL COMMENT 'TANQUES',
+  `infoacom` decimal(15,2) DEFAULT NULL COMMENT 'ACOMETIDAS',
+  `inforeci` int(11) DEFAULT NULL COMMENT 'RECIBO #',
+  `infonuat` int(15) DEFAULT NULL COMMENT 'ATRASOS',
+  `infovaim` decimal(15,2) DEFAULT NULL COMMENT 'VALOR IMPRESO',
+  `infoserv` decimal(15,2) DEFAULT NULL COMMENT 'VALOR SERVICOS',
+  `infoajus` decimal(15,2) DEFAULT NULL COMMENT 'AJUSTES',
+  `infovapa` decimal(15,2) DEFAULT NULL COMMENT 'VALOR PAGADO',
+  `infovano` decimal(15,2) DEFAULT NULL COMMENT 'VALOR NOTA',
+  PRIMARY KEY (`infocodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `informe_tmp_v2`
+--
+
+DROP TABLE IF EXISTS `informe_tmp_v2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `informe_tmp_v2` (
+  `infocodi` int(11) NOT NULL DEFAULT '0' COMMENT 'CODIGO',
+  `infoesta` int(11) DEFAULT NULL COMMENT 'ESTADO',
+  `infonomb` varchar(50) DEFAULT NULL COMMENT 'NOMRE DEL ABONADO',
+  `infodire` varchar(50) DEFAULT NULL COMMENT 'DIRECCION DEL ABONADO',
+  `infozona` varchar(10) DEFAULT NULL COMMENT 'ZONA',
+  `infosuca` varchar(1) DEFAULT NULL COMMENT 'ESTRATO',
+  `infolean` int(11) DEFAULT NULL COMMENT 'ANTERIOR',
+  `infoleac` int(11) DEFAULT NULL COMMENT 'ACTUAL',
+  `infocons` int(11) DEFAULT NULL COMMENT 'COMSUMO',
+  `infocate` varchar(2) DEFAULT NULL COMMENT 'USO',
+  `infoinan` decimal(15,2) DEFAULT NULL COMMENT 'INTE/ANTER',
+  `infoinag` decimal(15,2) DEFAULT NULL COMMENT 'INTE/AGUA',
+  `infoinal` decimal(15,2) DEFAULT NULL COMMENT 'INTE/ALCANT',
+  `infoinva` decimal(15,2) DEFAULT NULL COMMENT 'INTE/VARIOS',
+  `inforeag` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/AGU.',
+  `inforeal` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/ALCA.',
+  `inforeva` decimal(15,2) DEFAULT NULL COMMENT 'REFAC/VARIO.',
+  `infocafi` decimal(15,2) DEFAULT NULL COMMENT 'CARGOFIJO',
+  `infocbas` decimal(15,2) DEFAULT NULL COMMENT 'COMS.BASICO.',
+  `infoccom` decimal(15,2) DEFAULT NULL COMMENT 'COMPLENTARIOS',
+  `infocsun` decimal(15,2) DEFAULT NULL COMMENT 'COMSUELTAL',
+  `infoalca` decimal(15,2) DEFAULT NULL COMMENT 'ALCANTARILLADO',
+  `infomedi` decimal(15,2) DEFAULT NULL COMMENT 'MEDIDORES',
+  `infosure` decimal(15,2) DEFAULT NULL COMMENT 'SUSP+RECON',
+  `infotanq` decimal(15,2) DEFAULT NULL COMMENT 'TANQUES',
+  `infoacom` decimal(15,2) DEFAULT NULL COMMENT 'ACOMETIDAS',
+  `infootca` decimal(15,2) DEFAULT NULL COMMENT 'OTR/CARGOS',
+  `inforeci` int(11) DEFAULT NULL COMMENT 'RECIBO #',
+  `infonuat` int(15) DEFAULT NULL COMMENT 'ATRASOS',
+  `infovaim` decimal(15,2) DEFAULT NULL COMMENT 'VALOR IMPRESO',
+  `infoserv` decimal(15,2) DEFAULT NULL COMMENT 'VALOR SERVICOS',
+  `infoajus` decimal(15,2) DEFAULT NULL COMMENT 'AJUSTES',
+  `infovapa` decimal(15,2) DEFAULT NULL COMMENT 'VALOR PAGADO',
+  `infovano` decimal(15,2) DEFAULT NULL COMMENT 'VALOR NOTA',
+  PRIMARY KEY (`infocodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `log`
+--
+
+DROP TABLE IF EXISTS `log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log` (
+  `logfech` datetime DEFAULT NULL,
+  `logtext` varchar(500) DEFAULT NULL,
+  `loguser` varchar(50) DEFAULT NULL,
+  `loghost` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `planocsv`
+--
+
+DROP TABLE IF EXISTS `planocsv`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `planocsv` (
+  `periodo` int(11) NOT NULL DEFAULT '0',
+  `codigo` int(11) NOT NULL DEFAULT '0',
+  `linea` varchar(1000) DEFAULT NULL,
+  `formato` varchar(10) NOT NULL DEFAULT '',
+  PRIMARY KEY (`periodo`,`codigo`,`formato`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sui_claseuso`
+--
+
+DROP TABLE IF EXISTS `sui_claseuso`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sui_claseuso` (
+  `cluscodi` int(11) NOT NULL DEFAULT '0',
+  `clusnomb` varchar(50) DEFAULT NULL,
+  `cluscate` int(11) DEFAULT NULL,
+  `clussuca` int(11) DEFAULT NULL,
+  `clususo` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`cluscodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sui_liquidacion`
+--
+
+DROP TABLE IF EXISTS `sui_liquidacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sui_liquidacion` (
+  `liquperi` int(11) NOT NULL DEFAULT '0' COMMENT 'Periodo',
+  `liqucodi` int(11) NOT NULL DEFAULT '0' COMMENT 'Suscriptor',
+  `liqucate` varchar(2) DEFAULT NULL COMMENT 'Uso (Categoria)',
+  `liqusuca` varchar(1) DEFAULT NULL COMMENT 'Estrato (Subcategoria)',
+  `liquclus` int(11) DEFAULT NULL COMMENT 'SUI - Codigo clase de uso',
+  `liquserv` varchar(3) NOT NULL DEFAULT '' COMMENT 'Servicio (ACU, ALC)',
+  `liqucons` decimal(15,2) DEFAULT NULL COMMENT 'Consumo m3',
+  `liqucafi` decimal(15,2) DEFAULT NULL COMMENT 'Cargo Fijo (Tarifa plena)',
+  `liqucoba` decimal(15,2) DEFAULT NULL COMMENT 'Consumo basico (Tarifa plena)',
+  `liqucoco` decimal(15,2) DEFAULT NULL COMMENT 'Consumo complementario (Tarifa plena)',
+  `liqucosu` decimal(15,2) DEFAULT NULL COMMENT 'Consumo suntuario (Tarifa plena)',
+  `liqusacf` decimal(15,2) DEFAULT NULL COMMENT 'Subsidio/Aporte Cargo fijo',
+  `liqusacb` decimal(15,2) DEFAULT NULL COMMENT 'Subsidio/Aporte Consumo basico',
+  `liqusacc` decimal(15,2) DEFAULT NULL COMMENT 'Subsidio/Aporte Consumo complementario',
+  `liqusacs` decimal(15,2) DEFAULT NULL COMMENT 'Subsidio/Aporte Consumo suntuario',
+  PRIMARY KEY (`liquperi`,`liqucodi`,`liquserv`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sui_periodo`
+--
+
+DROP TABLE IF EXISTS `sui_periodo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sui_periodo` (
+  `pericodi` int(11) NOT NULL DEFAULT '0',
+  `periano` int(11) DEFAULT NULL,
+  `perimes` int(11) DEFAULT NULL,
+  `perifege` datetime DEFAULT NULL,
+  `perifein` datetime DEFAULT NULL,
+  `perifefi` datetime DEFAULT NULL,
+  PRIMARY KEY (`pericodi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sui_tarifa`
+--
+
+DROP TABLE IF EXISTS `sui_tarifa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sui_tarifa` (
+  `tariano` int(11) NOT NULL DEFAULT '0',
+  `tarimes` int(11) NOT NULL DEFAULT '0',
+  `taricodi` varchar(4) NOT NULL DEFAULT '',
+  `tarivalo` decimal(15,4) DEFAULT NULL,
+  `taricate` int(11) NOT NULL DEFAULT '0',
+  `tarisuca` int(11) NOT NULL DEFAULT '0',
+  `tariporc` decimal(15,4) DEFAULT NULL,
+  `taridesc` varchar(100) DEFAULT NULL,
+  `tariclus` int(11) DEFAULT NULL,
+  PRIMARY KEY (`tariano`,`tarimes`,`taricodi`,`taricate`,`tarisuca`),
+  UNIQUE KEY `ix_tarifa_ano_mes_codi_clus` (`tariano`,`tarimes`,`taricodi`,`tariclus`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sui_tbtablas`
+--
+
+DROP TABLE IF EXISTS `sui_tbtablas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sui_tbtablas` (
+  `tbnumero` int(11) NOT NULL,
+  `tbcodigo` varchar(10) DEFAULT NULL,
+  `tbclave` varchar(10) DEFAULT NULL,
+  `tbvalint` int(11) DEFAULT NULL,
+  `tbvalnum` decimal(15,2) DEFAULT NULL,
+  `tbvalfec` datetime DEFAULT NULL,
+  `tbvalor` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`tbnumero`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `suiacu2009`
+--
+
+DROP TABLE IF EXISTS `suiacu2009`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `suiacu2009` (
+  `PERIODO` int(11) NOT NULL DEFAULT '0',
+  `C01` int(11) NOT NULL DEFAULT '0' COMMENT '"nuid" tipo="texto" longitudmaxima="40" obligatorio="SI"',
+  `C02` int(11) DEFAULT NULL COMMENT '"numero de factura" tipo="texto" longitudmaxima="40" obligatorio="SI"',
+  `C03` varchar(8) DEFAULT NULL COMMENT '"codigo dane" tipo="numero" formato="00000000" obligatorio="SI" min="0"',
+  `C04` varchar(4) DEFAULT NULL COMMENT '"sector" tipo="numero" formato="0000" min="0"',
+  `C05` varchar(2) DEFAULT NULL COMMENT '"seccion" tipo="numero" formato="00" min="0"',
+  `C06` varchar(4) DEFAULT NULL COMMENT '"manzana" tipo="numero" formato="0000" min="0"',
+  `C07` varchar(1) DEFAULT NULL COMMENT '"ubicacion" tipo="lista" obligatorio="SI"> <lista> <item>1</item> <item>2</item> </lista> </columna>',
+  `C08` int(11) DEFAULT NULL COMMENT '"multiusuarios (No. Unidades)" tipo="numero" formato="9990" min="2"',
+  `C09` int(11) DEFAULT NULL COMMENT '"inquilinato" tipo="numero" formato="9990" min="2"',
+  `C10` varchar(2) DEFAULT NULL COMMENT '"clase de uso" tipo="lista" obligatorio="SI"> <lista> <item>R</item> <item>NR</item> </lista> </columna>',
+  `C11` int(11) DEFAULT NULL COMMENT '"codigo clase de uso" formato="90" tipo="numero" calculo="SI{Id10=[TR]}ENTONCES{Id11&lt ,=[6]}SINO{Id11>=[10]}" min="1" max="15" obligatorio="SI"/>',
+  `C12` int(11) DEFAULT NULL COMMENT '"dias facturados" formato="990" tipo="numero" min="0" obligatorio="SI"/>',
+  `C13` date DEFAULT NULL COMMENT '"fecha expedicion de la factura" formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI" calculo="Id13>=Id14"',
+  `C14` date DEFAULT NULL COMMENT '"fecha inicio periodo facturacion" formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI"',
+  `C15` varchar(1) DEFAULT NULL COMMENT '"tipo de factura" tipo="lista" obligatorio="SI">	<lista>		<item>R</item>		<item>P</item>	</lista> </columna>',
+  `C16` int(11) DEFAULT NULL COMMENT '"lectura actual" tipo="numero" obligatorio="SI" formato="999999999990" min="0"/>',
+  `C17` int(11) DEFAULT NULL COMMENT '"consumo del periodo" formato="999999999990" tipo="numero" obligatorio="SI" min="0"/>',
+  `C18` decimal(15,4) DEFAULT NULL COMMENT '"facturacion por consumo" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C19` decimal(15,4) DEFAULT NULL COMMENT '"valor subsidio o contribucion" formato="9999999990.9999" tipo="numero" obligatorio="SI"> <validacion warning="SI" calculo="SI{Id11&lt ,=[3]}ENTONCES{Id19&lt ,=[0]}" <validacion warning="SI" calculo="SI{Id11>[4]}ENTONCES{Id19>=[0]}" </columna>',
+  `C20` decimal(15,4) DEFAULT NULL COMMENT '"cobros de conexi?n" formato="9999999990.9999" tipo="numero" min="0"',
+  `C21` decimal(15,4) DEFAULT NULL COMMENT '"cargos por reconexion" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C22` decimal(15,4) DEFAULT NULL COMMENT '"cargos por reinstalacion" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C23` decimal(15,4) DEFAULT NULL COMMENT '"valor reliquidacion o refacturacion" formato="9999999990.9999" tipo="numero"',
+  `C24` decimal(15,4) DEFAULT NULL COMMENT '"valor de mora" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C25` decimal(15,4) DEFAULT NULL COMMENT '"intereses por mora" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C26` decimal(15,4) DEFAULT NULL COMMENT '"valor total facturado" formato="9999999999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C27` decimal(15,4) DEFAULT NULL COMMENT '"cargo fijo" formato="9999990.9999" tipo="numero" obligatorio="SI" min="0"/>',
+  `C28` decimal(15,4) DEFAULT NULL COMMENT '"pagos del cliente" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"/>',
+  `C29` varchar(80) DEFAULT NULL COMMENT '"direccion" tipo="texto" obligatorio="SI" longitudmaxima="80"/>',
+  PRIMARY KEY (`PERIODO`,`C01`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `suiacu2010`
+--
+
+DROP TABLE IF EXISTS `suiacu2010`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `suiacu2010` (
+  `periodo` int(11) NOT NULL DEFAULT '0' COMMENT 'periodo de facuracion',
+  `C01` int(11) NOT NULL DEFAULT '0' COMMENT '1 nuid',
+  `C02` int(11) DEFAULT NULL COMMENT '2 numero de cuenta contrato',
+  `C03` varchar(8) DEFAULT NULL COMMENT '3 Codigo DANE',
+  `C04` varchar(3) DEFAULT NULL COMMENT '4 Codigo predial catastro descentralizado',
+  `C05` varchar(2) DEFAULT NULL COMMENT '5 Tipo Avaluo',
+  `C06` varchar(2) DEFAULT NULL COMMENT '6 Sector IGAC',
+  `C07` varchar(4) DEFAULT NULL COMMENT '7 Manzana o Vereda IGAC',
+  `C08` varchar(4) DEFAULT NULL COMMENT '8 Numero del predio IGAC',
+  `C09` varchar(3) DEFAULT NULL COMMENT '9 Condicion de propiedad del predio IGAC',
+  `C10` varchar(130) DEFAULT NULL COMMENT '10 Direccion del predio',
+  `C11` int(11) DEFAULT NULL COMMENT '11 Numero de la factura',
+  `C12` date DEFAULT NULL COMMENT '12 Fecha de expedicien de la factura',
+  `C13` date DEFAULT NULL COMMENT '13 Fecha de inicio del periodo de facturación',
+  `C14` int(11) DEFAULT NULL COMMENT '14 Dias Facturados',
+  `C15` int(11) DEFAULT NULL COMMENT '15 Codigo Clase de uso',
+  `C16` int(11) DEFAULT NULL COMMENT '16 Unidades multiusuario residencial',
+  `C17` int(11) DEFAULT NULL COMMENT '17 unidades multiusuario no residencial',
+  `C18` int(11) DEFAULT NULL COMMENT '18 Hogar comunitario o sustituto',
+  `C19` int(11) DEFAULT NULL COMMENT '19 Estado de medidor',
+  `C20` int(11) DEFAULT NULL COMMENT '20 Determinación del consumo',
+  `C21` int(11) DEFAULT NULL COMMENT '21 Lectura anterior',
+  `C22` int(11) DEFAULT NULL COMMENT '22 Lectura actual',
+  `C23` decimal(15,4) DEFAULT NULL COMMENT '23 Consumo del periodo en M3',
+  `C24` decimal(15,4) DEFAULT NULL COMMENT '24 Cargo fijo',
+  `C25` decimal(15,4) DEFAULT NULL COMMENT '25 Cargo por consumo basico',
+  `C26` decimal(15,4) DEFAULT NULL COMMENT '26 Cargo por consumo complementario',
+  `C27` decimal(15,4) DEFAULT NULL COMMENT '27 Cargo por consumo suntuario',
+  `C28` decimal(15,4) DEFAULT NULL COMMENT '28 CMT (costo medio de tasa de uso)',
+  `C29` decimal(15,4) DEFAULT NULL COMMENT '29 Valor por metro cubico',
+  `C30` decimal(15,4) DEFAULT NULL COMMENT '30 Valor facturado por consumo',
+  `C31` decimal(15,4) DEFAULT NULL COMMENT '31 Valor del subsidio',
+  `C32` decimal(15,4) DEFAULT NULL COMMENT '32 Valor de la contribución',
+  `C33` decimal(15,4) DEFAULT NULL COMMENT '33 Factor de subsidio o contribución cargo fijo',
+  `C34` decimal(15,4) DEFAULT NULL COMMENT '34 Factor de subsidio o contribucion consumo',
+  `C35` decimal(15,4) DEFAULT NULL COMMENT '35 Cargos por conexión',
+  `C36` decimal(15,4) DEFAULT NULL COMMENT '36 Cargos por reconexión',
+  `C37` decimal(15,4) DEFAULT NULL COMMENT '37 Cargos por instalación',
+  `C38` decimal(15,4) DEFAULT NULL COMMENT '38 Cargos por suspensión',
+  `C39` decimal(15,4) DEFAULT NULL COMMENT '39 Cargos por corte',
+  `C40` decimal(15,4) DEFAULT NULL COMMENT '40 Pago anticipado del servicio',
+  `C41` int(11) DEFAULT NULL COMMENT '41 Dias de mora',
+  `C42` decimal(15,4) DEFAULT NULL COMMENT '42 valor de mora',
+  `C43` decimal(15,4) DEFAULT NULL COMMENT '43 intereses por mora',
+  `C44` decimal(15,4) DEFAULT NULL COMMENT '44 otros cobros',
+  `C45` int(11) DEFAULT NULL COMMENT '45 causal de refacturación',
+  `C46` int(11) DEFAULT NULL COMMENT '46 Numero de factura objeto de refacturación',
+  `C47` decimal(15,4) DEFAULT NULL COMMENT '47 Valor total facturado',
+  `C48` decimal(15,4) DEFAULT NULL COMMENT 'Pagos del usuario recibidos durante el mes de reporte',
+  PRIMARY KEY (`periodo`,`C01`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `suialc2009`
+--
+
+DROP TABLE IF EXISTS `suialc2009`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `suialc2009` (
+  `PERIODO` int(11) NOT NULL DEFAULT '0',
+  `C01` int(11) NOT NULL DEFAULT '0' COMMENT 'NUID" tipo="texto" obligatorio="SI" longitudmaxima="40"',
+  `C02` int(11) DEFAULT NULL COMMENT 'Numero de factura" tipo="texto" obligatorio="SI" longitudmaxima="40"',
+  `C03` varchar(8) DEFAULT NULL COMMENT 'codigo dane" tipo="numero" formato="00000000" obligatorio="SI" min="0"',
+  `C04` varchar(4) DEFAULT NULL COMMENT 'Sector" formato="0000" tipo="numero" min="0"',
+  `C05` varchar(2) DEFAULT NULL COMMENT 'Seccion" formato="00" tipo="numero" min="0"',
+  `C06` varchar(4) DEFAULT NULL COMMENT 'Manzana" formato="0000" tipo="numero" min="0"',
+  `C07` varchar(1) DEFAULT NULL COMMENT 'Ubicacion" tipo="lista" obligatorio="SI">  <lista>   <item>1</item>   <item>2</item>  </lista> </columna>',
+  `C08` int(11) DEFAULT NULL COMMENT 'multiusuarios (No. Unidades)" formato="9990" tipo="numero" min="2"',
+  `C09` int(11) DEFAULT NULL COMMENT 'Inquilinato" formato="9990" tipo="numero" min="2"',
+  `C10` varchar(2) DEFAULT NULL COMMENT 'clase de uso" tipo="lista" obligatorio="SI">  <lista>   <item>R</item>   <item>NR</item>  </lista> </columna>',
+  `C11` int(11) DEFAULT NULL COMMENT 'codigo clase de uso" formato="90" tipo="numero" calculo="SI{Id10=[TR]}ENTONCES{Id11&lt ,=[6]}SINO{Id11>=[10]}" min="1" max="15" obligatorio="SI"/>',
+  `C12` int(11) DEFAULT NULL COMMENT 'dias facturados" formato="990" tipo="numero" min="0" obligatorio="SI"/>',
+  `C13` date DEFAULT NULL COMMENT 'Fecha de expedicion de la factura" formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI" calculo="id13>=id14"',
+  `C14` date DEFAULT NULL COMMENT 'Fecha inicio del periodo de facturacion." formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI"',
+  `C15` varchar(1) DEFAULT NULL COMMENT 'Tipo de factura" tipo="lista" obligatorio="SI">  <lista>   <item>R</item>   <item>P</item>  </lista> </columna>',
+  `C16` decimal(15,4) DEFAULT NULL COMMENT 'Facturacion por prestacion del servicio ($)" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C17` decimal(15,4) DEFAULT NULL COMMENT 'Valor subsidio o contribucion ($)." formato="9999999990.9999" tipo="numero" obligatorio="SI" >   <validacion warning="SI" calculo="SI{Id11&lt ,=[3]}ENTONCES{Id17&lt ,=[0]}" <validacion warning="SI" calculo="SI{Id11>[4]}ENTONCES{Id17>=[0]}" </columna>',
+  `C18` decimal(15,4) DEFAULT NULL COMMENT 'Cobros de conexion ($)" formato="9999999990.9999" tipo="numero" min="0"',
+  `C19` decimal(15,4) DEFAULT NULL COMMENT 'Valor reliquidacion o refacturacion " formato="9999999990.9999" tipo="numero"',
+  `C20` decimal(15,4) DEFAULT NULL COMMENT 'Valor de mora ($)" formato="9999999990.9999" tipo="numero" min="0"',
+  `C21` decimal(15,4) DEFAULT NULL COMMENT 'Intereses por mora ($)" formato="9999999990.9999" tipo="numero" min="0"',
+  `C22` decimal(15,4) DEFAULT NULL COMMENT 'Valor total facturado ($)" formato="9999999999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C23` decimal(15,4) DEFAULT NULL COMMENT 'Cargo fijo ($)" formato="9999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C24` decimal(15,4) DEFAULT NULL COMMENT 'Pagos del cliente durante el periodo facturado ($)" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C25` varchar(80) DEFAULT NULL COMMENT 'direccion" tipo="texto" obligatorio="SI" longitudmaxima="80"/>',
+  PRIMARY KEY (`PERIODO`,`C01`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `suialc2010`
+--
+
+DROP TABLE IF EXISTS `suialc2010`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `suialc2010` (
+  `periodo` int(11) NOT NULL DEFAULT '0' COMMENT 'periodo de facuracion',
+  `C01` int(11) NOT NULL DEFAULT '0' COMMENT '1 nuid',
+  `C02` int(11) DEFAULT NULL COMMENT '2 numero de cuenta contrato',
+  `C03` varchar(2) DEFAULT NULL COMMENT '3 Codigo DANE',
+  `C04` varchar(3) DEFAULT NULL COMMENT '4 Codigo predial catastro descentralizado',
+  `C05` varchar(2) DEFAULT NULL COMMENT '5 Tipo Avaluo',
+  `C06` varchar(2) DEFAULT NULL COMMENT '6 Sector IGAC',
+  `C07` varchar(4) DEFAULT NULL COMMENT '7 Manzana o Vereda IGAC',
+  `C08` varchar(4) DEFAULT NULL COMMENT '8 Numero del predio IGAC',
+  `C09` varchar(3) DEFAULT NULL COMMENT '9 Condicion de propiedad del predio IGAC',
+  `C10` varchar(130) DEFAULT NULL COMMENT '10 Direccion del predio',
+  `C11` int(11) DEFAULT NULL COMMENT '11 Numero de la factura',
+  `C12` date DEFAULT NULL COMMENT '12 Fecha de expedicien de la factura',
+  `C13` date DEFAULT NULL COMMENT '13 Fecha de inicio del periodo de facturación',
+  `C14` int(11) DEFAULT NULL COMMENT '14 Dias Facturados',
+  `C15` int(11) DEFAULT NULL COMMENT '15 Codigo Clase de uso',
+  `C16` int(11) DEFAULT NULL COMMENT '16 Unidades multiusuario residencial',
+  `C17` int(11) DEFAULT NULL COMMENT '17 unidades multiusuario no residencial',
+  `C18` int(11) DEFAULT NULL COMMENT '18 Hogar comunitario o sustituto',
+  `C19` int(11) DEFAULT NULL COMMENT '19 Usuario Facturado con aforo',
+  `C20` int(11) DEFAULT NULL COMMENT '20 Usuario cuenta con caracterización',
+  `C21` decimal(15,4) DEFAULT NULL COMMENT '21 Cargo fijo',
+  `C22` decimal(15,4) DEFAULT NULL COMMENT '22 Cargo por Vertimiento basico',
+  `C23` decimal(15,4) DEFAULT NULL COMMENT '23 Cargo por Vertimiento complementario',
+  `C24` decimal(15,4) DEFAULT NULL COMMENT '24 Cargo por Vertimiento suntuario',
+  `C25` decimal(15,4) DEFAULT NULL COMMENT '25 CMT (costo medio de tasa Retributiva)',
+  `C26` decimal(15,4) DEFAULT NULL COMMENT '26 Vertimiento del periodo en M3',
+  `C27` decimal(15,4) DEFAULT NULL COMMENT '27 Valor facturado por vertido',
+  `C28` decimal(15,4) DEFAULT NULL COMMENT '28 Valor del subsidio',
+  `C29` decimal(15,4) DEFAULT NULL COMMENT '29 Valor de la contribución',
+  `C30` decimal(15,4) DEFAULT NULL COMMENT '30 Factor de subsidio o contribución cargo fijo',
+  `C31` decimal(15,4) DEFAULT NULL COMMENT '31 Factor de subsidio o contribucion vertimiento',
+  `C32` decimal(15,4) DEFAULT NULL COMMENT '32 Cargos por conexión',
+  `C33` decimal(15,4) DEFAULT NULL COMMENT '33 Pago anticipado del servicio',
+  `C34` int(11) DEFAULT NULL COMMENT '34 Dias de mora',
+  `C35` decimal(15,4) DEFAULT NULL COMMENT '35 valor de mora',
+  `C36` decimal(15,4) DEFAULT NULL COMMENT '36 intereses por mora',
+  `C37` decimal(15,4) DEFAULT NULL COMMENT '37 otros cobros',
+  `C38` int(11) DEFAULT NULL COMMENT '38 causal de refacturación',
+  `C39` int(11) DEFAULT NULL COMMENT '39 Numero de factura objeto de refacturación',
+  `C40` decimal(15,4) DEFAULT NULL COMMENT '40 Valor total facturado',
+  `C41` decimal(15,4) DEFAULT NULL COMMENT '41 Pagos del usuario recibidos durante el mes de reporte',
+  PRIMARY KEY (`periodo`,`C01`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tmp_uso`
+--
+
+DROP TABLE IF EXISTS `tmp_uso`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tmp_uso` (
+  `infoperi` int(11) DEFAULT NULL,
+  `infocodi` int(11) DEFAULT NULL,
+  `infocate` varchar(1) DEFAULT NULL,
+  `infosuca` int(11) DEFAULT NULL,
+  `uso` int(11) DEFAULT NULL,
+  `estrato` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tmpacu2009`
+--
+
+DROP TABLE IF EXISTS `tmpacu2009`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tmpacu2009` (
+  `C01` int(11) DEFAULT NULL COMMENT '"nuid" tipo="texto" longitudmaxima="40" obligatorio="SI"',
+  `C02` int(11) DEFAULT NULL COMMENT '"numero de factura" tipo="texto" longitudmaxima="40" obligatorio="SI"',
+  `C03` varchar(8) DEFAULT NULL COMMENT '"codigo dane" tipo="numero" formato="00000000" obligatorio="SI" min="0"',
+  `C04` varchar(4) DEFAULT NULL COMMENT '"sector" tipo="numero" formato="0000" min="0"',
+  `C05` varchar(2) DEFAULT NULL COMMENT '"seccion" tipo="numero" formato="00" min="0"',
+  `C06` varchar(4) DEFAULT NULL COMMENT '"manzana" tipo="numero" formato="0000" min="0"',
+  `C07` varchar(1) DEFAULT NULL COMMENT '"ubicacion" tipo="lista" obligatorio="SI"> <lista> <item>1</item> <item>2</item> </lista> </columna>',
+  `C08` int(11) DEFAULT NULL COMMENT '"multiusuarios (No. Unidades)" tipo="numero" formato="9990" min="2"',
+  `C09` int(11) DEFAULT NULL COMMENT '"inquilinato" tipo="numero" formato="9990" min="2"',
+  `C10` varchar(2) DEFAULT NULL COMMENT '"clase de uso" tipo="lista" obligatorio="SI"> <lista> <item>R</item> <item>NR</item> </lista> </columna>',
+  `C11` int(11) DEFAULT NULL COMMENT '"codigo clase de uso" formato="90" tipo="numero" calculo="SI{Id10=[TR]}ENTONCES{Id11&lt ,=[6]}SINO{Id11>=[10]}" min="1" max="15" obligatorio="SI"/>',
+  `C12` int(11) DEFAULT NULL COMMENT '"dias facturados" formato="990" tipo="numero" min="0" obligatorio="SI"/>',
+  `C13` date DEFAULT NULL COMMENT '"fecha expedicion de la factura" formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI" calculo="Id13>=Id14"',
+  `C14` date DEFAULT NULL COMMENT '"fecha inicio periodo facturacion" formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI"',
+  `C15` varchar(1) DEFAULT NULL COMMENT '"tipo de factura" tipo="lista" obligatorio="SI">	<lista>		<item>R</item>		<item>P</item>	</lista> </columna>',
+  `C16` int(11) DEFAULT NULL COMMENT '"lectura actual" tipo="numero" obligatorio="SI" formato="999999999990" min="0"/>',
+  `C17` int(11) DEFAULT NULL COMMENT '"consumo del periodo" formato="999999999990" tipo="numero" obligatorio="SI" min="0"/>',
+  `C18` decimal(15,4) DEFAULT NULL COMMENT '"facturacion por consumo" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C19` decimal(15,4) DEFAULT NULL COMMENT '"valor subsidio o contribucion" formato="9999999990.9999" tipo="numero" obligatorio="SI"> <validacion warning="SI" calculo="SI{Id11&lt ,=[3]}ENTONCES{Id19&lt ,=[0]}" <validacion warning="SI" calculo="SI{Id11>[4]}ENTONCES{Id19>=[0]}" </columna>',
+  `C20` decimal(15,4) DEFAULT NULL COMMENT '"cobros de conexi?n" formato="9999999990.9999" tipo="numero" min="0"',
+  `C21` decimal(15,4) DEFAULT NULL COMMENT '"cargos por reconexion" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C22` decimal(15,4) DEFAULT NULL COMMENT '"cargos por reinstalacion" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C23` decimal(15,4) DEFAULT NULL COMMENT '"valor reliquidacion o refacturacion" formato="9999999990.9999" tipo="numero"',
+  `C24` decimal(15,4) DEFAULT NULL COMMENT '"valor de mora" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C25` decimal(15,4) DEFAULT NULL COMMENT '"intereses por mora" formato="9999999990.9999" tipo="numero" min="0"/>',
+  `C26` decimal(15,4) DEFAULT NULL COMMENT '"valor total facturado" formato="9999999999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C27` decimal(15,4) DEFAULT NULL COMMENT '"cargo fijo" formato="9999990.9999" tipo="numero" obligatorio="SI" min="0"/>',
+  `C28` decimal(15,4) DEFAULT NULL COMMENT '"pagos del cliente" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"/>',
+  `C29` varchar(80) DEFAULT NULL COMMENT '"direccion" tipo="texto" obligatorio="SI" longitudmaxima="80"/>'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tmpalc2009`
+--
+
+DROP TABLE IF EXISTS `tmpalc2009`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tmpalc2009` (
+  `C01` int(11) DEFAULT NULL COMMENT 'NUID" tipo="texto" obligatorio="SI" longitudmaxima="40"',
+  `C02` int(11) DEFAULT NULL COMMENT 'Numero de factura" tipo="texto" obligatorio="SI" longitudmaxima="40"',
+  `C03` varchar(8) DEFAULT NULL COMMENT 'codigo dane" tipo="numero" formato="00000000" obligatorio="SI" min="0"',
+  `C04` varchar(4) DEFAULT NULL COMMENT 'Sector" formato="0000" tipo="numero" min="0"',
+  `C05` varchar(2) DEFAULT NULL COMMENT 'Seccion" formato="00" tipo="numero" min="0"',
+  `C06` varchar(4) DEFAULT NULL COMMENT 'Manzana" formato="0000" tipo="numero" min="0"',
+  `C07` varchar(1) DEFAULT NULL COMMENT 'Ubicacion" tipo="lista" obligatorio="SI"> <lista> <item>1</item> <item>2</item> </lista> </columna>',
+  `C08` int(11) DEFAULT NULL COMMENT 'multiusuarios (No. Unidades)" formato="9990" tipo="numero" min="2"',
+  `C09` int(11) DEFAULT NULL COMMENT 'Inquilinato" formato="9990" tipo="numero" min="2"',
+  `C10` varchar(2) DEFAULT NULL COMMENT 'clase de uso" tipo="lista" obligatorio="SI"> <lista> <item>R</item> <item>NR</item> </lista> </columna>',
+  `C11` int(11) DEFAULT NULL COMMENT 'codigo clase de uso" formato="90" tipo="numero" calculo="SI{Id10=[TR]}ENTONCES{Id11&lt ,=[6]}SINO{Id11>=[10]}" min="1" max="15" obligatorio="SI"/>',
+  `C12` int(11) DEFAULT NULL COMMENT 'dias facturados" formato="990" tipo="numero" min="0" obligatorio="SI"/>',
+  `C13` date DEFAULT NULL COMMENT 'Fecha de expedicion de la factura" formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI" calculo="id13>=id14"',
+  `C14` date DEFAULT NULL COMMENT 'Fecha inicio del periodo de facturacion." formato="dd-MM-yyyy" tipo="fecha" obligatorio="SI"',
+  `C15` varchar(1) DEFAULT NULL COMMENT 'Tipo de factura" tipo="lista" obligatorio="SI"> <lista> <item>R</item> <item>P</item> </lista> </columna>',
+  `C16` decimal(15,4) DEFAULT NULL COMMENT 'Facturacion por prestacion del servicio ($)" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C17` decimal(15,4) DEFAULT NULL COMMENT 'Valor subsidio o contribucion ($)." formato="9999999990.9999" tipo="numero" obligatorio="SI" > <validacion warning="SI" calculo="SI{Id11&lt ,=[3]}ENTONCES{Id17&lt ,=[0]}" <validacion warning="SI" calculo="SI{Id11>[4]}ENTONCES{Id17>=[0]}" </columna>',
+  `C18` decimal(15,4) DEFAULT NULL COMMENT 'Cobros de conexion ($)" formato="9999999990.9999" tipo="numero" min="0"',
+  `C19` decimal(15,4) DEFAULT NULL COMMENT 'Valor reliquidacion o refacturacion " formato="9999999990.9999" tipo="numero"',
+  `C20` decimal(15,4) DEFAULT NULL COMMENT 'Valor de mora ($)" formato="9999999990.9999" tipo="numero" min="0"',
+  `C21` decimal(15,4) DEFAULT NULL COMMENT 'Intereses por mora ($)" formato="9999999990.9999" tipo="numero" min="0"',
+  `C22` decimal(15,4) DEFAULT NULL COMMENT 'Valor total facturado ($)" formato="9999999999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C23` decimal(15,4) DEFAULT NULL COMMENT 'Cargo fijo ($)" formato="9999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C24` decimal(15,4) DEFAULT NULL COMMENT 'Pagos del cliente durante el periodo facturado ($)" formato="9999999990.9999" tipo="numero" obligatorio="SI" min="0"',
+  `C25` varchar(80) DEFAULT NULL COMMENT 'direccion" tipo="texto" obligatorio="SI" longitudmaxima="80"/>'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping routines for database 'empprivserv'
+--
+/*!50003 DROP FUNCTION IF EXISTS `getConsumo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `getConsumo`(inuPeriodo int, inuCodigo int) RETURNS int(11)
+begin
+  declare nuValo int;
+
+  select C17 into nuValo
+  from suiacu2009 
+  where periodo = inuPeriodo and c01 = inuCodigo;
+
+  return nuValo;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getDireccion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `getDireccion`(inuPeriodo int, inuCodigo int) RETURNS varchar(50) CHARSET latin1
+begin
+  declare sbDireccion varchar(50);
+
+  select direccc into sbDireccion
+  from historia 
+  where periodo = inuPeriodo and codigoc = inuCodigo;
+
+  return sbDireccion;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getPorcTarifaClaseUso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `getPorcTarifaClaseUso`(nuAno int, nuMes int, sbCodi varchar(4), nuClUs int) RETURNS decimal(15,4)
+begin
+  declare sbError varchar(1000);
+  declare nuValo numeric(15,2);
+
+  select tariporc into nuValo
+  from sui_tarifa 
+  where tariano = nuAno
+    and tarimes = nuMes
+    and taricodi = sbCodi 
+    and tariclus = nuClUs;
+
+  if nuValo is null then
+    set sbError = concat('getPorcTarifaClaseUso(',ifnull(nuAno,'null'),', ',ifnull(nuMes,'null'),', ',ifnull(sbCodi,'null'),', ',ifnull(nuClUs,'null'),') - No existe tarifa para las condiciones' );
+    signal sqlstate '45000' set message_text = sbError;
+  end if;
+
+  return ifnull(nuValo,0);
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getTarifa` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `getTarifa`(nuAno int, nuMes int, sbCodi varchar(4), nuCate int, nuSuca int) RETURNS decimal(15,4)
+begin
+  declare sbError varchar(1000);
+  declare nuValo numeric(15,4);
+
+  select tarivalo into nuValo
+  from sui_tarifa 
+  where tariano = nuAno
+    and tarimes = nuMes
+    and taricodi = sbCodi 
+    and (taricate = nuCate or taricate = -1)
+    and (tarisuca = nuSuca or tarisuca = -1);
+
+  if nuValo is null then
+    set sbError = concat('getTarifa(',ifnull(nuAno,'null'),', ',ifnull(nuMes,'null'),', ',ifnull(sbCodi,'null'),', ',ifnull(nuCate,'null'),', ',ifnull(nuSuca,'null'),') - No existe tarifa para las condiciones' );
+    signal sqlstate '45000' set message_text = sbError;
+  end if;
+
+  return nuValo;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getTarifaClaseUso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `getTarifaClaseUso`(nuAno int, nuMes int, sbCodi varchar(4), nuClUs int) RETURNS decimal(15,4)
+begin
+  declare sbError varchar(1000);  
+  declare nuValo numeric(15,4);
+
+  select tarivalo into nuValo
+  from sui_tarifa 
+  where tariano = nuAno
+    and tarimes = nuMes
+    and taricodi = sbCodi 
+    and tariclus = nuClUs;
+
+  if nuValo is null then
+    set sbError = concat('getTarifaClaseUso(',ifnull(nuAno,'null'),', ',ifnull(nuMes,'null'),', ',ifnull(sbCodi,'null'),', ',ifnull(nuClUs,'null'),') - No existe tarifa para las condiciones' );
+    signal sqlstate '45000' set message_text = sbError;
+  end if;
+
+  return nuValo;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genCsv2010Acu` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genCsv2010Acu`( inuPeriodo int)
+begin
+   
+  delete from planocsv where periodo = inuPeriodo and formato = 'ACU';
+
+  insert into planocsv (periodo, formato, codigo, linea) 
+    select  inuPeriodo, 
+            'ACU',
+            c01,
+            concat(
+            C01, ',', 
+            C02, ',', 
+            C03, ',', 
+            C04, ',', 
+            C05, ',', 
+            C06, ',', 
+            C07, ',', 
+            C08, ',', 
+            C09, ',', 
+            C10, ',', 
+            C11, ',', 
+            date_format(C12,'%d-%m-%Y'), ',', 
+            date_format(C13,'%d-%m-%Y'), ',', 
+            C14, ',', 
+            C15, ',', 
+            ifnull(C16,''), ',', 
+            ifnull(C17,''), ',', 
+            ifnull(C18,'0'), ',', 
+            ifnull(C19,'0'), ',', 
+            ifnull(C20,'0'), ',', 
+            ifnull(C21,'0'), ',', 
+            ifnull(C22,'0'), ',', 
+            ifnull(C23,'0'), ',', 
+            ifnull(C24,'0'), ',', 
+            ifnull(C25,'0'), ',', 
+            ifnull(C26,'0'), ',', 
+            ifnull(C27,'0'), ',', 
+            ifnull(C28,'0'), ',', 
+            ifnull(C29,'0'), ',', 
+            ifnull(C30,'0'), ',', 
+            ifnull(C31,'0'), ',', 
+            ifnull(C32,'0'), ',', 
+            ifnull(round(C33,3),'0'), ',', 
+            ifnull(round(C34,3),'0'), ',', 
+            ifnull(C35,'0'), ',', 
+            ifnull(C36,'0'), ',', 
+            ifnull(C37,'0'), ',', 
+            ifnull(C38,'0'), ',',
+            ifnull(C39,'0'), ',',  
+            ifnull(C40,'0'), ',', 
+            ifnull(C41,'0'), ',', 
+            ifnull(C42,'0'), ',',  
+            ifnull(C43,'0'), ',', 
+            ifnull(C44,'0'), ',', 
+            ifnull(C45,'0'), ',', 
+            ifnull(C46,''), ',',
+            ifnull(C47,'0'), ',', 
+            ifnull(C48,'0'))
+      from suiacu2010
+      where periodo = inuPeriodo;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genCsv2010Alc` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genCsv2010Alc`( inuPeriodo int)
+begin
+   
+  delete from planocsv where periodo = inuPeriodo and formato = 'ALC';
+
+  insert into planocsv (periodo, formato, codigo, linea) 
+    select  inuPeriodo, 
+            'ALC',
+            c01,
+            concat(
+            C01, ',', 
+            C02, ',', 
+            C03, ',', 
+            C04, ',', 
+            C05, ',', 
+            C06, ',', 
+            C07, ',', 
+            C08, ',', 
+            C09, ',', 
+            C10, ',', 
+            C11, ',', 
+            date_format(C12,'%d-%m-%Y'), ',', 
+            date_format(C13,'%d-%m-%Y'), ',', 
+            C14, ',', 
+            C15, ',', 
+            ifnull(C16,''), ',', 
+            ifnull(C17,''), ',', 
+            ifnull(C18,'0'), ',', 
+            ifnull(C19,'0'), ',', 
+            ifnull(C20,'0'), ',', 
+            ifnull(C21,'0'), ',', 
+            ifnull(C22,'0'), ',', 
+            ifnull(C23,'0'), ',', 
+            ifnull(C24,'0'), ',', 
+            ifnull(C25,'0'), ',', 
+            ifnull(C26,'0'), ',', 
+            ifnull(C27,'0'), ',', 
+            ifnull(C28,'0'), ',', 
+            ifnull(C29,'0'), ',', 
+            ifnull(round(C30,3),'0'), ',', 
+            ifnull(round(C31,3),'0'), ',', 
+            ifnull(C32,'0'), ',', 
+            ifnull(C33,'0'), ',', 
+            ifnull(C34,'0'), ',', 
+            ifnull(C35,'0'), ',', 
+            ifnull(C36,'0'), ',', 
+            ifnull(C37,'0'), ',', 
+            ifnull(C38,'0'), ',',
+            ifnull(C39,''), ',',  
+            ifnull(C40,'0'), ',', 
+            ifnull(C41,'0'))
+      from suialc2010
+      where periodo = inuPeriodo;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genLiquidacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genLiquidacion`(inuPeri int)
+begin
+    declare aInfocodi int;
+    declare aInfocate varchar(2);
+    declare aInfosuca varchar(1);
+    declare aInfocons int;
+    declare aInfocafi numeric(15,2);
+    
+    declare aLiquclus int;
+    declare aLiqucafi numeric(15,2);
+    declare aLiqucoba numeric(15,2);
+    declare aLiqucoco numeric(15,2);
+    declare aLiqucosu numeric(15,2);
+    declare aLiqusacf numeric(15,2);
+    declare aLiqusacb numeric(15,2);
+    declare aLiqusacc numeric(15,2);
+    declare aLiqusacs numeric(15,2);
+    
+    declare cate int;
+    declare suca int;
+    
+    declare nuAno int;
+    declare nuMes int;
+    declare nuFactor numeric(15,2); -- Factor de Alcantarillado respecto del acueducto
+    
+    declare doneData int default 0;
+    declare cuData cursor for 
+        select infocodi, infocate, infosuca, ifnull(infocons,0), infocafi
+        from informe 
+        where infoperi = inuPeri
+        order by infocodi;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    -- Borra previamente los datos
+    delete from sui_liquidacion where liquperi = inuPeri;
+
+    set nuAno := inuPeri / 100;
+    set nuMes := inuPeri % 100;
+    set nuFactor := 0.4;
+
+    open cuData;
+    BUCLE_MAIN: repeat 
+        fetch cuData into 
+            aInfocodi, aInfocate, aInfosuca, aInfocons, aInfocafi;
+
+        if not doneData then
+            call setLog(concat('genLiquidacion - ',aInfocodi));
+            
+            call getUsoEstFromTarivalo(nuAno, nuMes, aInfocafi, cate, suca);
+            if cate is null then
+                iterate BUCLE_MAIN;
+            else
+                set aInfocate := case cate when 1 then 'R' when 2 then 'C' else '*' end;
+            end if;
+            
+            -- Calcula el Codigo clase de uso del SUI
+            call genSuiAcuGetClaseUso(aInfocate, aInfosuca, aLiquclus);            
+            
+            -- Hace la liquidacion
+            call genSuiAcuLiquidacion(nuAno, nuMes, aLiquclus, aInfocons, aLiqucafi, aLiqucoba, aLiqucoco, aLiqucosu, aLiqusacf, aLiqusacb, aLiqusacc, aLiqusacs);
+            
+            -- Inserta en la tabla ACU
+            insert into sui_liquidacion
+                (liquperi, liqucodi, liqucate, liqusuca,
+                 liquclus, liquserv, liqucons, liqucafi,
+                 liqucoba, liqucoco, liqucosu, liqusacf,
+                 liqusacb, liqusacc, liqusacs)
+            values
+                (inuPeri, aInfocodi, aInfocate, aInfosuca,
+                 aLiquclus, 'ACU', aInfocons, aLiqucafi,
+                 aLiqucoba, aLiqucoco, aLiqucosu, aLiqusacf,
+                 aLiqusacb, aLiqusacc, aLiqusacs);
+            
+            -- Inserta en la tabla ACU
+            insert into sui_liquidacion
+                (liquperi, liqucodi, liqucate, liqusuca,
+                 liquclus, liquserv, liqucons, liqucafi,
+                 liqucoba, liqucoco, liqucosu, liqusacf,
+                 liqusacb, liqusacc, liqusacs)
+            values
+                (inuPeri, aInfocodi, aInfocate, aInfosuca,
+                 aLiquclus, 'ALC', aInfocons, aLiqucafi*nuFactor,
+                 aLiqucoba*nuFactor, aLiqucoco*nuFactor, aLiqucosu*nuFactor, aLiqusacf*nuFactor,
+                 aLiqusacb*nuFactor, aLiqusacc*nuFactor, aLiqusacs*nuFactor);
+            
+        end if;
+        
+    until doneData end repeat BUCLE_MAIN;
+    close cuData;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSui2010Acu` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSui2010Acu`(inuPeriodo int, inuAno int, inuMes int)
+begin
+    
+    declare aC01 int(11);	
+    declare aC02 int(11);	
+    declare aC03 varchar(8);	
+    declare aC04 varchar(4);	
+    declare aC05 varchar(2);	
+    declare aC06 varchar(4);	
+    declare aC07 varchar(1);	
+    declare aC08 int(11);	
+    declare aC09 int(11);	
+    declare aC10 varchar(2);	
+    declare aC11 int(11);	
+    declare aC12 int(11);	
+    declare aC13 date;          
+    declare aC14 date;          
+    declare aC15 varchar(1);	
+    declare aC16 int(11);	
+    declare aC17 int(11);	
+    declare aC18 decimal(15,4);	
+    declare aC19 decimal(15,4);	
+    declare aC20 decimal(15,4);	
+    declare aC21 decimal(15,4);	
+    declare aC22 decimal(15,4);	
+    declare aC23 decimal(15,4);	
+    declare aC24 decimal(15,4);	
+    declare aC25 decimal(15,4);	
+    declare aC26 decimal(15,4);	
+    declare aC27 decimal(15,4);	
+    declare aC28 decimal(15,4);	
+    declare aC29 varchar(80);	
+
+    
+    declare bPeriodo int(11);	
+    declare bC01 int(11);	
+    declare bC02 int(11);	
+    declare bC03 varchar(8);	
+    declare bC04 varchar(3);	
+    declare bC05 varchar(2);	
+    declare bC06 varchar(2);	
+    declare bC07 varchar(4);	
+    declare bC08 varchar(4);	
+    declare bC09 varchar(3);	
+    declare bC10 varchar(130);	
+    declare bC11 int(11);	
+    declare bC12 date;          
+    declare bC13 date;          
+    declare bC14 int(11);	
+    declare bC15 int(11);	
+    declare bC16 int(11);	
+    declare bC17 int(11);	
+    declare bC18 int(11);	
+    declare bC19 int(11);	
+    declare bC20 int(11);	
+    declare bC21 int(11);	
+    declare bC22 int(11);	
+    declare bC23 decimal(15,4);	
+    declare bC24 decimal(15,4);	
+    declare bC25 decimal(15,4);	
+    declare bC26 decimal(15,4);	
+    declare bC27 decimal(15,4);	
+    declare bC28 decimal(15,4);	
+    declare bC29 decimal(15,4);	
+    declare bC30 decimal(15,4);	
+    declare bC31 decimal(15,4);	
+    declare bC32 decimal(15,4);	
+    declare bC33 decimal(15,4);	
+    declare bC34 decimal(15,4);	
+    declare bC35 decimal(15,4);	
+    declare bC36 decimal(15,4);	
+    declare bC37 decimal(15,4);	
+    declare bC38 decimal(15,4);	
+    declare bC39 decimal(15,4);	
+    declare bC40 decimal(15,4);	
+    declare bC41 int(11);	
+    declare bC42 decimal(15,4);	
+    declare bC43 decimal(15,4);	
+    declare bC44 decimal(15,4);	
+    declare bC45 int(11);	
+    declare bC46 int(11);	
+    declare bC47 decimal(15,4);	
+    declare bC48 decimal(15,4);	
+    
+    
+    declare doneData int default 0;
+    declare cuData cursor for select * from suiacu2009 where periodo = inuPeriodo;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    call setLog(concat('Borra datos previamente generados: ', inuPeriodo));
+    
+    delete from suiacu2010 where periodo = inuPeriodo;
+
+    call setLog(concat('genSui2010Acu: ', inuPeriodo));
+
+    
+    select perifege, perifein into bC12, bC13 from periodo where pericodi = inuPeriodo;
+
+    open cuData;
+    repeat 
+        fetch cuData into inuPeriodo,
+                          aC01, aC02, aC03, aC04, aC05, aC06, aC07, aC08, aC09, aC10, 
+                          aC11, aC12, aC13, aC14, aC15, aC16, aC17, aC18, aC19, aC20, 
+                          aC21, aC22, aC23, aC24, aC25, aC26, aC27, aC28, aC29;
+        if not doneData then
+
+            set bPeriodo = inuPeriodo;
+            
+            set bC01 = aC01;
+            
+            set bC02 = aC01;
+            
+            set bC03 = '54';
+            
+            set bC04 = '405';
+            
+            set bC05 = '00';
+            
+            set bC06 = '00';
+            
+            set bC07 = '0000';
+            
+            set bC08 = '0000';
+            
+            set bC09 = '000';
+            
+            set bc10 = ifnull(aC29,'');
+            
+            set bC11 = ifnull(aC02,'');
+            
+            
+            
+            
+            
+            set bC14 = ifnull(aC12,'');
+            
+            set bC15 = ifnull(aC11,'');
+            
+            set bC16 = null;
+            
+            set bC17 = null;
+            
+            set bC18 = 0;
+            
+            set bC19 = case when aC15 = 'R' then 1 else 2 end;
+            
+            set bC20 = case when aC15 = 'R' then 1 else 2 end;
+            
+            set bC21 = aC16 - aC17;
+            
+            set bC22 = aC16;
+            
+            set bC23 = ifnull(aC17,0);
+            
+            set bC24 = getTarifaClaseUso(inuAno, inuMes, 'CF', -1);
+
+            
+            set bC25 = case when bC23 > 0 then getTarifaClaseUso(inuAno, inuMes, 'COB', -1) else 0 end;
+            
+            set bC26 = case when bC23 > 0 then getTarifaClaseUso(inuAno, inuMes, 'COC', -1) else 0 end;
+            
+            set bC27 = case when bC23 > 0 then getTarifaClaseUso(inuAno, inuMes, 'COS', -1) else 0 end;
+
+            
+            set bC28 = 0;
+            
+            set bC29 = ifnull(aC18 / aC17, 0);
+            
+            set bC30 = ifnull(aC18, 0);
+            
+            set bC31 = case when aC19 < 0 then abs(aC19) else 0 end;
+            
+            set bC32 = case when aC19 > 0 then aC19 else 0 end;
+            
+            set bC33 = round( getPorcTarifaClaseUso(inuAno, inuMes, 'CF', bC15), 3);
+            
+            set bC34 = case when bC23 > 0 then round( getPorcTarifaClaseUso(inuAno, inuMes, 'COB', bC15), 3) else 0 end;
+            
+            set bC35 = ifnull(aC20,0);
+            
+            set bC36 = ifnull(aC21,0);
+            
+            set bC37 = ifnull(aC22,0);
+            
+            set bC38 = 0;
+            
+            set bC39 = 0;
+            
+            set bC40 = 0;
+            
+            set bC41 = case when ifnull(aC24,0) > 0 then 30 else 0 end;
+            
+            set bC42 = ifnull(aC24,0);
+            
+            set bC43 = ifnull(aC25,0);
+            
+            set bC44 = 0;
+            
+            set bC45 = 0;
+            
+            set bC46 = null;
+
+            
+            if bC01 = 20050 then
+              set bC44 = bc31;
+              set bc31 = 0;
+              set bc24 = 0;
+            end if;
+
+            
+            set bC47 = ifnull(aC26,0);
+
+            set bc47 = ifnull(bc24,0) + 
+                       ifnull(bc30,0) - 
+                       ifnull(bc31,0) + 
+                       ifnull(bc32,0) + 
+                       ifnull(bc35,0) + 
+                       ifnull(bc36,0) + 
+                       ifnull(bc37,0) + 
+                       ifnull(bc38,0) + 
+                       ifnull(bc39,0) + 
+                       ifnull(bc42,0) + 
+                       ifnull(bc43,0) + 
+                       ifnull(bc44,0) - 
+                       ifnull(bc40,0);
+
+            
+            set bC48 = ifnull(aC28,0);
+
+            insert into SUIACU2010 (periodo,
+                C01,C02,C03,C04,C05,C06,C07,C08,C09,C10,
+                C11,C12,C13,C14,C15,C16,C17,C18,C19,C20,
+                C21,C22,C23,C24,C25,C26,C27,C28,C29,C30,
+                C31,C32,C33,C34,C35,C36,C37,C38,C39,C40,
+                C41,C42,C43,C44,C45,C46,C47,C48)
+            values (bPeriodo,
+                bC01,bC02,bC03,bC04,bC05,bC06,bC07,bC08,bC09,bC10,
+                bC11,bC12,bC13,bC14,bC15,bC16,bC17,bC18,bC19,bC20,
+                bC21,bC22,bC23,bC24,bC25,bC26,bC27,bC28,bC29,bC30,
+                bC31,bC32,bC33,bC34,bC35,bC36,bC37,bC38,bC39,bC40,
+                bC41,bC42,bC43,bC44,bC45,bC46,bC47,bC48);
+            
+        end if;
+    until doneData end repeat;
+    close cuData;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSui2010Alc` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSui2010Alc`(inuPeriodo int, inuAno int, inuMes int)
+begin
+    
+    declare aC01 int(11);       
+    declare aC02 int(11);       
+    declare aC03 varchar(8);    
+    declare aC04 varchar(4);	
+    declare aC05 varchar(2);	
+    declare aC06 varchar(4);	
+    declare aC07 varchar(1);	
+    declare aC08 int(11);	
+    declare aC09 int(11); 	
+    declare aC10 varchar(2);	
+    declare aC11 int(11); 	
+    declare aC12 int(11); 	
+    declare aC13 date;		
+    declare aC14 date;		
+    declare aC15 varchar(1);	
+    declare aC16 numeric(15,4); 
+    declare aC17 numeric(15,4); 
+    declare aC18 numeric(15,4); 
+    declare aC19 numeric(15,4); 
+    declare aC20 numeric(15,4); 
+    declare aC21 numeric(15,4); 
+    declare aC22 numeric(15,4); 
+    declare aC23 numeric(15,4); 
+    declare aC24 numeric(15,4); 
+    declare aC25 varchar(80);	
+
+    
+    declare bPeriodo int(11);	
+    declare bC01 int(11); 	
+    declare bC02 int(11); 	
+    declare bC03 varchar(2); 	
+    declare bC04 varchar(3); 	
+    declare bC05 varchar(2); 	
+    declare bC06 varchar(2); 	
+    declare bC07 varchar(4); 	
+    declare bC08 varchar(4); 	
+    declare bC09 varchar(3); 	
+    declare bC10 varchar(130);  
+    declare bC11 int(11); 	
+    declare bC12 date; 		
+    declare bC13 date; 		
+    declare bC14 int(11); 	
+    declare bC15 int(11); 	
+    declare bC16 int(11); 	
+    declare bC17 int(11); 	
+    declare bC18 int(11); 	
+    declare bC19 int(11); 	
+    declare bC20 int(11); 	
+    declare bC21 numeric(15,4); 
+    declare bC22 numeric(15,4); 
+    declare bC23 numeric(15,4); 
+    declare bC24 numeric(15,4); 
+    declare bC25 numeric(15,4); 
+    declare bC26 numeric(15,4); 
+    declare bC27 numeric(15,4); 
+    declare bC28 numeric(15,4); 
+    declare bC29 numeric(15,4); 
+    declare bC30 numeric(15,4); 
+    declare bC31 numeric(15,4); 
+    declare bC32 numeric(15,4); 
+    declare bC33 numeric(15,4); 
+    declare bC34 int(11); 	
+    declare bC35 numeric(15,4); 
+    declare bC36 numeric(15,4); 
+    declare bC37 numeric(15,4); 
+    declare bC38 int(11); 	
+    declare bC39 int(11); 	
+    declare bC40 numeric(15,4); 
+    declare bC41 numeric(15,4); 
+
+    declare nuCBas int;
+    declare nuCCom int;
+    declare nuCSun int;
+
+    
+    declare doneData int default 0;
+    declare cuData cursor for select * from suialc2009 where periodo = inuPeriodo;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    call setLog(concat('genSui2010Alc Borra datos previamente generados: ', inuPeriodo));
+    
+    delete from suialc2010 where periodo = inuPeriodo;
+
+    call setLog(concat('genSui2010Alc: ', inuPeriodo));
+
+    
+    select perifege, perifein into bC12, bC13 from periodo where pericodi = inuPeriodo;
+
+    open cuData;
+    repeat 
+        fetch cuData into inuPeriodo,
+                          aC01, aC02, aC03, aC04, aC05, aC06, aC07, aC08, aC09, aC10, 
+                          aC11, aC12, aC13, aC14, aC15, aC16, aC17, aC18, aC19, aC20, 
+                          aC21, aC22, aC23, aC24, aC25;
+        if not doneData then
+
+            set bPeriodo = inuPeriodo;
+            
+            set bC01 = aC01;
+            
+            set bC02 = aC01;
+            
+            set bC03 = '54';
+            
+            set bC04 = '405';
+            
+            set bC05 = '00';
+            
+            set bC06 = '00';
+            
+            set bC07 = '0000';
+            
+            set bC08 = '0000';
+            
+            set bC09 = '000';
+            
+            set bc10 = ifnull(aC25,'');
+            
+            set bC11 = ifnull(aC02,'');
+
+            
+            
+            
+            
+
+            
+            set bC14 = ifnull(aC12,'');
+            
+            set bC15 = ifnull(aC11,'');
+            
+            set bC16 = null;
+            
+            set bC17 = null;
+            
+            set bC18 = 0;
+            
+            set bC19 = 0;
+            
+            set bC20 = 1;
+
+            
+            
+            
+            
+            set bC21 = ifnull(aC16, 0);
+            set bC22 = 0;
+            set bC23 = 0; 
+            set bC24 = 0;
+            set bC25 = 0; 
+            set bC26 = 0; 
+            set bC27 = 0; 
+            set bC28 = 0; 
+            set bC29 = 0; 
+            set bC30 = 0; 
+            set bC31 = 0; 
+
+            
+            set bC32 = ifnull(aC18, 0);
+            
+            set bC33 = 0;
+            
+            set bC34 = case when ifnull(aC20,0) > 0 then 30 else 0 end;
+            
+            set bC35 = ifnull(aC20, 0);
+            
+            set bC36 = ifnull(aC21, 0);
+            
+            set bC37 = 0;
+            
+            set bC38 = 0;
+            
+            set bC39 = null;
+            
+            set bC40 = ifnull(aC22, 0);
+            
+            set bC41 = ifnull(aC24, 0);
+
+            
+            set bC40 = bC21 + bC27 - bC28 + bC29 + bC32 + bC35 + bC36 + bC37 - bC33;
+
+            insert into SUIALC2010 (periodo,
+                C01,C02,C03,C04,C05,C06,C07,C08,C09,C10,
+                C11,C12,C13,C14,C15,C16,C17,C18,C19,C20,
+                C21,C22,C23,C24,C25,C26,C27,C28,C29,C30,
+                C31,C32,C33,C34,C35,C36,C37,C38,C39,C40,
+                C41)
+            values (bPeriodo,
+                bC01,bC02,bC03,bC04,bC05,bC06,bC07,bC08,bC09,bC10,
+                bC11,bC12,bC13,bC14,bC15,bC16,bC17,bC18,bC19,bC20,
+                bC21,bC22,bC23,bC24,bC25,bC26,bC27,bC28,bC29,bC30,
+                bC31,bC32,bC33,bC34,bC35,bC36,bC37,bC38,bC39,bC40,
+                bC41);
+            
+        end if;
+    until doneData end repeat;
+    close cuData;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSuiAcu` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSuiAcu`(inuPeriodo int, inuAno int, inuMes int)
+begin
+    /** Variables para la tabla INFORME **/
+    declare aInfoperi	int(11);
+    declare aInfocodi	int(11);
+    declare aInfoesta	int(11);
+    declare aInfonomb	varchar(50);
+    declare aInfodire	varchar(50);
+    declare aInfozona	varchar(10);
+    declare aInfosuca	varchar(1);
+    declare aInfolean	int(11);
+    declare aInfoleac	int(11);
+    declare aInfocons	int(11);
+    declare aInfocate	varchar(2);
+    declare aInfoinan	decimal(15,2);
+    declare aInfoinag	decimal(15,2);
+    declare aInfoinal	decimal(15,2);
+    declare aInfoinva	decimal(15,2);
+    declare aInforeag	decimal(15,2);
+    declare aInforeal	decimal(15,2);
+    declare aInforeva	decimal(15,2);
+    declare aInfocafi	decimal(15,2);
+    declare aInfocbas	decimal(15,2);
+    declare aInfoccom	decimal(15,2);
+    declare aInfocsun	decimal(15,2);
+    declare aInfoalca	decimal(15,2);
+    declare aInfomedi	decimal(15,2);
+    declare aInfosure	decimal(15,2);
+    declare aInfotanq	decimal(15,2);
+    declare aInfoacom	decimal(15,2);
+    declare aInfootca	decimal(15,2);
+    declare aInforeci	int(11);
+    declare aInfonuat	decimal(15,2);
+    declare aInfovaim	decimal(15,2);
+    declare aInfoserv	decimal(15,2);
+    declare aInfoajus	decimal(15,2);
+    declare aInfovapa	decimal(15,2);
+    declare aInfovano	decimal(15,2);  
+    
+    -- Variables de ayuda para encontrar el Uso y Estrato por el valor del CF
+    declare cafi    decimal(15,2);
+    declare cate    varchar(2);
+    declare suca    varchar(2);  
+    
+    -- Variables para la informacion del periodo,
+    declare perifege    date;
+    declare perifein    date;
+    declare perifefi    date;
+    declare peridias    int;
+    
+    -- Variables para la liquidacion
+    declare lCF   numeric(15,2);
+    declare lCB   numeric(15,2);
+    declare lCC   numeric(15,2);
+    declare lCS   numeric(15,2);
+    declare lCFSA numeric(15,2);
+    declare lCBSA numeric(15,2);
+    declare lCCSA numeric(15,2);
+    declare lCSSA numeric(15,2);
+    
+    -- Variables temporales
+    declare total numeric(15,2);
+    
+    -- Variables de salida
+    declare bPeriodo int(11);	
+    declare bC01 int(11);	
+    declare bC02 int(11);	
+    declare bC03 varchar(8);	
+    declare bC04 varchar(3);	
+    declare bC05 varchar(2);	
+    declare bC06 varchar(2);	
+    declare bC07 varchar(4);	
+    declare bC08 varchar(4);	
+    declare bC09 varchar(3);	
+    declare bC10 varchar(130);	
+    declare bC11 int(11);	
+    declare bC12 date;          
+    declare bC13 date;          
+    declare bC14 int(11);	
+    declare bC15 int(11);	
+    declare bC16 int(11);	
+    declare bC17 int(11);	
+    declare bC18 int(11);	
+    declare bC19 int(11);	
+    declare bC20 int(11);	
+    declare bC21 int(11);	
+    declare bC22 int(11);	
+    declare bC23 decimal(15,4);	
+    declare bC24 decimal(15,4);	
+    declare bC25 decimal(15,4);	
+    declare bC26 decimal(15,4);	
+    declare bC27 decimal(15,4);	
+    declare bC28 decimal(15,4);	
+    declare bC29 decimal(15,4);	
+    declare bC30 decimal(15,4);	
+    declare bC31 decimal(15,4);	
+    declare bC32 decimal(15,4);	
+    declare bC33 decimal(15,4);	
+    declare bC34 decimal(15,4);	
+    declare bC35 decimal(15,4);	
+    declare bC36 decimal(15,4);	
+    declare bC37 decimal(15,4);	
+    declare bC38 decimal(15,4);	
+    declare bC39 decimal(15,4);	
+    declare bC40 decimal(15,4);	
+    declare bC41 int(11);	
+    declare bC42 decimal(15,4);	
+    declare bC43 decimal(15,4);	
+    declare bC44 decimal(15,4);	
+    declare bC45 int(11);	
+    declare bC46 int(11);	
+    declare bC47 decimal(15,4);	
+    declare bC48 decimal(15,4);	
+    
+    declare doneData int default 0;
+    declare cuData cursor for 
+        select  infoperi, infocodi, infoesta, infonomb, infodire, 
+                infozona, infosuca, infolean, infoleac, infocons, 
+                infocate, infoinan, infoinag, infoinal, infoinva, 
+                inforeag, inforeal, inforeva, infocafi, infocbas, 
+                infoccom, infocsun, infoalca, infomedi, infosure,
+                infotanq, infoacom, infootca, inforeci, infonuat, 
+                infovaim, infoserv, infoajus, infovapa, infovano
+        from informe 
+        where infoperi = inuPeriodo
+        order by infocodi;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    call setLog(concat('genSuiAcu ',inuPeriodo, ' Borra datos previamente generados'));
+    delete from suiacu2010 where periodo = inuPeriodo;
+
+    call setLog(concat('genSuiAcu ',inuPeriodo, ' Inicio'));
+    
+    -- Se obtienen las fechas del periodo
+    call genSuiAcuGetPeriodo(inuPeriodo, perifege, perifein, perifefi, peridias);
+
+
+    open cuData;
+    BUCLE_MAIN: repeat 
+        fetch cuData into 
+            aInfoperi, aInfocodi, aInfoesta, aInfonomb, aInfodire, 
+            aInfozona, aInfosuca, aInfolean, aInfoleac, aInfocons, 
+            aInfocate, aInfoinan, aInfoinag, aInfoinal, aInfoinva, 
+            aInforeag, aInforeal, aInforeva, aInfocafi, aInfocbas, 
+            aInfoccom, aInfocsun, aInfoalca, aInfomedi, aInfosure,
+            aInfotanq, aInfoacom, aInfootca, aInforeci, aInfonuat, 
+            aInfovaim, aInfoserv, aInfoajus, aInfovapa, aInfovano;
+            
+        if not doneData then
+            
+            call setLog(concat('genSuiAcu - ',aInfocodi));
+
+            set bPeriodo = inuPeriodo;
+            -- 1. Nuid
+            set bC01 = aInfocodi;
+            -- 2. Numero de cuenta o contrato
+            set bC02 = aInfocodi;
+            -- 3. Codigo dane depto
+            set bC03 = '54';
+            -- 4. Codigo dane mpio 
+            set bC04 = '405';
+            -- 5. Zona IGAC
+            set bC05 = '00';
+            -- 6. Sector IGAC
+            set bC06 = '00';
+            -- 7. Manzana o vereda IGAC
+            set bC07 = '0000';
+            -- 8. Numero del predio IGAC
+            set bC08 = '0000';
+            -- 9. Condicion de propiedad del predio IGAC
+            set bC09 = '000';
+            -- 10. Direccion
+            set bc10 = ifnull(aInfodire,'');
+            -- 11. Numero de factura
+            set bC11 = ifnull(aInforeci,'');
+            -- 12. Fecha expedicion factura
+            set bC12 = perifege;
+            -- 13. fecha inicio periodo
+            set bC13 = perifein;            
+            -- 14. Dias facturados
+            set bC14 = peridias;
+            
+            /**
+                Calculo del Uso y Estrato dado el CF cobrado
+            **/
+            call getUsoEstFromTarivalo(inuAno, inuMes, aInfocafi, cate, suca);
+            if cate is null then
+                iterate BUCLE_MAIN;
+            else
+                set aInfocate := case cate when 1 then 'R' when 2 then 'C' else '*' end;
+            end if;
+            
+            -- 15. Codigo clase de uso
+            call genSuiAcuGetClaseUso(aInfocate, aInfosuca, bC15);
+            -- 16. Unidades multiusuario residenciales
+            set bC16 = null;
+            -- 17. Unidades multiusuario no residenciales
+            set bC17 = null;
+            -- 18. Hogar comunitario o sustituto
+            set bC18 = 0;
+            -- 19. Estado del medidor
+            set bC19 = case when aInfocate = 'R' then 1 else 2 end;
+            -- 20. Determinacion del consumo
+            set bC20 = case when aInfocate = 'R' then 1 else 2 end;
+            -- 21. Lectura Anterior
+            set bC21 = aInfoleac - aInfocons;
+            -- 22. Lectura Actual
+            set bC22 = aInfoleac;
+            -- 23. Consumo del periodo en m3
+            set bC23 = ifnull(aInfocons,0);
+            
+            -- Liquidacion interna
+            call genSuiAcuLiquidacion(inuAno, inuMes, bC15, bC23, lCF, lCB, lCC, lCS, lCFSA, lCBSA, lCCSA, lCSSA);
+            
+            -- 24. Cargo Fijo
+            set bC24 = getTarifaClaseUso(inuAno, inuMes, 'CF', -1);
+            -- 25. Consumo basico            
+            set bC25 = case when bC23 > 0 then getTarifaClaseUso(inuAno, inuMes, 'COB', -1) else 0 end;
+            -- 26. Consumo complementario
+            set bC26 = case when bC23 > 0 then getTarifaClaseUso(inuAno, inuMes, 'COC', -1) else 0 end;
+            -- 27. Consumo suntuario
+            set bC27 = case when bC23 > 0 then getTarifaClaseUso(inuAno, inuMes, 'COS', -1) else 0 end;
+            -- 28. CMT            
+            set bC28 = 0;
+            -- 29. Valor por metro cubico
+            set bC29 = case when bC23 <> 0 then (ifnull(aInfocbas, 0) + ifnull(aInfoccom, 0) + ifnull(aInfocsun, 0)) / bC23 else 0 end;
+            -- 30. Valor facturado por consumo 
+            -- set bC30 = (ifnull(aInfocbas, 0) + ifnull(aInfoccom, 0) + ifnull(aInfocsun, 0));
+            set bC30 = (ifnull(lCB, 0) + ifnull(lCC, 0) + ifnull(lCS, 0));
+            -- 31. Valor subsidio
+            set bC31 = case when (lCFSA + lCBSA + lCCSA + lCSSA) < 0 then abs(lCFSA + lCBSA + lCCSA + lCSSA) else 0 end;
+            -- 32. Valor contribucion
+            set bC32 = case when (lCFSA + lCBSA + lCCSA + lCSSA) > 0 then lCFSA + lCBSA + lCCSA + lCSSA else 0 end;
+            -- 33. Factor subsidio o contribucion
+            set bC33 = round( lCFSA / lCF , 3);
+            -- 34. Factor subsidio o contribucion consumo
+            if (lCB + lCC + lCS) <> 0 then 
+                set bC34 = round( (lCBSA + lCCSA + lCSSA) / (lCB + lCC + lCS) , 3);
+            else
+                set bC34 = 0;
+            end if;
+            -- 35. Cargo por conexion -- NO EXISTE
+            set bC35 = 0;
+            -- 36. Cargo por Reconexion -- 50% de INFODURE
+            set bC36 = ifnull(aInfosure,0)/2;
+            -- 37. Cargo por Reinstalacion -- NO EXISTE
+            set bC37 = 0;
+            -- 38. Cargo por suspension -- 50% de INFODURE
+            set bC38 = ifnull(aInfosure,0) - bc36;
+            -- 39. Cargo por corte
+            set bC39 = 0;
+            -- 40. Pago anticipado del servicio
+            set bC40 = 0;
+            -- 41. Dias de mora.
+            set bC41 = ifnull(aInfonuat,0) * 30;
+            -- 42. Valor de mora
+            set bC42 = ifnull(aInforeag,0);
+            -- 43. Intereses por mora
+            set bC43 = ifnull(aInfoinag,0);
+            -- 44. Otros Cobros
+            set bC44 = ifnull(aInfoinan,0) + -- Intereses anteriores
+                       ifnull(aInforeva,0) + ifnull(aInfoinva,0) + -- Refacturado e intereses Varios
+                       ifnull(aInfomedi,0) + ifnull(aInfotanq,0) + ifnull(aInfoacom,0) + 
+                       ifnull(aInfootca,0) - ifnull(aInfoajus,0);
+                       
+            -- En el 201105 se present� Refacturado negativo, lo sumamos a otros cobros.
+            if bC42 < 0 then
+                set bC44 = bC44 + bC42;    
+                set bC42 = 0;
+            end if;
+            -- Por si los intereses son negativos
+            if bC43 < 0 then
+                set bC44 = bC44 + bC43;    
+                set bC43 = 0;
+            end if;
+            --  Dias de mora por si no tiene y hay mora
+            if bC42 > 0 and bC41 = 0 then
+                set bC41 = 30;
+            end if;
+            
+            -- En algunos meses del 2011 se presenta que hay intereses pero no refacturado, 
+            -- por lo tanto se suma este Interes por mora a Otros cobros.
+            if bC42 = 0 and bc43 <> 0 then
+                set bC44 = bC44 + bC43;
+                set bC43 = 0;
+            end if;
+                       
+            -- 45. Causal de Refacturacion
+            set bC45 = 0;
+            -- 46. Numero de factura objeto de refacturacion
+            set bC46 = null;
+            -- 47.Valor total facturado ACUEDUCTO
+            set bC47 = ifnull(aInfovaim,0) - (ifnull(aInfoalca,0) + ifnull(aInfoinal,0) + ifnull(aInforeal,0)) ;
+            
+            -- Ajuste de los totales
+            set total = ifnull(bc24,0) + 
+                        ifnull(bc30,0) - 
+                        ifnull(bc31,0) + 
+                        ifnull(bc32,0) + 
+                        ifnull(bc35,0) + 
+                        ifnull(bc36,0) + 
+                        ifnull(bc37,0) + 
+                        ifnull(bc38,0) + 
+                        ifnull(bc39,0) + 
+                        ifnull(bc42,0) + 
+                        ifnull(bc43,0) + 
+                        ifnull(bc44,0) - 
+                        ifnull(bc40,0);
+            
+            set bC44 = bC44 + (bC47 - total);
+            
+            -- 48. Pagos del usuario durante el mes de reporte, se calcula para Acuedcucto
+            set bC48 = ifnull(aInfovapa,0);
+            set bC48 = case when bC48 > bC47 then bC47 else bC48 end;
+
+            insert into SUIACU2010 (periodo,
+                C01,C02,C03,C04,C05,C06,C07,C08,C09,C10,
+                C11,C12,C13,C14,C15,C16,C17,C18,C19,C20,
+                C21,C22,C23,C24,C25,C26,C27,C28,C29,C30,
+                C31,C32,C33,C34,C35,C36,C37,C38,C39,C40,
+                C41,C42,C43,C44,C45,C46,C47,C48)
+            values (bPeriodo,
+                bC01,bC02,bC03,bC04,bC05,bC06,bC07,bC08,bC09,bC10,
+                bC11,bC12,bC13,bC14,bC15,bC16,bC17,bC18,bC19,bC20,
+                bC21,bC22,bC23,bC24,bC25,bC26,bC27,bC28,bC29,bC30,
+                bC31,bC32,bC33,bC34,bC35,bC36,bC37,bC38,bC39,bC40,
+                bC41,bC42,bC43,bC44,bC45,bC46,bC47,bC48);
+            
+        end if;
+    until doneData end repeat BUCLE_MAIN;
+    close cuData;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSuiAcuDivideConsumo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSuiAcuDivideConsumo`(consumo int, out bas int, out com int, out sun int)
+begin
+    set bas = case when consumo < 20 then consumo else 20 end;
+    set com = case when (consumo-bas) > 20 then 20 else (consumo-bas) end;
+    set sun = case when (consumo-bas-com) > 0 then (consumo-bas-com) else 0 end;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSuiAcuGetClaseUso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSuiAcuGetClaseUso`(
+    infocate varchar(2), 
+    infosuca varchar(2), 
+    out oClaseuso int
+)
+begin
+    declare sbError varchar(1000);
+
+    select cluscodi into oClaseuso
+    from sui_claseuso 
+    where clususo = infocate 
+      and (clussuca = infosuca or clussuca = -1);
+      
+    if oClaseuso is null then
+      set sbError = concat('genSuiAcuGetClaseUso(',ifnull(infocate,'null'),', ',ifnull(infosuca,'null'),') - No existe Categoria/Subcategoria' );
+      signal sqlstate '45000' set message_text = sbError;
+    end if;  
+      
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSuiAcuGetPeriodo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSuiAcuGetPeriodo`(
+    inuPeriodo int, 
+    out oPerifege date,
+    out oPerifein date,
+    out operifefi date,
+    out oPeridias int
+)
+begin
+    declare doneData int default 0;
+    declare cuData cursor for select perifege, perifein, perifefi from sui_periodo where pericodi = inuPeriodo;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    open cuData;
+    repeat 
+        fetch cuData into oPerifege, oPerifein, oPerifefi;
+        if not doneData then
+            set oPeridias := datediff(oPerifefi, oPerifein);
+        end if;
+    until doneData end repeat;
+    close cuData;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSuiAcuLiquidacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSuiAcuLiquidacion`(
+    inuAno int, 
+    inuMes int, 
+    inuClaseUso int, 
+    inuConsumo numeric(15,2),
+    out oCF    numeric(15,2),
+    out oCOB   numeric(15,2),
+    out oCOC   numeric(15,2),
+    out oCOS   numeric(15,2),
+    out oCFsa  numeric(15,2),
+    out oCOBsa numeric(15,2),
+    out oCOCsa numeric(15,2),
+    out oCOSsa numeric(15,2) 
+)
+begin
+
+    declare tCFp   numeric(15,4);
+    declare tCF    numeric(15,4);
+    declare tCOBp  numeric(15,4);
+    declare tCOB   numeric(15,4);
+    declare tCOCp  numeric(15,4);
+    declare tCOC   numeric(15,4);
+    declare tCOSp  numeric(15,4);
+    declare tCOS   numeric(15,4);
+
+    declare saCF  numeric(15,2);
+    declare saCOB numeric(15,2);
+    declare saCOC numeric(15,2);
+    declare saCOS numeric(15,2);
+    
+    declare cob numeric(15,2);
+    declare coc numeric(15,2);
+    declare cos numeric(15,2);    
+    
+    call genSuiAcuDivideConsumo(inuConsumo, cob, coc, cos);
+    call setLog(concat('genSuiAcuLiquidacion. ', inuConsumo, '=(', cob, ',', coc, ',', cos,')'));
+    
+    set tCFp  = getTarifaClaseUso(inuAno, inuMes, 'CF', -1);
+    set tCF   = getTarifaClaseUso(inuAno, inuMes, 'CF', inuClaseUso);
+    set tCOBp = getTarifaClaseUso(inuAno, inuMes, 'COB', -1);
+    set tCOB  = getTarifaClaseUso(inuAno, inuMes, 'COB', inuClaseUso);
+    set tCOCp = getTarifaClaseUso(inuAno, inuMes, 'COC', -1);
+    set tCOC  = getTarifaClaseUso(inuAno, inuMes, 'COC', inuClaseUso);
+    set tCOSp = getTarifaClaseUso(inuAno, inuMes, 'COS', -1);
+    set tCOS  = getTarifaClaseUso(inuAno, inuMes, 'COS', inuClaseUso);
+    
+    set oCF = tCFp;
+    set oCFsa = tCF - tCFp;
+    set oCOB = tCOBp * cob;
+    set oCOBsa = (tCOB - tCOBp) * cob;
+    set oCOC = tCOCp * coc;
+    set oCOCsa = (tCOC - tCOCp) * coc;
+    set oCOS = tCOSp * cos;
+    set oCOSsa = (tCOS - tCOSp) * cos;
+
+    set oCF    = round( oCF, 0 );
+    set oCFsa  = round( oCFsa, 0 );
+    set oCOB   = round( oCOB, 0 );
+    set oCOBsa = round( oCOBsa, 0 );
+    set oCOC   = round( oCOC, 0 );
+    set oCOCsa = round( oCOCsa, 0 );
+    set oCOS   = round( oCOS, 0 );
+    set oCOSsa = round( oCOSsa, 0 );
+    
+    call setLog(concat('genSuiAcuLiquidacion. CF  = ', oCF, ' CFsa = ', oCFsa));
+    call setLog(concat('genSuiAcuLiquidacion. COB = ', oCOB, '(',tCOBp,'*',cob,') COBsa = ', oCOBsa));
+    call setLog(concat('genSuiAcuLiquidacion. COC = ', oCOC, '(',tCOCp,'*',coc,') COCsa = ', oCOCsa));
+    call setLog(concat('genSuiAcuLiquidacion. COS = ', oCOS, '(',tCOSp,'*',cos,') COSsa = ', oCOSsa));
+    call setLog(concat('genSuiAcuLiquidacion. Total = ', oCF+oCOB+oCOC+oCOS, ' Subs/Apo = ', oCFsa+oCOBsa+oCOCsa+oCOSsa));
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `genSuiAlc` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `genSuiAlc`(inuPeriodo int, inuAno int, inuMes int)
+begin
+    /** Variables para la tabla INFORME **/
+    declare aInfoperi	int(11);
+    declare aInfocodi	int(11);
+    declare aInfoesta	int(11);
+    declare aInfonomb	varchar(50);
+    declare aInfodire	varchar(50);
+    declare aInfozona	varchar(10);
+    declare aInfosuca	varchar(1);
+    declare aInfolean	int(11);
+    declare aInfoleac	int(11);
+    declare aInfocons	int(11);
+    declare aInfocate	varchar(2);
+    declare aInfoinan	decimal(15,2);
+    declare aInfoinag	decimal(15,2);
+    declare aInfoinal	decimal(15,2);
+    declare aInfoinva	decimal(15,2);
+    declare aInforeag	decimal(15,2);
+    declare aInforeal	decimal(15,2);
+    declare aInforeva	decimal(15,2);
+    declare aInfocafi	decimal(15,2);
+    declare aInfocbas	decimal(15,2);
+    declare aInfoccom	decimal(15,2);
+    declare aInfocsun	decimal(15,2);
+    declare aInfoalca	decimal(15,2);
+    declare aInfomedi	decimal(15,2);
+    declare aInfosure	decimal(15,2);
+    declare aInfotanq	decimal(15,2);
+    declare aInfoacom	decimal(15,2);
+    declare aInfootca	decimal(15,2);
+    declare aInforeci	int(11);
+    declare aInfonuat	decimal(15,2);
+    declare aInfovaim	decimal(15,2);
+    declare aInfoserv	decimal(15,2);
+    declare aInfoajus	decimal(15,2);
+    declare aInfovapa	decimal(15,2);
+    declare aInfovano	decimal(15,2);
+   
+    -- Variables de ayuda para encontrar el Uso y Estrato por el valor del CF
+    declare cafi    decimal(15,2);
+    declare cate    varchar(2);
+    declare suca    varchar(2);  
+    
+    -- Variables para la informacion del periodo,
+    declare perifege    date;
+    declare perifein    date;
+    declare perifefi    date;
+    declare peridias    int;
+    
+    -- Variables para la liquidacion
+    declare lCF   numeric(15,2);
+    declare lCB   numeric(15,2);
+    declare lCC   numeric(15,2);
+    declare lCS   numeric(15,2);
+    declare lCFSA numeric(15,2);
+    declare lCBSA numeric(15,2);
+    declare lCCSA numeric(15,2);
+    declare lCSSA numeric(15,2);
+    
+    -- Variables temporales
+    declare total numeric(15,2);
+
+    
+    declare bPeriodo int(11);	
+    declare bC01 int(11); 	
+    declare bC02 int(11); 	
+    declare bC03 varchar(2); 	
+    declare bC04 varchar(3); 	
+    declare bC05 varchar(2); 	
+    declare bC06 varchar(2); 	
+    declare bC07 varchar(4); 	
+    declare bC08 varchar(4); 	
+    declare bC09 varchar(3); 	
+    declare bC10 varchar(130);  
+    declare bC11 int(11); 	
+    declare bC12 date; 		
+    declare bC13 date; 		
+    declare bC14 int(11); 	
+    declare bC15 int(11); 	
+    declare bC16 int(11); 	
+    declare bC17 int(11); 	
+    declare bC18 int(11); 	
+    declare bC19 int(11); 	
+    declare bC20 int(11); 	
+    declare bC21 numeric(15,4); 
+    declare bC22 numeric(15,4); 
+    declare bC23 numeric(15,4); 
+    declare bC24 numeric(15,4); 
+    declare bC25 numeric(15,4); 
+    declare bC26 numeric(15,4); 
+    declare bC27 numeric(15,4); 
+    declare bC28 numeric(15,4); 
+    declare bC29 numeric(15,4); 
+    declare bC30 numeric(15,4); 
+    declare bC31 numeric(15,4); 
+    declare bC32 numeric(15,4); 
+    declare bC33 numeric(15,4); 
+    declare bC34 int(11); 	
+    declare bC35 numeric(15,4); 
+    declare bC36 numeric(15,4); 
+    declare bC37 numeric(15,4); 
+    declare bC38 int(11); 	
+    declare bC39 int(11); 	
+    declare bC40 numeric(15,4); 
+    declare bC41 numeric(15,4); 
+
+    declare nuCBas int;
+    declare nuCCom int;
+    declare nuCSun int;
+
+    
+    declare doneData int default 0;
+    declare cuData cursor for 
+        select  infoperi, infocodi, infoesta, infonomb, infodire, 
+                infozona, infosuca, infolean, infoleac, infocons, 
+                infocate, infoinan, infoinag, infoinal, infoinva, 
+                inforeag, inforeal, inforeva, infocafi, infocbas, 
+                infoccom, infocsun, infoalca, infomedi, infosure,
+                infotanq, infoacom, infootca, inforeci, infonuat, 
+                infovaim, infoserv, infoajus, infovapa, infovano
+        from informe 
+        where infoperi = inuPeriodo
+        order by infocodi;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    call setLog(concat('genSuiAlc ',inuPeriodo, ' Borra datos previamente generados'));
+    delete from suialc2010 where periodo = inuPeriodo;
+
+    call setLog(concat('genSuiAlc ',inuPeriodo, ' Inicio'));
+    
+    -- Se obtienen las fechas del periodo
+    call genSuiAcuGetPeriodo(inuPeriodo, perifege, perifein, perifefi, peridias);
+
+
+    open cuData;
+    BUCLE_MAIN: repeat 
+        fetch cuData into 
+            aInfoperi, aInfocodi, aInfoesta, aInfonomb, aInfodire, 
+            aInfozona, aInfosuca, aInfolean, aInfoleac, aInfocons, 
+            aInfocate, aInfoinan, aInfoinag, aInfoinal, aInfoinva, 
+            aInforeag, aInforeal, aInforeva, aInfocafi, aInfocbas, 
+            aInfoccom, aInfocsun, aInfoalca, aInfomedi, aInfosure,
+            aInfotanq, aInfoacom, aInfootca, aInforeci, aInfonuat, 
+            aInfovaim, aInfoserv, aInfoajus, aInfovapa, aInfovano;
+            
+        if not doneData then
+            
+            call setLog(concat('genSuiAlc - ',aInfocodi));
+
+            set bPeriodo = inuPeriodo;
+            -- 1. Nuid
+            set bC01 = aInfocodi;
+            -- 2. Numero de cuenta o contrato
+            set bC02 = aInfocodi;
+            -- 3. Codigo dane depto
+            set bC03 = '54';
+            -- 4. Codigo dane mpio 
+            set bC04 = '405';
+            -- 5. Zona IGAC
+            set bC05 = '00';
+            -- 6. Sector IGAC
+            set bC06 = '00';
+            -- 7. Manzana o vereda IGAC
+            set bC07 = '0000';
+            -- 8. Numero del predio IGAC
+            set bC08 = '0000';
+            -- 9. Condicion de propiedad del predio IGAC
+            set bC09 = '000';
+            -- 10. Direccion
+            set bc10 = ifnull(aInfodire,'');
+            -- 11. Numero de factura
+            set bC11 = ifnull(aInforeci,'');
+            -- 12. Fecha expedicion factura
+            set bC12 = perifege;
+            -- 13. fecha inicio periodo
+            set bC13 = perifein;            
+            -- 14. Dias facturados
+            set bC14 = peridias;
+            /**
+                Calculo del Uso y Estrato dado el CF cobrado
+            **/
+            call getUsoEstFromTarivalo(inuAno, inuMes, aInfocafi, cate, suca);
+            if cate is null then
+                iterate BUCLE_MAIN;
+            else
+                set aInfocate := case cate when 1 then 'R' when 2 then 'C' else '*' end;
+            end if;
+            
+            -- 15. Codigo clase de uso
+            call genSuiAcuGetClaseUso(aInfocate, aInfosuca, bC15);
+            set bC16 = null;
+            -- 17. Unidades multiusuario no residenciales
+            set bC17 = null;
+            -- 18. Hogar comunitario o sustituto
+            set bC18 = 0;
+            -- 19. ?Usuarios facturados con aforo
+            set bC19 = 0;
+            -- 20. ?Usuario cuenta con caracterizacion
+            set bC20 = 1;
+            -- 21. Cargo fijo
+            set bC21 = ifnull(aInfoalca, 0);
+            -- 22. ?Cargo por vertimiento basico
+            set bC22 = 0;
+            -- 23. ?Cargo por vertimiento complementario
+            set bC23 = 0; 
+            -- 24. ?Cargo por vertimiento suntuario
+            set bC24 = 0;
+            -- 25. CMT
+            set bC25 = 0; 
+            -- 26. ?Vertimiento del periodo en metros cubicos
+            set bC26 = 0; 
+            -- 27. ?Valor facturado por vertimiento
+            set bC27 = 0; 
+            -- 28. Valor subsidio
+            set bC28 = 0; 
+            -- 29. Valor contribucion
+            set bC29 = 0; 
+            -- 30. ?Factor subsidio o contribucion cargp fijo
+            set bC30 = 0; 
+            -- 31. ?Factor subsidio o contribucion por vertimiento
+            set bC31 = 0; 
+            -- 32. ?Cargo por conexion
+            set bC32 = 0;
+            -- 33. ?Pago anticipado por servicio
+            set bC33 = 0;
+            -- 34. Dias de mora
+            set bC34 = ifnull(aInfonuat,0) * 30;
+            -- 35. Valor por mora
+            set bC35 = ifnull(aInforeal,0);
+            -- 36. Intereses por mora
+            set bC36 = ifnull(aInfoinal,0);
+            -- 37. Otros cobros
+            set bC37 = 0;
+            
+            -- Por si el Refacturado es negativo, se agrega a Otros cobros.
+            if bC35 < 0 then 
+                set bC37 = bC37 + bC35;
+                set bC35 = 0;
+            end if;
+            -- Por si el Valor en Mora es negativo, se agrega a Otros cobros.
+            if bC36 < 0 then 
+                set bC37 = bC37 + bC36;
+                set bC36 = 0;
+            end if;
+            -- Dias de mora
+            --  Dias de mora por si no tiene y hay mora
+            if bC35 > 0 and bC34 = 0 then
+                set bC34 = 30;
+            end if;
+            
+            
+            -- En algunos meses del 2011 se presentan Intereses por mora sin haber Refacturado
+            -- por lo tanto, se suman a Otros cobros.
+            if bC35 = 0 and bC36 <> 0 then
+                set bC37 = bC37 + bC36;
+                set bC36 = 0;
+            end if;
+            
+            -- 38. Causal refacturacion
+            set bC38 = 0;
+            -- 39. Numero de factura objeto de refacturacion
+            set bC39 = null;
+            -- 40. Valor total facturado
+            set bC40 = bC21 + bC35 + bC36 + bC37; -- ifnull(aInfoalca,0) + ifnull(aInfoinal,0) + ifnull(aInforeal,0);
+            -- 41. Pagos del usuario recibidos durante el mes de reporte
+            set bC41 = ifnull(aInfovapa,0) - (ifnull(aInfovaim,0) - bC40);
+            set bC41 = case when bC41 < 0 then 0 else bC41 end;
+            
+            insert into SUIALC2010 (periodo,
+                C01,C02,C03,C04,C05,C06,C07,C08,C09,C10,
+                C11,C12,C13,C14,C15,C16,C17,C18,C19,C20,
+                C21,C22,C23,C24,C25,C26,C27,C28,C29,C30,
+                C31,C32,C33,C34,C35,C36,C37,C38,C39,C40,
+                C41)
+            values (bPeriodo,
+                bC01,bC02,bC03,bC04,bC05,bC06,bC07,bC08,bC09,bC10,
+                bC11,bC12,bC13,bC14,bC15,bC16,bC17,bC18,bC19,bC20,
+                bC21,bC22,bC23,bC24,bC25,bC26,bC27,bC28,bC29,bC30,
+                bC31,bC32,bC33,bC34,bC35,bC36,bC37,bC38,bC39,bC40,
+                bC41);
+            
+        end if;
+    until doneData end repeat;
+    close cuData;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getUsoEstFromTarivalo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `getUsoEstFromTarivalo`(inuAno int, inuMes int, inuValo numeric(15,2), out onuCate int, out onuSuca int)
+begin
+  /**
+    Obtiene la el Uso y Estrato desde la tarifa de Cargo Fijo, 
+    procedimiento usado para correcion del uso y estrato.  
+  **/
+  
+    declare sbError varchar(1000);
+
+    select taricate, tarisuca
+    into onuCate, onuSuca
+    from sui_tarifa
+    where tariano = inuAno
+      and tarimes = inuMes
+      and taricodi = 'CF'
+      and taricate <> -1 -- Excluye la tarifa plena
+      and inuValo between floor(tarivalo) and ceil(tarivalo)
+    order by tariano, tarimes;
+    
+    if onuCate is null or onuSuca is null then
+        set sbError = concat('getUsoEstFromTarivalo(',ifnull(inuAno,'null'),', ',ifnull(inuMes,'null'),', ',ifnull(inuValo,'null'),',',ifnull(onuCate,'null'),',',ifnull(onuSuca,'null'),') - No se encuentra tarifa' );
+        call setLog(concat('ERROR ', sbError));
+        -- signal sqlstate '45000' set message_text = sbError;
+    end if;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `migraHistoria` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `migraHistoria`(inuPeriodo int)
+begin
+    delete from histdeta where hideperi = inuPeriodo;
+    delete from histmaes where himaperi = inuPeriodo;
+    
+    insert into histmaes
+        select periodo, codigoc, 0, 0, 0, 0
+        from historia 
+        where periodo = inuPeriodo;
+        
+    insert into histdeta select periodo, codigoc,'VRPAG',VRPAG, null from historia where periodo = inuPeriodo and VRPAG<>0;
+    insert into histdeta select periodo, codigoc,'VRPAS',VRPAS, null from historia where periodo = inuPeriodo and VRPAS<>0;
+    insert into histdeta select periodo, codigoc,'VRPAL',VRPAL, null from historia where periodo = inuPeriodo and VRPAL<>0;
+    insert into histdeta select periodo, codigoc,'VRPVA',VRPVA, null from historia where periodo = inuPeriodo and VRPVA<>0;
+    insert into histdeta select periodo, codigoc,'INTAG',INTAG, null from historia where periodo = inuPeriodo and INTAG<>0;
+    insert into histdeta select periodo, codigoc,'INTAL',INTAL, null from historia where periodo = inuPeriodo and INTAL<>0;
+    insert into histdeta select periodo, codigoc,'INTAS',INTAS, null from historia where periodo = inuPeriodo and INTAS<>0;
+    insert into histdeta select periodo, codigoc,'INTVA',INTVA, null from historia where periodo = inuPeriodo and INTVA<>0;
+    insert into histdeta select periodo, codigoc,'INTAGM',INTAGM, null from historia where periodo = inuPeriodo and INTAGM<>0;
+    insert into histdeta select periodo, codigoc,'INTALM',INTALM, null from historia where periodo = inuPeriodo and INTALM<>0;
+    insert into histdeta select periodo, codigoc,'INTASM',INTASM, null from historia where periodo = inuPeriodo and INTASM<>0;
+    insert into histdeta select periodo, codigoc,'INTVAM',INTVAM, null from historia where periodo = inuPeriodo and INTVAM<>0;
+    insert into histdeta select periodo, codigoc,'RECARGO',RECARGO, null from historia where periodo = inuPeriodo and RECARGO<>0;
+    insert into histdeta select periodo, codigoc,'VALORABON',VALORABON, null from historia where periodo = inuPeriodo and VALORABON<>0;
+    insert into histdeta select periodo, codigoc,'CARGOFIJO',CARGOFIJO, null from historia where periodo = inuPeriodo and CARGOFIJO<>0;
+    insert into histdeta select periodo, codigoc,'CONSBASICO',CONSBASICO, null from historia where periodo = inuPeriodo and CONSBASICO<>0;
+    insert into histdeta select periodo, codigoc,'CONSUPLEM',CONSUPLEM, null from historia where periodo = inuPeriodo and CONSUPLEM<>0;
+    insert into histdeta select periodo, codigoc,'CONSUNTUA',CONSUNTUA, null from historia where periodo = inuPeriodo and CONSUNTUA<>0;
+    insert into histdeta select periodo, codigoc,'ASEO',ASEO, null from historia where periodo = inuPeriodo and ASEO<>0;
+    insert into histdeta select periodo, codigoc,'ALCANTA',ALCANTA, null from historia where periodo = inuPeriodo and ALCANTA<>0;
+    insert into histdeta select periodo, codigoc,'INST_ACUED',INST_ACUED, null from historia where periodo = inuPeriodo and INST_ACUED<>0;
+    insert into histdeta select periodo, codigoc,'INST_ALCAN',INST_ALCAN, null from historia where periodo = inuPeriodo and INST_ALCAN<>0;
+    insert into histdeta select periodo, codigoc,'MANTO_MEDI',MANTO_MEDI, null from historia where periodo = inuPeriodo and MANTO_MEDI<>0;
+    insert into histdeta select periodo, codigoc,'ABONO_CRED',ABONO_CRED, null from historia where periodo = inuPeriodo and ABONO_CRED<>0;
+    insert into histdeta select periodo, codigoc,'VARIOS',VARIOS, null from historia where periodo = inuPeriodo and VARIOS<>0;
+    -- insert into histdeta select periodo, codigoc,'ULTIMOREC',ULTIMOREC, null from historia where periodo = inuPeriodo and ULTIMOREC<>0;
+    insert into histdeta select periodo, codigoc,'VALOREC ',VALOREC , null from historia where periodo = inuPeriodo and VALOREC <>0;
+    insert into histdeta select periodo, codigoc,'VALORPAG',VALORPAG, null from historia where periodo = inuPeriodo and VALORPAG<>0;
+    insert into histdeta select periodo, codigoc,'DIFEREN',DIFEREN, null from historia where periodo = inuPeriodo and DIFEREN<>0;
+    insert into histdeta select periodo, codigoc,'VALOR_NOTA',VALOR_NOTA, null from historia where periodo = inuPeriodo and VALOR_NOTA<>0;
+    insert into histdeta select periodo, codigoc,'OTROS_CAR',OTROS_CAR, null from historia where periodo = inuPeriodo and OTROS_CAR<>0;
+    insert into histdeta select periodo, codigoc,'CONS_ANTER',CONS_ANTER, null from historia where periodo = inuPeriodo and CONS_ANTER<>0;
+    -- insert into histdeta select periodo, codigoc,'PROMEDIO',PROMEDIO, null from historia where periodo = inuPeriodo and PROMEDIO<>0;
+    insert into histdeta select periodo, codigoc,'CARGO_FIJO',CARGO_FIJO, null from historia where periodo = inuPeriodo and CARGO_FIJO<>0;
+    insert into histdeta select periodo, codigoc,'SUBAGUA',SUBAGUA, null from historia where periodo = inuPeriodo and SUBAGUA<>0;
+    insert into histdeta select periodo, codigoc,'SUBASEO',SUBASEO, null from historia where periodo = inuPeriodo and SUBASEO<>0;
+    insert into histdeta select periodo, codigoc,'SUBALCA',SUBALCA, null from historia where periodo = inuPeriodo and SUBALCA<>0;
+    insert into histdeta select periodo, codigoc,'DEUDA',DEUDA, null from historia where periodo = inuPeriodo and DEUDA<>0;
+    insert into histdeta select periodo, codigoc,'INTERESA',INTERESA, null from historia where periodo = inuPeriodo and INTERESA<>0;
+    insert into histdeta select periodo, codigoc,'INTERESM',INTERESM, null from historia where periodo = inuPeriodo and INTERESM<>0;
+    insert into histdeta select periodo, codigoc,'VCUOTAM',VCUOTAM, null from historia where periodo = inuPeriodo and VCUOTAM<>0;
+    insert into histdeta select periodo, codigoc,'VALORPEN',VALORPEN, null from historia where periodo = inuPeriodo and VALORPEN<>0;
+    insert into histdeta select periodo, codigoc,'PAGOACU',PAGOACU, null from historia where periodo = inuPeriodo and PAGOACU<>0;
+    insert into histdeta select periodo, codigoc,'PAGOALC',PAGOALC, null from historia where periodo = inuPeriodo and PAGOALC<>0;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `pasaArchivoSuiAcu` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `pasaArchivoSuiAcu`(inuPeriodo int)
+begin
+
+  -- Agregado 2013-11-26
+  delete from suiacu2009 where periodo = inuPeriodo;
+
+  insert into suiacu2009
+    select inuPeriodo, 
+           C01, C02, C03, C04, C05, C06, C07, C08,
+           C09, C10, C11, C12, C13, C14, C15, C16,
+           C17, C18, C19, C20, C21, C22, C23, C24,
+           C25, C26, C27, C28, C29
+    from tmpacu2009;
+
+    truncate table tmpacu2009;
+
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `pasaArchivoSuiAlc` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `pasaArchivoSuiAlc`(inuPeriodo int)
+begin
+
+  -- Agregado 2013-11-26
+  delete from suialc2009 where periodo = inuPeriodo;
+
+  insert into suialc2009
+    select inuPeriodo, 
+           C01, C02, C03, C04, C05, C06, C07, C08,
+           C09, C10, C11, C12, C13, C14, C15, C16,
+           C17, C18, C19, C20, C21, C22, C23, C24,
+           C25
+    from tmpalc2009;
+
+    truncate table tmpalc2009;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `pasaInforme_v1` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `pasaInforme_v1`(inuPeriodo int)
+begin
+  /**  
+    Procedimiento para migrar los datos de la tabla INFORME_TMP
+    a la tabla INFORME agregando el campo del periodo. La tabla
+    INFORME_TMP se llena con el archivo plano que env�an Luis 
+    Eduardo desde el software H2O.
+    hoglyrubio@gmail.com 2013-12-04
+  **/
+  delete from informe where infoperi = inuPeriodo;
+
+  insert into informe
+    select inuPeriodo, 
+           infocodi, infoesta, infonomb, 
+           infodire, infozona, infosuca, infolean, 
+           infoleac, infocons, infocate, infoinan, 
+           infoinag, infoinal, infoinva, inforeag, 
+           inforeal, inforeva, infocafi, infocbas, 
+           infoccom, infocsun, infoalca, infomedi, 
+           infosure, infotanq, infoacom, 0,
+           inforeci, infonuat, infovaim, infoserv, 
+           infoajus, infovapa, infovano
+    from informe_tmp_v1;
+
+    truncate table informe_tmp_v1;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `pasaInforme_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `pasaInforme_v2`(inuPeriodo int)
+begin
+  /**  
+    Procedimiento para migrar los datos de la tabla INFORME_TMP
+    a la tabla INFORME agregando el campo del periodo. La tabla
+    INFORME_TMP se llena con el archivo plano que env�an Luis 
+    Eduardo desde el software H2O.
+    hoglyrubio@gmail.com 2013-12-04
+  **/
+  delete from informe where infoperi = inuPeriodo;
+
+  insert into informe
+    select inuPeriodo, 
+           infocodi, infoesta, infonomb, 
+           infodire, infozona, infosuca, infolean, 
+           infoleac, infocons, infocate, infoinan, 
+           infoinag, infoinal, infoinva, inforeag, 
+           inforeal, inforeva, infocafi, infocbas, 
+           infoccom, infocsun, infoalca, infomedi, 
+           infosure, infotanq, infoacom, null,
+           inforeci, infonuat, infovaim, infoserv, 
+           infoajus, infovapa, infovano
+  from informe_tmp_v2;
+
+    truncate table informe_tmp_v2;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `reparaInformeUsoEstrato` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `reparaInformeUsoEstrato`(inuPeriodo int)
+begin
+    /**
+        Este procedimiento actualiza el Uso y Estrato desde las novedades
+        reportadas en excel por Luis Eduardo en excel.
+    **/
+    declare aInfoperi int;
+    declare aInfocodi int;
+    declare aInfocate varchar(1);
+    declare aInfosuca int;
+    declare cant      int;
+    
+    declare doneData int default 0;
+    declare cuData cursor for 
+        select infoperi, infocodi, infocate, infosuca
+        from tmp_uso
+        where infoperi = inuPeriodo
+        order by infocodi;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+    
+    call setLog(concat('reparaInformeUsoEstrato(',inuPeriodo, ') - Inicio'));    
+    
+    set cant := 0;
+    open cuData;
+    repeat 
+        fetch cuData into aInfoperi, aInfocodi, aInfocate, aInfosuca;
+        
+        if not doneData then
+            update informe
+            set infocate = aInfocate, infosuca = aInfosuca
+            where infoperi = aInfoperi
+              and infocodi = aInfocodi;            
+              
+            set cant := cant + 1;
+        end if;
+    until doneData end repeat;
+    close cuData;
+    
+    call setLog(concat('reparaInformeUsoEstrato(',inuPeriodo, ') - Fin. ', cant, ' Registros actualizados'));    
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `setLog` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `setLog`(isbTexto varchar(1000) )
+begin
+  insert into log values (current_timestamp, isbTexto, user(), user());
+  -- signal sqlstate '01000' set message_text = isbTexto;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `setProcStatus` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `setProcStatus`(
+  isbProg varchar(10), 
+  isbPara varchar(50), 
+  isbData varchar(1000), 
+  isbEsta varchar(1)
+)
+begin
+  if isbEsta <> 'F' then
+    insert into contproc (coprprog, coprpara, coprfeie, coprfefe, copresta, coprdata, copruser) 
+    values (isbProg, isbPara, current_timestamp, null, isbEsta, isbData, user());
+  else
+    update contproc 
+    set coprfefe = current_timestamp, copresta = isbEsta, coprdata = isbData
+    where coprprog = isbProg and coprpara = isbPara;
+  end if;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `test` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `test`(valint int)
+begin
+    declare c int;
+    declare b int;
+    declare s int;
+    
+    declare cf numeric(15,2);
+    declare cb numeric(15,2);
+    declare cc numeric(15,2);
+    declare cs numeric(15,2);
+    declare cfsa numeric(15,2);
+    declare cbsa numeric(15,2);
+    declare ccsa numeric(15,2);
+    declare cssa numeric(15,2);
+    
+    
+    call genSuiAcuDivideConsumo(valint, b, c, s);
+    select concat(valint,' = (', b, ',', c, ',', s, ')');
+        
+    call genSuiAcuLiquidacion(2012, 1, 1, 0, cf, cb, cc, cs, cfsa, cbsa, ccsa, cssa);
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `updInformeUsoEstFromTarifa` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `updInformeUsoEstFromTarifa`( inuPeri int,inuAno int, inuMes int )
+begin
+    declare aInfocodi int;
+    declare aInfocafi numeric(15,2);
+    declare cant int;
+    declare aTaricate int;
+    declare aTarisuca int;
+
+    declare doneData int default 0;
+    declare cuData cursor for 
+        select infocafi, count(1)
+        from informe
+        where infoperi = inuPeri
+        group by infocafi;
+    declare continue handler for sqlstate '02000' set doneData = 1;
+
+    open cuData;
+    repeat 
+        fetch cuData into aInfocafi, cant;
+        if not doneData then
+            call setLog(concat('updInformeUsoEstFromTarifa(',ifnull(inuAno,'null'),', ',ifnull(inuMes,'null'),', ',ifnull(aInfocafi,'null'),', ',ifnull(aTaricate,'null'),', ',ifnull(aTarisuca,'null'),') - ',cant,' registros'));
+            
+            call getUsoEstFromTarivalo(inuAno, inuMes, aInfocafi, aTaricate, aTarisuca);
+            if aTaricate is not null and aTarisuca is not null then
+                update informe
+                set cate = case aTaricate when 1 then 'R' when 2 then 'C' else null end, suca = infosuca
+                where infoperi = inuPeri and infocafi = aInfocafi;
+            end if;
+        end if;
+    until doneData end repeat;
+    close cuData;
+    
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `updPorcentajeTarifas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `updPorcentajeTarifas`(inuAno int, inuMes int)
+begin
+    call setLog(concat('updPorcentajeTarifas(',inuAno,',',inuMes,')'));
+
+    update sui_tarifa
+    set tariporc = round(tarivalo / getTarifaClaseUso(tariano, tarimes, taricodi, -1), 4) - 1
+    where tariano = inuAno and tarimes = inuMes;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2016-04-19 23:02:43

@@ -1,0 +1,5 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd">
+  <cache name="tarifas" maxEntriesLocalHeap="5000" timeToLiveSeconds="600"> </cache>
+  <cache name="periodos" maxEntriesLocalHeap="5000" timeToLiveSeconds="600"> </cache>
+  <cache name="catesuca" maxEntriesLocalHeap="5000" timeToLiveSeconds="600"> </cache>
+</ehcache>
