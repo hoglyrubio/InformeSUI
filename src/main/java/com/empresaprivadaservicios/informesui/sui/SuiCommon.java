@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Optional;
 
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_NORMAL;
 import static com.empresaprivadaservicios.informesui.informe.InformeConstantes.ESTADO_SOLO_INTERESES;
@@ -41,13 +42,16 @@ public class SuiCommon {
 
     SuiCateSuca suiCateSuca = null;
 
+    Tarifa tarifaCF = obtainTarifaCargoFijoCobrada(informe, periodo);
+    Integer uso = tarifaCF.getTarifaPk().getTaricate();
+    Integer est = tarifaCF.getTarifaPk().getTarisuca();
+
     if (ESTADO_NORMAL.equals(informe.getInfoesta())) {
-      Tarifa tarifaCF = obtainTarifaCargoFijoCobrada(informe, periodo);
-      Integer uso = tarifaCF.getTarifaPk().getTaricate();
-      Integer est = tarifaCF.getTarifaPk().getTarisuca();
       suiCateSuca = suiCateSucaRepository.findOne(new SuiCateSucaPk(uso.toString(), est.toString()));
     } else if (ESTADO_SOLO_INTERESES.equals(informe.getInfoesta())) {
-      suiCateSuca = suiCateSucaRepository.findOne(new SuiCateSucaPk(informe.getInfocate(), informe.getInfosuca()));
+      suiCateSuca = Optional
+        .ofNullable(suiCateSucaRepository.findOne(new SuiCateSucaPk(informe.getInfocate(), informe.getInfosuca())))
+        .orElse(suiCateSucaRepository.findOne(new SuiCateSucaPk(uso.toString(), est.toString())));
     } else {
       throw new BusinessException(MessageFormat.format("El código <{0}> tiene un estado inválido <{1}>.",
         informe.getInformePk().getInfocodi(), informe.getInfoesta()));
